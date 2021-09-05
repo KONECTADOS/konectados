@@ -1,0 +1,11 @@
+.container{
+  width: 100vw;
+  height: calc(100vh - 5rem);
+}
+
+.componentInfo{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 4rem;
+}

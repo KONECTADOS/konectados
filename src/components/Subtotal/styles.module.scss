@@ -1,0 +1,14 @@
+.subtotal {
+  color: var(--red-400);
+  font-size: 1.25rem;
+  display: flex;
+  align-items: flex-end;
+
+  span {
+    font-size: 3.5rem;
+    color: var(--white);
+    font-weight: bold;
+    transform: translateY(5px);
+    margin-left: 0.15em;
+  }
+}

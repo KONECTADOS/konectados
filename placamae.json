@@ -1,0 +1,91 @@
+[
+  {
+    "name": "PlacaABC",
+    "amountInStock": 8,
+    "price": 1017,
+    "cpuSocket": "LGA2000",
+    "maxRamFrequencyInMhz": 1600,
+    "maxRamSizeInGb": 64,
+    "ramSocket": "ddr3"
+  },
+  {
+    "name": "PlacaXZ",
+    "amountInStock": 5,
+    "price": 468,
+    "cpuSocket": "LGA2000",
+    "maxRamFrequencyInMhz": 2000,
+    "maxRamSizeInGb": 16,
+    "ramSocket": "ddr4"
+  },
+  {
+    "name": "PlacaXYZ",
+    "amountInStock": 14,
+    "price": 403,
+    "cpuSocket": "LGA2000",
+    "maxRamFrequencyInMhz": 2333,
+    "maxRamSizeInGb": 16,
+    "ramSocket": "ddr4"
+  },
+  {
+    "name": "PlacaXYZ",
+    "amountInStock": 9,
+    "price": 691,
+    "cpuSocket": "LGA1155",
+    "maxRamFrequencyInMhz": 1600,
+    "maxRamSizeInGb": 4,
+    "ramSocket": "ddr4"
+  },
+  {
+    "name": "PlacaXYZ",
+    "amountInStock": 6,
+    "price": 421,
+    "cpuSocket": "AM4",
+    "maxRamFrequencyInMhz": 1333,
+    "maxRamSizeInGb": 8,
+    "ramSocket": "ddr4"
+  },
+  {
+    "name": "PlacaY",
+    "amountInStock": 3,
+    "price": 1086,
+    "cpuSocket": "LGA775",
+    "maxRamFrequencyInMhz": 1600,
+    "maxRamSizeInGb": 8,
+    "ramSocket": "ddr4"
+  },
+  {
+    "name": "PlacaXYZ",
+    "amountInStock": 11,
+    "price": 1109,
+    "cpuSocket": "LGA2000",
+    "maxRamFrequencyInMhz": 2800,
+    "maxRamSizeInGb": 8,
+    "ramSocket": "ddr3"
+  },
+  {
+    "name": "PlacaXYZ",
+    "amountInStock": 7,
+    "price": 859,
+    "cpuSocket": "LGA1151",
+    "maxRamFrequencyInMhz": 2333,
+    "maxRamSizeInGb": 4,
+    "ramSocket": "ddr3"
+  },
+  {
+    "name": "PlacaABC",
+    "amountInStock": 9,
+    "price": 716,
+    "cpuSocket": "LGA1151",
+    "maxRamFrequencyInMhz": 1333,
+    "maxRamSizeInGb": 8,
+    "ramSocket": "ddr3"
+  },{
+    "name": "PlacaXZ",
+    "amountInStock": 11,
+    "price": 569,
+    "cpuSocket": "LGA775",
+    "maxRamFrequencyInMhz": 1333,
+    "maxRamSizeInGb": 16,
+    "ramSocket": "ddr3"
+ }
+]
