@@ -1,0 +1,15 @@
+.skipButton{
+  position: absolute;
+  bottom: 4rem;
+  left: calc(50% - 40px);
+  height: 2.25rem;
+  width: 80px;
+  background: transparent;
+  border: 1px solid var(--red-400);
+  color: var(--white);
+  border-radius: .5rem;
+  transition: .3s;
+  &:hover{
+    background: var(--red-400);
+  }
+}

@@ -79,6 +79,38 @@ export function ComputerContextProvider ({ children } ) {
     setCurrentComponent(componentName)
   }
 
+  function handleChangeSetup(componentName){
+    switch(componentName){
+      case 'Processador':
+        setCurrentComponent('Placa mãe');
+        break;
+      case 'Placa mãe':
+        setCurrentComponent('Water Cooler');
+        break;
+      case 'Water Cooler':
+        setCurrentComponent('Memória RAM');
+        break;
+      case 'Memória RAM':
+        setCurrentComponent('Placa de vídeo');
+        break;
+      case 'Placa de vídeo':
+        setCurrentComponent('Hard Disk');
+        break;
+      case 'Hard Disk':
+        setCurrentComponent('SSD');
+        break;
+      case 'SSD':
+        setCurrentComponent('Fonte');
+        break;
+      case 'Fonte':
+        setCurrentComponent('Gabinete');
+        break;
+      case 'Gabinete':
+        setCurrentComponent('Monitor');
+        break;
+    }
+  }
+
   function insertComponentIntoSetup (
     componentName: CurrentComponent, 
     product: PcComponent | PcCabinet | GraphicCard | RamMemory | Motherboard | CPU
@@ -92,6 +124,9 @@ export function ComputerContextProvider ({ children } ) {
         currentSetupPrice += newSetup[key].price;
       }
     }
+
+    handleChangeSetup(componentName)
+
     setSetupPrice(currentSetupPrice)
     setSetup(newSetup)
   }

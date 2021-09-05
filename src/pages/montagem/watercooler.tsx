@@ -2,13 +2,11 @@ import React from 'react';
 import { useComputer } from '../../hooks/useComputer';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
-import processadores from '../../../processadores.json';
 import placamae from '../../../placamae.json';
 import { ComponentsTable } from '../../components/ComponentsTable';
 import { SkipComponentButton } from '../../components/SkipComponentButton';
-import { useRouter } from 'next/dist/client/router';
 
-export default function Montagem() {
+export default function WaterCooler() {
   const { currentComponent } = useComputer();
 
   return (
@@ -23,13 +21,13 @@ export default function Montagem() {
 
       <section className={styles.productTableSection}>
         <ComponentsTable 
-          products={processadores}
-          componentName={'cpu'}
-          onChoose={{redirectTo: '/montagem/placamae'}}
+          products={placamae}
+          componentName={'motherboard'}
+          onChoose={{redirectTo: '/montagem/memoriaram'}}
         />
       </section>
 
-      <SkipComponentButton nextComponent='motherboard'/>
+      <SkipComponentButton nextComponent='memoriaram'/>
     </main>
   )
 }

@@ -1,8 +1,15 @@
+import { useRouter } from 'next/dist/client/router';
 import { useComputer } from '../../hooks/useComputer';
 import styles from './styles.module.scss';
 
-export function ComponentsTable({ products, componentName }) {
+export function ComponentsTable({ products, componentName, onChoose }) {
   const { insertComponentIntoSetup, setup } = useComputer();
+  const router = useRouter()
+
+  function handleChoseComponent(product){
+    insertComponentIntoSetup(componentName, product)
+    router.push(onChoose.redirectTo)
+  }
 
   return (
     <section className={styles.container}>
@@ -11,6 +18,8 @@ export function ComponentsTable({ products, componentName }) {
           <tr>
             <th>Componente</th>
             <th>Preço</th>
+            { products[0].cpuSocket && (<th>Soquete</th>)}
+            { products[0].ramSocket && (<th>Soquete</th>)}
             <th></th>
           </tr>
         </thead>
@@ -19,6 +28,9 @@ export function ComponentsTable({ products, componentName }) {
           {products.map((product, index) => {
             if(componentName === 'motherboard'){
               if(setup.cpu.cpuSocket !== product.cpuSocket) return
+            }
+            if(componentName === 'ramMemory'){
+              if(setup.motherboard.ramSocket !== product.ramSocket) return
             }
 
             return (
@@ -30,9 +42,11 @@ export function ComponentsTable({ products, componentName }) {
                     currency: 'BRL',
                   }).format(product.price)
                 }</td>
+                { product.cpuSocket && (<td>{product.cpuSocket}</td>)}
+                { product.ramSocket && (<td>{product.ramSocket}</td>)}
                 <td>
                   <button type="button" onClick={e => {
-                    insertComponentIntoSetup(componentName, product)
+                    handleChoseComponent(product)
                   }}>
                     Escolher
                   </button>

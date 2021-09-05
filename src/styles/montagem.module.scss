@@ -1,11 +1,18 @@
 .container{
   width: 100vw;
   height: calc(100vh - 5rem);
+  padding: 4rem;
 }
 
 .componentInfo{
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 4rem;
+  align-items:center;
+  max-height: 8rem;
+}
+
+.productTableSection{
+  width: 100%;
+  margin-top: 3rem;
 }
