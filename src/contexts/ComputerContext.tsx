@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 
 interface PcComponent {
@@ -9,7 +9,7 @@ interface PcComponent {
 }
 
 interface CPU extends PcComponent{
-  maxRamSizeInMhz: number;
+  maxRamFrequencyInMhz: number;
   maxRamSizeInGB: number;
   cpuSocket: string;
 }
@@ -18,6 +18,9 @@ interface Motherboard extends CPU{
   ramSocket: string;
 }
 
+interface WaterCooler extends PcComponent{
+  socketCompatibility: string[];
+}
 interface RamMemory extends PcComponent{
   ramSocket: string;
   frequencyInMhz: number;
@@ -39,7 +42,7 @@ type CurrentComponent = 'Processador' | 'Placa mãe' | 'Water Cooler' | 'Memóri
 interface UserSetup{
   cpu: CPU;
   motherboard: Motherboard;
-  waterCooler: PcComponent;
+  waterCooler: WaterCooler;
   ramMemory: RamMemory;
   graphicCard: GraphicCard;
   hardDisk: PcComponent;
@@ -74,6 +77,21 @@ export function ComputerContextProvider ({ children } ) {
   const [currentComponent, setCurrentComponent] = useState<CurrentComponent>('Processador')
   const [setup, setSetup] = useState<UserSetup>({} as UserSetup)
   const [setupPrice, setSetupPrice] = useState(0)
+
+  useEffect(() => {
+    const savedSetup = JSON.parse(localStorage.getItem('konecta@setup'))
+    if(!savedSetup) return
+    let currentSetupPrice: number = 0
+
+    for (const key in savedSetup) {
+      if (Object.prototype.hasOwnProperty.call(savedSetup, key)) {
+        currentSetupPrice += savedSetup[key].price;
+      }
+    }
+    
+    setSetupPrice(currentSetupPrice)
+    setSetup(savedSetup);
+  }, [])
 
   function changeCurrentComponent (componentName: CurrentComponent) {
     setCurrentComponent(componentName)
@@ -125,8 +143,8 @@ export function ComputerContextProvider ({ children } ) {
       }
     }
 
-    handleChangeSetup(componentName)
-
+    // handleChangeSetup(componentName)
+    localStorage.setItem('konecta@setup', JSON.stringify(newSetup))
     setSetupPrice(currentSetupPrice)
     setSetup(newSetup)
   }

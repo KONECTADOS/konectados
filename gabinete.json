@@ -1,0 +1,32 @@
+[
+  {
+    "name": "GabineteA",
+    "amountInStock": 13,
+    "price": 499,
+    "cabinetSizeInCm": 45
+  },
+  {
+    "name": "GabineteB",
+    "amountInStock": 13,
+    "price": 399,
+    "cabinetSizeInCm": 42
+  },
+  {
+    "name": "GabineteC",
+    "amountInStock": 13,
+    "price": 359,
+    "cabinetSizeInCm": 40
+  },
+  {
+    "name": "GabineteD",
+    "amountInStock": 13,
+    "price": 512,
+    "cabinetSizeInCm": 51
+  },
+  {
+    "name": "GabineteE",
+    "amountInStock": 13,
+    "price": 543,
+    "cabinetSizeInCm": 56
+  }
+]

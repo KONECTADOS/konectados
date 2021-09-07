@@ -1,0 +1,27 @@
+[
+  {
+    "name": "MonitorA",
+    "amountInStock": 13,
+    "price": 999
+  },
+  {
+    "name": "MonitorB",
+    "amountInStock": 13,
+    "price": 902
+  },
+  {
+    "name": "MonitorC",
+    "amountInStock": 13,
+    "price": 1159
+  },
+  {
+    "name": "MonitorD",
+    "amountInStock": 13,
+    "price": 1089
+  },
+  {
+    "name": "MonitorE",
+    "amountInStock": 13,
+    "price": 1499
+  }
+]

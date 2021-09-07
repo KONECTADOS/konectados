@@ -1,0 +1,17 @@
+[
+  {
+    "name": "HD 1Tb",
+    "amountInStock": 13,
+    "price": 369
+  },
+  {
+    "name": "HD 2Tb",
+    "amountInStock": 13,
+    "price": 399
+  },
+  {
+    "name": "HD 500Gb",
+    "amountInStock": 13,
+    "price": 289
+  }
+]

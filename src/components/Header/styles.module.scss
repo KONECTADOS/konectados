@@ -17,4 +17,36 @@
       background: var(--red-500);
     }
   }
+
+  nav{
+    list-style: none;
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+
+    a{
+      position: relative;
+
+      color: var(--gray);
+
+      &.choosed{
+        color: var(--white);
+      }
+      
+      &.currentComponent{
+        color: var(--white);
+      }
+
+      &.currentComponent::before{
+        content: '';
+        width: 5px;
+        height: 25px;
+        position: absolute; 
+        top: -35px;
+        border-radius: 0 0 .5rem .5rem;
+        left: calc(50% - 2.5px);
+        background: var(--red-400);
+      }
+    }
+  }
 }

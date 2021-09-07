@@ -7,13 +7,11 @@ import { ComponentsTable } from '../../components/ComponentsTable';
 import { SkipComponentButton } from '../../components/SkipComponentButton';
 
 export default function Montagem() {
-  const { currentComponent } = useComputer();
-
   return (
     <main className={styles.container}>
       <section className={styles.componentInfo}>
         <div className={styles.componentName}>
-          <h2>{currentComponent}</h2>
+          <h2>Placa mãe</h2>
           <p>Escolha um processador para continuar.</p>
         </div>
         <Subtotal />
@@ -27,7 +25,7 @@ export default function Montagem() {
         />
       </section>
 
-      <SkipComponentButton nextComponent='waterCooler'/>
+      {/* <SkipComponentButton nextComponent='waterCooler'/> */}
     </main>
   )
 }

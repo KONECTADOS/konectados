@@ -6,7 +6,7 @@ export default function Montagem(){
 
   return (
     <main className={styles.container}>
-      <h2>{currentComponent}</h2>
+      <h2>Como funciona a montagem do PC?</h2>
       <p>Escolha um</p>
     </main>
   )

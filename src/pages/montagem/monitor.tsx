@@ -2,18 +2,16 @@ import React from 'react';
 import { useComputer } from '../../hooks/useComputer';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
-import coolers from '../../../coolers.json';
+import monitor from '../../../monitor.json';
 import { ComponentsTable } from '../../components/ComponentsTable';
 import { SkipComponentButton } from '../../components/SkipComponentButton';
 
-export default function WaterCooler() {
-  const { currentComponent } = useComputer();
-
+export default function MemoriaRam() {
   return (
     <main className={styles.container}>
       <section className={styles.componentInfo}>
         <div className={styles.componentName}>
-          <h2>Water Cooler</h2>
+          <h2>Monitor</h2>
           <p>Escolha um processador para continuar.</p>
         </div>
         <Subtotal />
@@ -21,13 +19,13 @@ export default function WaterCooler() {
 
       <section className={styles.productTableSection}>
         <ComponentsTable 
-          products={coolers}
-          componentName={'waterCooler'}
-          onChoose={{redirectTo: '/montagem/memoriaram'}}
+          products={monitor}
+          componentName={'screen'}
+          onChoose={{redirectTo: '/montagem/resultado'}}
         />
       </section>
 
-      <SkipComponentButton nextComponent='memoriaram'/>
+      <SkipComponentButton nextComponent='finalizar'/>
     </main>
   )
 }

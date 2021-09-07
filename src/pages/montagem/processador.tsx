@@ -3,10 +3,8 @@ import { useComputer } from '../../hooks/useComputer';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
 import processadores from '../../../processadores.json';
-import placamae from '../../../placamae.json';
 import { ComponentsTable } from '../../components/ComponentsTable';
 import { SkipComponentButton } from '../../components/SkipComponentButton';
-import { useRouter } from 'next/dist/client/router';
 
 export default function Montagem() {
   const { currentComponent } = useComputer();
@@ -15,7 +13,7 @@ export default function Montagem() {
     <main className={styles.container}>
       <section className={styles.componentInfo}>
         <div className={styles.componentName}>
-          <h2>{currentComponent}</h2>
+          <h2>Processador</h2>
           <p>Escolha um processador para continuar.</p>
         </div>
         <Subtotal />
@@ -29,7 +27,7 @@ export default function Montagem() {
         />
       </section>
 
-      <SkipComponentButton nextComponent='motherboard'/>
+      {/* <SkipComponentButton nextComponent='motherboard'/> */}
     </main>
   )
 }

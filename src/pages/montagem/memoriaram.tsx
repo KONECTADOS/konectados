@@ -7,13 +7,11 @@ import { ComponentsTable } from '../../components/ComponentsTable';
 import { SkipComponentButton } from '../../components/SkipComponentButton';
 
 export default function MemoriaRam() {
-  const { currentComponent } = useComputer();
-
   return (
     <main className={styles.container}>
       <section className={styles.componentInfo}>
         <div className={styles.componentName}>
-          <h2>{currentComponent}</h2>
+          <h2>Memória RAM</h2>
           <p>Escolha um processador para continuar.</p>
         </div>
         <Subtotal />
@@ -23,11 +21,11 @@ export default function MemoriaRam() {
         <ComponentsTable 
           products={memoriaRam}
           componentName={'ramMemory'}
-          onChoose={{redirectTo: '/montagem/memoriaram'}}
+          onChoose={{redirectTo: '/montagem/placadevideo'}}
         />
       </section>
 
-      <SkipComponentButton nextComponent='memoriaram'/>
+      {/* <SkipComponentButton nextComponent='placadevideo'/> */}
     </main>
   )
 }

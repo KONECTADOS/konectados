@@ -1,0 +1,20 @@
+[
+  {
+    "name": "WaterCooler",
+    "amountInStock": 13,
+    "price": 399,
+    "socketCompatibility": ["LGA775", "LGA1150", "LGA1151", "LGA1155"]
+  },
+  {
+    "name": "WaterCooler",
+    "amountInStock": 13,
+    "price": 399,
+    "socketCompatibility": ["AM4", "AM3", "AM2"]
+  },
+  {
+    "name": "WaterCooler",
+    "amountInStock": 13,
+    "price": 289,
+    "socketCompatibility": ["LGA1151", "LGA1155", "LGA200"]
+  }
+]
