@@ -57,6 +57,7 @@ interface ComputerContextProps{
   setup: UserSetup;
   setupPrice: number;
   changeCurrentComponent: (componentName: CurrentComponent) => void;
+  skipComponent: (componentName: CurrentComponent) => void;
   insertComponentIntoSetup: (
     componentName: CurrentComponent, 
     product: PcComponent | PcCabinet | GraphicCard | RamMemory | Motherboard | CPU
@@ -88,7 +89,7 @@ export function ComputerContextProvider ({ children } ) {
         currentSetupPrice += savedSetup[key].price;
       }
     }
-    
+    console.log('checked')
     setSetupPrice(currentSetupPrice)
     setSetup(savedSetup);
   }, [])
@@ -97,37 +98,37 @@ export function ComputerContextProvider ({ children } ) {
     setCurrentComponent(componentName)
   }
 
-  function handleChangeSetup(componentName){
-    switch(componentName){
-      case 'Processador':
-        setCurrentComponent('Placa mãe');
-        break;
-      case 'Placa mãe':
-        setCurrentComponent('Water Cooler');
-        break;
-      case 'Water Cooler':
-        setCurrentComponent('Memória RAM');
-        break;
-      case 'Memória RAM':
-        setCurrentComponent('Placa de vídeo');
-        break;
-      case 'Placa de vídeo':
-        setCurrentComponent('Hard Disk');
-        break;
-      case 'Hard Disk':
-        setCurrentComponent('SSD');
-        break;
-      case 'SSD':
-        setCurrentComponent('Fonte');
-        break;
-      case 'Fonte':
-        setCurrentComponent('Gabinete');
-        break;
-      case 'Gabinete':
-        setCurrentComponent('Monitor');
-        break;
-    }
-  }
+  // function handleChangeSetup(componentName){
+  //   switch(componentName){
+  //     case 'Processador':
+  //       setCurrentComponent('Placa mãe');
+  //       break;
+  //     case 'Placa mãe':
+  //       setCurrentComponent('Water Cooler');
+  //       break;
+  //     case 'Water Cooler':
+  //       setCurrentComponent('Memória RAM');
+  //       break;
+  //     case 'Memória RAM':
+  //       setCurrentComponent('Placa de vídeo');
+  //       break;
+  //     case 'Placa de vídeo':
+  //       setCurrentComponent('Hard Disk');
+  //       break;
+  //     case 'Hard Disk':
+  //       setCurrentComponent('SSD');
+  //       break;
+  //     case 'SSD':
+  //       setCurrentComponent('Fonte');
+  //       break;
+  //     case 'Fonte':
+  //       setCurrentComponent('Gabinete');
+  //       break;
+  //     case 'Gabinete':
+  //       setCurrentComponent('Monitor');
+  //       break;
+  //   }
+  // }
 
   function insertComponentIntoSetup (
     componentName: CurrentComponent, 
@@ -171,7 +172,7 @@ export function ComputerContextProvider ({ children } ) {
     componentName: CurrentComponent
   ) {
     const newSetup = {...setup};
-    newSetup[componentName] = null;
+    newSetup[componentName] = {};
     let currentSetupPrice: number = 0
 
     for (const key in newSetup) {
@@ -183,6 +184,14 @@ export function ComputerContextProvider ({ children } ) {
     setSetup(newSetup);
   }
 
+  function skipComponent(componentName: string){
+    const newSetup = {...setup};
+    newSetup[componentName] = {name: "skipped", price: 0}
+    
+    localStorage.setItem('konecta@setup', JSON.stringify(newSetup))
+    setSetup(newSetup)
+  }
+
   return ( 
     <ComputerContext.Provider value={{
       currentComponent,
@@ -192,6 +201,7 @@ export function ComputerContextProvider ({ children } ) {
       changeComponentIntoSetup,
       removeComponentIntoSetup,
       changeCurrentComponent,
+      skipComponent
     } as ComputerContextProps}>
       {children}
     </ComputerContext.Provider>

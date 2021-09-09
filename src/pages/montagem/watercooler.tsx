@@ -27,7 +27,7 @@ export default function WaterCooler() {
         />
       </section>
 
-      <SkipComponentButton nextComponent='memoriaram'/>
+      <SkipComponentButton componentToSkip='waterCooler' nextComponent='memoriaram'/>
     </main>
   )
 }

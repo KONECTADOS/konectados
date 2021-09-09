@@ -25,7 +25,7 @@ export default function MemoriaRam() {
         />
       </section>
 
-      <SkipComponentButton nextComponent='finalizar'/>
+      <SkipComponentButton componentToSkip='screen' nextComponent='resultado'/>
     </main>
   )
 }

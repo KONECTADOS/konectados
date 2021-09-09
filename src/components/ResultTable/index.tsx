@@ -6,6 +6,11 @@ export function ResultTable() {
   const router = useRouter()
   const { setup } = useComputer();
 
+  if (!setup.cpu) {
+    return (
+      <h4>Carregando</h4>
+    )
+  }
   return (
     <section className={styles.container}>
       <table>
@@ -27,17 +32,17 @@ export function ResultTable() {
               new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'BRL',
-              }).format(setup.cpu.price)  
+              }).format(setup.cpu.price)
             }</td>
             <td>{setup.cpu.cpuSocket}</td>
             <td>{setup.cpu.maxRamFrequencyInMhz}</td>
             <td>{setup.cpu.maxRamSizeInGB}</td>
           </tr>
-          
+
           <tr>
             <td>{setup.motherboard.name}</td>
             <td>{
-               new Intl.NumberFormat('en-US', {
+              new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'BRL',
               }).format(setup.motherboard.price)
@@ -47,27 +52,29 @@ export function ResultTable() {
             <td>{setup.motherboard.maxRamSizeInGB}</td>
           </tr>
 
-          <tr>
-            <td>{setup.waterCooler.name}</td>
-            <td>{
-              new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'BRL',
-              }).format(setup.waterCooler.price)
-            }</td>
-            <td>{setup.waterCooler.socketCompatibility.join(', ')}</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
+          {setup.waterCooler.name !== 'skipped' && (
+            <tr>
+              <td>{setup.waterCooler.name}</td>
+              <td>{
+                new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'BRL',
+                }).format(setup.waterCooler.price)
+              }</td>
+              <td>{setup.waterCooler.socketCompatibility.join(', ')}</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+          )}
 
           <tr>
             <td>{setup.ramMemory.name}</td>
             <td>{
-            new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'BRL',
-            }).format(setup.ramMemory.price)
+              new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'BRL',
+              }).format(setup.ramMemory.price)
             }</td>
             <td>{setup.ramMemory.ramSocket}</td>
             <td>{setup.ramMemory.frequencyInMhz} Mhz</td>
@@ -90,33 +97,37 @@ export function ResultTable() {
             {/* <td>{setup.graphicCard.amount}</td> */}
           </tr>
 
-          <tr>
-            <td>{setup.hardDisk.name}</td>
-            <td>{
-              new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'BRL',
-              }).format(setup.hardDisk.price)
-            }</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>{setup.hardDisk.amount || '-'}</td>
-          </tr>
+          {setup.hardDisk.name !== 'skipped' && (
+            <tr>
+              <td>{setup.hardDisk.name}</td>
+              <td>{
+                new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'BRL',
+                }).format(setup.hardDisk.price)
+              }</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>{setup.hardDisk.amount || '-'}</td>
+            </tr>
+          )}
 
-          <tr>
-            <td>{setup.SSD.name}</td>
-            <td>{
-              new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'BRL',
-              }).format(setup.SSD.price)
-            }</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>{setup.SSD.amount || '-'}</td>
-          </tr>
+          {setup.SSD.name !== 'skipped' && (
+            <tr>
+              <td>{setup.SSD.name}</td>
+              <td>{
+                new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'BRL',
+                }).format(setup.SSD.price)
+              }</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>{setup.SSD.amount || '-'}</td>
+            </tr>
+          )}
 
           <tr>
             <td>{setup.powerSupply.name}</td>
@@ -143,16 +154,18 @@ export function ResultTable() {
             <td>{setup.pcCabinet.cabinetSizeInCm}</td>
           </tr>
 
-          <tr>
-            <td>{setup.screen.name}</td>
-            <td>{
-              new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'BRL',
-              }).format(setup.screen.price)
-            }</td>
-            <td>{setup.screen.amount}</td>
-          </tr>
+          {setup.screen.name !== 'skipped' && (
+            <tr>
+              <td>{setup.screen.name}</td>
+              <td>{
+                new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'BRL',
+                }).format(setup.screen.price)
+              }</td>
+              <td>{setup.screen.amount}</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </section>

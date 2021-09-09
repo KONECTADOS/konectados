@@ -25,7 +25,7 @@ export default function MemoriaRam() {
         />
       </section>
 
-      <SkipComponentButton nextComponent='fonte'/>
+      <SkipComponentButton componentToSkip='SSD' nextComponent='fonte'/>
     </main>
   )
 }

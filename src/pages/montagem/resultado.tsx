@@ -9,7 +9,7 @@ export default function Resultado() {
       <section className={styles.resultsContainer}>
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
-            <h2>Processador</h2>
+            <h2>Meu <span>PC</span></h2>
             <p>Escolha um processador para continuar.</p>
           </div>
           <Subtotal />
