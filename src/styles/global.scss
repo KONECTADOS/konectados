@@ -7,11 +7,15 @@
 :root {
   --green: #85ff33;
   --white: #f8f0fb;
+  --white-75: rgba(255, 255, 255, 0.75);
   
+  --red-300: rgba(51, 22, 24, .5);
   --red-400: #ef233c;
   --red-500: #d90429;
+  --red-900: #331618;
   
   --gray-50: rgba(113, 113, 111, 0.47);
+  --gray-100: #b8b8b0;
   --gray: #72726f;
   --gray-600: #64595b;
   --gray-700: #352f2f;
@@ -85,6 +89,10 @@ h1 {
 
 h2 {
   font-size: 4.5rem;
+
+  span{
+    color: var(--red-400);
+  }
 }
 
 a {

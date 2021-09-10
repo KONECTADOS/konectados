@@ -10,6 +10,10 @@
   justify-content: space-between;
   align-items:center;
   max-height: 8rem;
+
+  div p{
+    color: var(--white-75);
+  }
 }
 
 .productTableSection{
@@ -17,3 +21,49 @@
   margin-top: 3rem;
 }
 
+.contentHelp	{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1120px;
+  margin: 0 auto;
+
+  *{
+    text-align: center;
+  }
+
+  a{
+    width: 280px;
+    text-align: center;
+    display: inline-block;
+    padding: 1rem 3rem;
+    border-radius: 1rem;
+    background: var(--red-400);
+  }
+
+  h2 span, p span{
+    color: var(--red-400);
+  }
+  p{
+    width: 100%;
+    max-width: 1000px;
+    line-height: 160%;
+    font-size: 1.15rem;
+    margin-top: 1rem;
+    color: var(--white-75);
+  }
+
+  ol{
+    list-style: none;
+    margin: 2rem 0;
+    font-size: 1.25rem;
+
+    li span{
+      color: var(--red-400);
+    }
+
+    li+ li{
+      margin-top: .5rem;
+    }
+  }
+}

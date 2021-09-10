@@ -5,8 +5,10 @@ import styles from '../../styles/montagem.module.scss';
 import monitor from '../../../monitor.json';
 import { ComponentsTable } from '../../components/ComponentsTable';
 import { SkipComponentButton } from '../../components/SkipComponentButton';
+import { GetStaticProps } from 'next';
+import { api } from '../../services/api';
 
-export default function MemoriaRam() {
+export default function Monitor({ monitor }) {
   return (
     <main className={styles.container}>
       <section className={styles.componentInfo}>
@@ -28,4 +30,31 @@ export default function MemoriaRam() {
       <SkipComponentButton componentToSkip='screen' nextComponent='resultado'/>
     </main>
   )
+}
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const {data} = await api.get('', {
+    params: {
+      pesquisa: 'MONITOR',
+      situacao: 'A'
+    },
+  })
+
+  const monitor = data.retorno.produtos.map(el => {
+    const produto = el.produto;
+    
+    if(produto.nome.includes('GABINETE')) return null
+
+    return { 
+      name: produto.nome,
+      price: produto.preco,
+    }
+  })
+
+  return{
+    props:{
+      monitor: monitor.filter(el => el !== null),
+    },
+    revalidate: 1000 * 60 * 10 // 10 minutos 
+  }
 }

@@ -9,8 +9,8 @@ interface PcComponent {
 }
 
 interface CPU extends PcComponent{
-  maxRamFrequencyInMhz: number;
-  maxRamSizeInGB: number;
+  // maxRamFrequencyInMhz: number;
+  // maxRamSizeInGb: number;
   cpuSocket: string;
 }
 
@@ -28,11 +28,20 @@ interface RamMemory extends PcComponent{
 }
 
 interface GraphicCard extends PcComponent{
-  graphicCardSizeInCm: number;
+  graphicCardSizeInCm?: number;
+  vRamSizeInGb: number;
 }
 
 interface PcCabinet extends PcComponent{
   cabinetSizeInCm: number;
+}
+
+interface HardDisk extends PcComponent{
+  sizeInGb: number;
+}
+
+interface PowerSupply extends PcComponent{
+  powerInWatts: number;
 }
 
 type CurrentComponent = 'Processador' | 'Placa mãe' | 'Water Cooler' | 'Memória RAM' 
@@ -45,9 +54,9 @@ interface UserSetup{
   waterCooler: WaterCooler;
   ramMemory: RamMemory;
   graphicCard: GraphicCard;
-  hardDisk: PcComponent;
-  SSD: PcComponent;
-  powerSupply: PcComponent;
+  hardDisk: HardDisk;
+  SSD: HardDisk;
+  powerSupply: PowerSupply;
   pcCabinet: PcCabinet;
   screen: PcComponent;
 }
@@ -89,7 +98,6 @@ export function ComputerContextProvider ({ children } ) {
         currentSetupPrice += savedSetup[key].price;
       }
     }
-    console.log('checked')
     setSetupPrice(currentSetupPrice)
     setSetup(savedSetup);
   }, [])

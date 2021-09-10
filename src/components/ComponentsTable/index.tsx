@@ -21,6 +21,9 @@ export function ComponentsTable({ products, componentName, onChoose }) {
             { products[0].cpuSocket && (<th>Soquete</th>)}
             { products[0].ramSocket && (<th>Soquete</th>)}
             { products[0].socketCompatibility && (<th>Compatibilidade</th>)}
+            { (products[0].sizeInGb || products[0].ramSizeInGb || products[0].vRamSizeInGb) && (<th>Memória</th>)}
+            { products[0].frequencyInMhz && (<th>Frequência</th>)}
+            { products[0].powerInWatts && (<th>Potência</th>)}
             { products[0].graphicCardSizeInCm && (<th>Tamanho (cm)</th>)}
             { products[0].cabinetSizeInCm && (<th>Tamanho (cm)</th>)}
             <th></th>
@@ -30,17 +33,17 @@ export function ComponentsTable({ products, componentName, onChoose }) {
         <tbody>
           {products.map((product, index) => {
             if(componentName === 'motherboard'){
-              if(setup.cpu.cpuSocket !== product.cpuSocket) return
+              if(setup.cpu?.cpuSocket !== product.cpuSocket) return
             }
             if(componentName === 'ramMemory'){
-              if(setup.motherboard.ramSocket !== product.ramSocket) return
+              if(setup.motherboard?.ramSocket !== product.ramSocket) return
             }
             if(componentName === 'waterCooler'){
-              if(!product.socketCompatibility.includes(setup.cpu.cpuSocket)) return
+              if(product.socketCompatibility[0] !== 'Universal' && !product.socketCompatibility?.includes(setup.cpu?.cpuSocket)) return
             }
 
             if(componentName === 'pcCabinet'){
-              if(setup.graphicCard.graphicCardSizeInCm > product.cabinetSizeInCm) {
+              if(setup.graphicCard?.graphicCardSizeInCm > product.cabinetSizeInCm) {
                 console.log(setup, product.cabinetSizeInCm)
               }
             }
@@ -49,13 +52,18 @@ export function ComponentsTable({ products, componentName, onChoose }) {
               <tr key={index}>
                 <td>{product.name}</td>
                 <td>{
-                  new Intl.NumberFormat('en-US', {
+                  new Intl.NumberFormat('pt-BR', {
                     style: 'currency',
                     currency: 'BRL',
                   }).format(product.price)
                 }</td>
                 { product.cpuSocket && (<td>{product.cpuSocket}</td>)}
                 { product.ramSocket && (<td>{product.ramSocket}</td>)}
+                { product.ramSizeInGb && (<td>{product.ramSizeInGb} Gb</td>)}
+                { product.sizeInGb && (<td>{product.sizeInGb} Gb</td>)}
+                { product.vRamSizeInGb && (<td>{product.vRamSizeInGb} Gb</td>)}
+                { product.powerInWatts && (<td>{product.powerInWatts}W</td>)}
+                { product.frequencyInMhz && (<td>{product.frequencyInMhz} Mhz</td>)}
                 { product.socketCompatibility && (<td>{product.socketCompatibility.join(', ')}</td>)}
                 { product.graphicCardSizeInCm && (<td>{product.graphicCardSizeInCm} cm</td>)}
                 { product.cabinetSizeInCm && (<td>{product.cabinetSizeInCm} cm</td>)}
