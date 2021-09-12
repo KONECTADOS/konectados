@@ -26,6 +26,7 @@ export default function MemoriaRam({ ramMemory }) {
         <ComponentsTable 
           products={ramMemory}
           componentName={'ramMemory'}
+          moreThanOne={true}
           onChoose={{redirectTo: '/montagem/placadevideo'}}
         />
       </section>

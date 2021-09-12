@@ -52,7 +52,7 @@ interface UserSetup{
   cpu: CPU;
   motherboard: Motherboard;
   waterCooler: WaterCooler;
-  ramMemory: RamMemory;
+  ramMemory: RamMemory[];
   graphicCard: GraphicCard;
   hardDisk: HardDisk;
   SSD: HardDisk;
@@ -62,10 +62,10 @@ interface UserSetup{
 }
 
 interface ComputerContextProps{
-  currentComponent: CurrentComponent;
+  currentComponentAmount: number;
   setup: UserSetup;
   setupPrice: number;
-  changeCurrentComponent: (componentName: CurrentComponent) => void;
+  changeCurrentComponentAmount: (componentAmount: string | number) => void;
   skipComponent: (componentName: CurrentComponent) => void;
   insertComponentIntoSetup: (
     componentName: CurrentComponent, 
@@ -84,7 +84,7 @@ interface ComputerContextProps{
 export const ComputerContext = createContext({} as ComputerContextProps)
 
 export function ComputerContextProvider ({ children } ) {
-  const [currentComponent, setCurrentComponent] = useState<CurrentComponent>('Processador')
+  const [currentComponentAmount, setCurrentComponentAmount] = useState(1)
   const [setup, setSetup] = useState<UserSetup>({} as UserSetup)
   const [setupPrice, setSetupPrice] = useState(0)
 
@@ -102,48 +102,16 @@ export function ComputerContextProvider ({ children } ) {
     setSetup(savedSetup);
   }, [])
 
-  function changeCurrentComponent (componentName: CurrentComponent) {
-    setCurrentComponent(componentName)
+  function changeCurrentComponentAmount (componentAmount: string | number) {
+    setCurrentComponentAmount(Number(componentAmount))
   }
-
-  // function handleChangeSetup(componentName){
-  //   switch(componentName){
-  //     case 'Processador':
-  //       setCurrentComponent('Placa mãe');
-  //       break;
-  //     case 'Placa mãe':
-  //       setCurrentComponent('Water Cooler');
-  //       break;
-  //     case 'Water Cooler':
-  //       setCurrentComponent('Memória RAM');
-  //       break;
-  //     case 'Memória RAM':
-  //       setCurrentComponent('Placa de vídeo');
-  //       break;
-  //     case 'Placa de vídeo':
-  //       setCurrentComponent('Hard Disk');
-  //       break;
-  //     case 'Hard Disk':
-  //       setCurrentComponent('SSD');
-  //       break;
-  //     case 'SSD':
-  //       setCurrentComponent('Fonte');
-  //       break;
-  //     case 'Fonte':
-  //       setCurrentComponent('Gabinete');
-  //       break;
-  //     case 'Gabinete':
-  //       setCurrentComponent('Monitor');
-  //       break;
-  //   }
-  // }
 
   function insertComponentIntoSetup (
     componentName: CurrentComponent, 
     product: PcComponent | PcCabinet | GraphicCard | RamMemory | Motherboard | CPU
   ) {
     const newSetup = {...setup};
-    newSetup[componentName] = product
+    newSetup[componentName] = {...product, amount: currentComponentAmount}
     let currentSetupPrice: number = 0
 
     for (const key in newSetup) {
@@ -202,13 +170,13 @@ export function ComputerContextProvider ({ children } ) {
 
   return ( 
     <ComputerContext.Provider value={{
-      currentComponent,
+      currentComponentAmount,
       setup,
       setupPrice,
       insertComponentIntoSetup,
       changeComponentIntoSetup,
       removeComponentIntoSetup,
-      changeCurrentComponent,
+      changeCurrentComponentAmount,
       skipComponent
     } as ComputerContextProps}>
       {children}

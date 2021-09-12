@@ -1,8 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { setSetup } from '../services/firebase';
 import styles from '../styles/index.module.scss';
 
 export default function Home() {
+  useEffect(() => {
+    setSetup().then(e => console.log('Enviado')).catch(e => console.log('Rejeitado'))
+  })
+
   return (
     <main className={styles.container}>
       <div className={styles.pageContent}>

@@ -1,13 +1,24 @@
 import { useRouter } from 'next/dist/client/router';
+import { useRef, useState } from 'react';
 import { useComputer } from '../../hooks/useComputer';
+import { InputNumber } from './InputNumber';
 import styles from './styles.module.scss';
 
-export function ComponentsTable({ products, componentName, onChoose }) {
+export function ComponentsTable({ products, componentName, onChoose, moreThanOne = false }) {
   const { insertComponentIntoSetup, setup } = useComputer();
   const router = useRouter()
 
-  function handleChoseComponent(product){
-    insertComponentIntoSetup(componentName, product)
+  const [moreThanOneItem, setMoreThanOneItem] = useState(moreThanOne ? [] : null)
+
+  function handleChoseComponent(product) {
+    if (moreThanOne && moreThanOneItem.length < 2) {
+      const newMoreThanOneItem = [...moreThanOneItem];
+
+      newMoreThanOneItem.push(product)
+      setMoreThanOneItem(newMoreThanOneItem)
+      return
+    }
+    insertComponentIntoSetup(componentName, moreThanOne ? {...moreThanOneItem, price: moreThanOneItem[0].price + moreThanOneItem[1].price} : product)
     router.push(onChoose.redirectTo)
   }
 
@@ -18,32 +29,32 @@ export function ComponentsTable({ products, componentName, onChoose }) {
           <tr>
             <th>Componente</th>
             <th>Preço</th>
-            { products[0].cpuSocket && (<th>Soquete</th>)}
-            { products[0].ramSocket && (<th>Soquete</th>)}
-            { products[0].socketCompatibility && (<th>Compatibilidade</th>)}
-            { (products[0].sizeInGb || products[0].ramSizeInGb || products[0].vRamSizeInGb) && (<th>Memória</th>)}
-            { products[0].frequencyInMhz && (<th>Frequência</th>)}
-            { products[0].powerInWatts && (<th>Potência</th>)}
-            { products[0].graphicCardSizeInCm && (<th>Tamanho (cm)</th>)}
-            { products[0].cabinetSizeInCm && (<th>Tamanho (cm)</th>)}
+            {products[0].cpuSocket && (<th>Soquete</th>)}
+            {products[0].ramSocket && (<th>Soquete</th>)}
+            {products[0].socketCompatibility && (<th>Compatibilidade</th>)}
+            {(products[0].sizeInGb || products[0].ramSizeInGb || products[0].vRamSizeInGb) && (<th>Memória</th>)}
+            {products[0].frequencyInMhz && (<th>Frequência</th>)}
+            {products[0].powerInWatts && (<th>Potência</th>)}
+            {products[0].graphicCardSizeInCm && (<th>Tamanho (cm)</th>)}
+            {products[0].cabinetSizeInCm && (<th>Tamanho (cm)</th>)}
             <th></th>
           </tr>
         </thead>
 
         <tbody>
           {products.map((product, index) => {
-            if(componentName === 'motherboard'){
-              if(setup.cpu?.cpuSocket !== product.cpuSocket) return
+            if (componentName === 'motherboard') {
+              if (setup.cpu?.cpuSocket !== product.cpuSocket) return
             }
-            if(componentName === 'ramMemory'){
-              if(setup.motherboard?.ramSocket !== product.ramSocket) return
+            if (componentName === 'ramMemory') {
+              if (setup.motherboard?.ramSocket !== product.ramSocket) return
             }
-            if(componentName === 'waterCooler'){
-              if(product.socketCompatibility[0] !== 'Universal' && !product.socketCompatibility?.includes(setup.cpu?.cpuSocket)) return
+            if (componentName === 'waterCooler') {
+              if (product.socketCompatibility[0] !== 'Universal' && !product.socketCompatibility?.includes(setup.cpu?.cpuSocket)) return
             }
 
-            if(componentName === 'pcCabinet'){
-              if(setup.graphicCard?.graphicCardSizeInCm > product.cabinetSizeInCm) {
+            if (componentName === 'pcCabinet') {
+              if (setup.graphicCard?.graphicCardSizeInCm > product.cabinetSizeInCm) {
                 console.log(setup, product.cabinetSizeInCm)
               }
             }
@@ -57,16 +68,23 @@ export function ComponentsTable({ products, componentName, onChoose }) {
                     currency: 'BRL',
                   }).format(product.price)
                 }</td>
-                { product.cpuSocket && (<td>{product.cpuSocket}</td>)}
-                { product.ramSocket && (<td>{product.ramSocket}</td>)}
-                { product.ramSizeInGb && (<td>{product.ramSizeInGb} Gb</td>)}
-                { product.sizeInGb && (<td>{product.sizeInGb} Gb</td>)}
-                { product.vRamSizeInGb && (<td>{product.vRamSizeInGb} Gb</td>)}
-                { product.powerInWatts && (<td>{product.powerInWatts}W</td>)}
-                { product.frequencyInMhz && (<td>{product.frequencyInMhz} Mhz</td>)}
-                { product.socketCompatibility && (<td>{product.socketCompatibility.join(', ')}</td>)}
-                { product.graphicCardSizeInCm && (<td>{product.graphicCardSizeInCm} cm</td>)}
-                { product.cabinetSizeInCm && (<td>{product.cabinetSizeInCm} cm</td>)}
+                {product.cpuSocket && (<td>{product.cpuSocket}</td>)}
+                {product.ramSocket && (<td>{product.ramSocket}</td>)}
+                {product.ramSizeInGb && (<td>{product.ramSizeInGb} Gb</td>)}
+                {product.sizeInGb && (<td>{product.sizeInGb} Gb</td>)}
+                {product.vRamSizeInGb && (<td>{product.vRamSizeInGb} Gb</td>)}
+                {product.powerInWatts && (<td>{product.powerInWatts}W</td>)}
+                {product.frequencyInMhz && (<td>{product.frequencyInMhz} Mhz</td>)}
+                {product.socketCompatibility && (<td>{product.socketCompatibility.join(', ')}</td>)}
+                {product.graphicCardSizeInCm && (<td>{product.graphicCardSizeInCm} cm</td>)}
+                {product.cabinetSizeInCm && (<td>{product.cabinetSizeInCm} cm</td>)}
+                {moreThanOne && (
+                  <div className={styles.inputWrapper}>
+                    <input name={`product ${index}`} type="text" />
+                    <button>+</button>
+                    <button>-</button>
+                  </div>
+                )}
                 <td>
                   <button type="button" onClick={e => {
                     handleChoseComponent(product)
@@ -79,6 +97,20 @@ export function ComponentsTable({ products, componentName, onChoose }) {
           })}
         </tbody>
       </table>
+
+      {moreThanOne && (
+        <div className={styles.listOfItems}>
+          <ul>
+            { moreThanOneItem?.map((el, index) => {
+              return (
+                <li key={index}>
+                  {el.name} • {el.price}
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
     </section>
   );
 }

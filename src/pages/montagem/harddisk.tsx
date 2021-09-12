@@ -24,6 +24,7 @@ export default function HardDisk({ hardDisk }) {
         <ComponentsTable 
           products={hardDisk}
           componentName={'hardDisk'}
+          moreThanOne={true}
           onChoose={{redirectTo: '/montagem/ssd'}}
         />
       </section>

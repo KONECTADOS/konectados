@@ -56,8 +56,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     }
   })
 
-  console.log(graphicCards)
-
   return{
     props:{
       graphicCards: graphicCards.filter(el => el !== null),

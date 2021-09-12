@@ -20,7 +20,17 @@ export function ComponentCard({ componentName, component, imageUrl }) {
       </header>
 
       <main>
-        <p className={styles.componentName}>{component.name}</p>
+        <p className={styles.componentName} style={{
+          fontSize: componentName === 'Memória RAM' || componentName === 'Hard Disk' || componentName === 'SSD' ? '.8rem' : '1rem'
+        }}>
+          {
+            componentName === 'Memória RAM'
+              || componentName === 'Hard Disk'
+              || componentName === 'SSD'
+              ? `${component[0].name} • ${component[1].name} `
+              : component.name
+          }
+        </p>
 
         {componentName === 'Processador' && (
           <p>Soquete: {component.cpuSocket}</p>
@@ -35,16 +45,31 @@ export function ComponentCard({ componentName, component, imageUrl }) {
         )}
         {componentName === 'Memória RAM' && (
           <>
-            <p>Soquete: {component.ramSocket}</p>
-            <p>Memória: {component.ramSizeInGb} Gb</p>
-            <p>Frequência: {component.frequencyInMhz} Mhz</p>
+            <p>Soquete: {component[0].ramSocket}</p>
+            <p>Memória: {component[0].ramSizeInGb + component[1].ramSizeInGb} Gb</p>
+            <p>Frequência: {component[0].frequencyInMhz} Mhz</p>
+          </>
+        )}
+        {componentName === 'Hard Disk' && (
+          <>
+            <p>Memória: {component[0].sizeInGb + component[1].sizeInGb} Gb</p>
+          </>
+        )}
+        {componentName === 'SSD' && (
+          <>
+            <p>Memória: {component[0].sizeInGb + component[1].sizeInGb} Gb</p>
           </>
         )}
         {componentName === 'Water Cooler' && (
           <p>Soquete(s): {component.socketCompatibility.join(', ')}</p>
         )}
         {componentName === 'Placa de vídeo' && (
-          <p>Tamanho: {component.graphicCardSizeInCm} cm</p>
+          <>
+          <p>Memória: {component.vRamSizeInGb} Gb</p>
+          {
+            component.graphicCardSizeInCm && <p>Tamanho: {component.graphicCardSizeInCm} cm</p>
+          }
+          </>
         )}
         {componentName === 'Gabinete' && (
           <p>Tamanho: {component.cabinetSizeInCm} cm</p>

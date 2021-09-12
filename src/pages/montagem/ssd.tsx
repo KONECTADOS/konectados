@@ -24,6 +24,7 @@ export default function MemoriaRam({ ssd }) {
         <ComponentsTable 
           products={ssd}
           componentName={'SSD'}
+          moreThanOne={true}
           onChoose={{redirectTo: '/montagem/fonte'}}
         />
       </section>
