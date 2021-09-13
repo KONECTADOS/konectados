@@ -43,6 +43,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     const produto = el.produto;
     
     if(produto.nome.includes('C/FONTE')) return null
+    if(produto.nome.includes('SUPORTE PARA GABINETE')) return null
     if(produto.nome.includes('COOLER PARA')) return null
     if(produto.nome.includes('COOLER FAN PARA')) return null
 
@@ -51,8 +52,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       price: produto.preco,
     }
   })
-
-  console.log(pcCabinet)
 
   return{
     props:{

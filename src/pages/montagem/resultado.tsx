@@ -1,5 +1,6 @@
-import axios from "axios";
-import { getDatabase, ref, set } from "firebase/database";
+import { v4 as uuid } from "uuid";
+import {ref, set } from "firebase/database";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { ResultTable } from "../../components/ResultTable";
 import { Subtotal } from "../../components/Subtotal";
@@ -9,7 +10,7 @@ import styles from '../../styles/montagem.module.scss';
 
 export default function Resultado() {
   const [email, setEmail] = useState('')
-
+  const router = useRouter()
   const { setup } = useComputer();
 
   async function handleSendSetup() {
@@ -19,13 +20,15 @@ export default function Resultado() {
     }
 
     try {
-      set(ref(database, 'setups/' + data.email.replace('.', '_D')), {
+      set(ref(database, 'setups/' + uuid()), {
         ...data
       });
     
     } catch (error) {
       console.log(error)
     }
+    setEmail('')
+    router.push('/finalizar')
   }
 
   return (
