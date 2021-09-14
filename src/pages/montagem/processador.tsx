@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
 import { ComponentsTable } from '../../components/ComponentsTable';
@@ -6,6 +6,7 @@ import { ComponentsTable } from '../../components/ComponentsTable';
 import { api } from '../../services/api';
 import { GetStaticProps } from 'next';
 import { getSocketCompatibility } from '../../utils/getSocketCompatibility';
+import { SideNavigation } from '../../components/SideNavigation';
 
 export default function Montagem({ cpus }) {
   const [cpuList, setCpuList] = useState([...cpus])
