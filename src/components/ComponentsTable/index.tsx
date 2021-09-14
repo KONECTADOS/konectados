@@ -1,8 +1,8 @@
 import { useRouter } from 'next/dist/client/router';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useComputer } from '../../hooks/useComputer';
-import { InputNumber } from './InputNumber';
 import styles from './styles.module.scss';
+import Image from 'next/image';
 
 export function ComponentsTable({ products, componentName, onChoose, moreThanOne = false, maxItems = 1 }) {
   const { insertComponentIntoSetup, setup } = useComputer();
@@ -121,7 +121,7 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
             {ListOfComponents?.map((el, index) => {
               return (
                 <li key={index}>
-                  <img src="/icons/removeItem.svg" alt="" onClick={e => handleRemoveItemFromSetupList(index)}/> {el.name} • {el.price}
+                  <Image width="24px" height="24px" src="/icons/removeItem.svg" alt="" onClick={e => handleRemoveItemFromSetupList(index)}/> {el.name} • {el.price}
                 </li>
               )
             })}
