@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
-import coolers from '../../../coolers.json';
 import { ComponentsTable } from '../../components/ComponentsTable';
 import { SkipComponentButton } from '../../components/SkipComponentButton';
 import { GetStaticProps } from 'next';

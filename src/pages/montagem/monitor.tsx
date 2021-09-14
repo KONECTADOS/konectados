@@ -2,7 +2,6 @@ import React from 'react';
 import { useComputer } from '../../hooks/useComputer';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
-import monitor from '../../../monitor.json';
 import { ComponentsTable } from '../../components/ComponentsTable';
 import { SkipComponentButton } from '../../components/SkipComponentButton';
 import { GetStaticProps } from 'next';
