@@ -29,7 +29,7 @@ export default function HardDisk({ hardDisk }) {
         />
       </section>
 
-      <SkipComponentButton componentToSkip='hardDisk' nextComponent='ssd'/>
+      {/* <SkipComponentButton componentToSkip='hardDisk' nextComponent='ssd'/> */}
     </main>
   )
 }
@@ -55,7 +55,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     }
   })
 
-  console.log(hardDisk)
   return{
     props:{
       hardDisk: hardDisk.filter(el => el !== null),

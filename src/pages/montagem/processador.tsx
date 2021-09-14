@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useComputer } from '../../hooks/useComputer';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
-import processadores from '../../../processadores.json';
 import { ComponentsTable } from '../../components/ComponentsTable';
 import { SkipComponentButton } from '../../components/SkipComponentButton';
 import { api } from '../../services/api';
@@ -10,7 +8,6 @@ import { GetStaticProps } from 'next';
 import { getSocketCompatibility } from '../../utils/getSocketCompatibility';
 
 export default function Montagem({ cpus }) {
-  const { currentComponent } = useComputer();
   const [cpuList, setCpuList] = useState([...cpus])
 
   return (

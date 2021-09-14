@@ -111,7 +111,7 @@ export function ComputerContextProvider ({ children } ) {
     product: PcComponent | PcCabinet | GraphicCard | RamMemory | Motherboard | CPU
   ) {
     const newSetup = {...setup};
-    newSetup[componentName] = {...product, amount: currentComponentAmount}
+    newSetup[componentName] = {...product}
     let currentSetupPrice: number = 0
 
     for (const key in newSetup) {

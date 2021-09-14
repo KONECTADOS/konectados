@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import { useComputer } from '../../hooks/useComputer';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
-// import placamae from '../../../placamae.json';
 import { ComponentsTable } from '../../components/ComponentsTable';
-// import { SkipComponentButton } from '../../components/SkipComponentButton';
 import { GetStaticProps } from 'next';
 import { api } from '../../services/api';
 import { getSocketCompatibility } from '../../utils/getSocketCompatibility';

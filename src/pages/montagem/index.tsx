@@ -1,10 +1,7 @@
 import Link from 'next/link';
-import { useComputer } from '../../hooks/useComputer';
 import styles from '../../styles/montagem.module.scss';
 
 export default function Montagem() {
-  const { currentComponent } = useComputer();
-
   return (
     <main className={styles.container}>
       <section className={styles.contentHelp}>

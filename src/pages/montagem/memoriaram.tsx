@@ -24,6 +24,7 @@ export default function MemoriaRam({ ramMemory }) {
 
       <section className={styles.productTableSection}>
         <ComponentsTable 
+          maxItems={4}
           products={ramMemory}
           componentName={'ramMemory'}
           moreThanOne={true}

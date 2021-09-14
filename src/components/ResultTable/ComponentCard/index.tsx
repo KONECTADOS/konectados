@@ -27,7 +27,10 @@ export function ComponentCard({ componentName, component, imageUrl }) {
             componentName === 'Memória RAM'
               || componentName === 'Hard Disk'
               || componentName === 'SSD'
-              ? `${component[0].name} • ${component[1].name} `
+              ? `${component.ListOfComponents.reduce((ac, el) => {
+                if(typeof ac === 'string') return `${ac}, ${el.ramSizeInGb}`
+                return `${ac.name}, ${el.name}`
+              })} `
               : component.name
           }
         </p>
@@ -45,21 +48,31 @@ export function ComponentCard({ componentName, component, imageUrl }) {
         )}
         {componentName === 'Memória RAM' && (
           <>
-            <p>Soquete: {component[0].ramSocket}</p>
-            <p>Memória: {component[0].ramSizeInGb + component[1].ramSizeInGb} Gb</p>
-            <p>Frequência: {component[0].frequencyInMhz} Mhz</p>
+            <p>Soquete: {component.ListOfComponents[0].ramSocket}</p>
+            <p>Memória: {component.ListOfComponents.reduce((ac, el) =>{
+              if(typeof ac === 'number') return ac + el.ramSizeInGb
+              return ac.ramSizeInGb + el.ramSizeInGb
+            })} Gb</p>
+            <p>Frequência: {component.ListOfComponents[0].frequencyInMhz} Mhz</p>
           </>
         )}
-        {componentName === 'Hard Disk' && (
+        {/* {componentName === 'Hard Disk' && (
           <>
-            <p>Memória: {component[0].sizeInGb + component[1].sizeInGb} Gb</p>
+            <p>Memória: {component.ListOfComponents.reduce((ac, el) =>{
+              if(typeof ac === 'number') return ac + el.sizeInGb
+              return ac.sizeInGb + el.sizeInGb
+            })} Gb</p>
           </>
-        )}
-        {componentName === 'SSD' && (
+        )} */}
+        {/* {componentName === 'SSD' && (
           <>
-            <p>Memória: {component[0].sizeInGb + component[1].sizeInGb} Gb</p>
+            <p>Memória: {component.ListOfComponents.reduce((ac, el) =>{
+              if(typeof ac === 'number') return ac + el.sizeInGb
+              console.log(ac)
+              return ac.sizeInGb + el.sizeInGb
+            })} Gb</p>
           </>
-        )}
+        )} */}
         {componentName === 'Water Cooler' && (
           <p>Soquete(s): {component.socketCompatibility.join(', ')}</p>
         )}

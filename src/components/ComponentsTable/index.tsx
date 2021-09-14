@@ -4,22 +4,39 @@ import { useComputer } from '../../hooks/useComputer';
 import { InputNumber } from './InputNumber';
 import styles from './styles.module.scss';
 
-export function ComponentsTable({ products, componentName, onChoose, moreThanOne = false }) {
+export function ComponentsTable({ products, componentName, onChoose, moreThanOne = false, maxItems = 1 }) {
   const { insertComponentIntoSetup, setup } = useComputer();
   const router = useRouter()
 
-  const [moreThanOneItem, setMoreThanOneItem] = useState(moreThanOne ? [] : null)
+  const [ListOfComponents, setListOfComponents] = useState(moreThanOne ? (setup[componentName] ? setup[componentName].ListOfComponents : []) : null)
 
-  function handleChoseComponent(product) {
-    if (moreThanOne && moreThanOneItem.length < 2) {
-      const newMoreThanOneItem = [...moreThanOneItem];
+  function handleChoseComponent(product?) {
+    if (moreThanOne && product && ListOfComponents.length < 4) {
+      const newListOfComponents = [...ListOfComponents];
 
-      newMoreThanOneItem.push(product)
-      setMoreThanOneItem(newMoreThanOneItem)
+      product && newListOfComponents.push(product)
+      setListOfComponents(newListOfComponents)
       return
     }
-    insertComponentIntoSetup(componentName, moreThanOne ? {...moreThanOneItem, price: moreThanOneItem[0].price + moreThanOneItem[1].price} : product)
+
+    const totalPrice = moreThanOne 
+      ? (ListOfComponents.length === 1 
+        ? ListOfComponents[0].price 
+        : [...ListOfComponents].reduce((ac, el, ind) =>{
+          if(typeof ac === 'number') return ac + el.price
+          return ac.price + el.price
+        }))
+      : product.price;
+
+    insertComponentIntoSetup(componentName, moreThanOne ? { ListOfComponents, price: totalPrice, amount: ListOfComponents.length } : product)
     router.push(onChoose.redirectTo)
+  }
+
+  function handleRemoveItemFromSetupList (index: number) {
+    const newList = [...ListOfComponents];
+    newList.splice(index, 1);
+
+    setListOfComponents(newList)
   }
 
   return (
@@ -78,18 +95,18 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
                 {product.socketCompatibility && (<td>{product.socketCompatibility.join(', ')}</td>)}
                 {product.graphicCardSizeInCm && (<td>{product.graphicCardSizeInCm} cm</td>)}
                 {product.cabinetSizeInCm && (<td>{product.cabinetSizeInCm} cm</td>)}
-                {moreThanOne && (
+                {/* {moreThanOne && (
                   <div className={styles.inputWrapper}>
                     <input name={`product ${index}`} type="text" />
                     <button>+</button>
                     <button>-</button>
                   </div>
-                )}
+                )} */}
                 <td>
                   <button type="button" onClick={e => {
                     handleChoseComponent(product)
                   }}>
-                    Escolher
+                    {moreThanOne && ListOfComponents?.length === maxItems ? 'Avançar' : 'Escolher'}
                   </button>
                 </td>
               </tr>
@@ -101,14 +118,20 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
       {moreThanOne && (
         <div className={styles.listOfItems}>
           <ul>
-            { moreThanOneItem?.map((el, index) => {
+            {ListOfComponents?.map((el, index) => {
               return (
                 <li key={index}>
-                  {el.name} • {el.price}
+                  <img src="/icons/removeItem.svg" alt="" onClick={e => handleRemoveItemFromSetupList(index)}/> {el.name} • {el.price}
                 </li>
               )
             })}
           </ul>
+
+          <button type="button" onClick={e => {
+            handleChoseComponent()
+          }}>
+            Avançar
+          </button>
         </div>
       )}
     </section>

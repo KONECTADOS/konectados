@@ -55,7 +55,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     }
   })
 
-  console.log(waterCoolers, data.retorno.produtos)
   return{
     props:{
       waterCoolers: waterCoolers.filter(el => el !== null),

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useComputer } from '../../hooks/useComputer';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
 // import video from '../../../video.json';
