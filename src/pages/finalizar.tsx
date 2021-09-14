@@ -30,6 +30,7 @@ export default function Finalizar() {
     }
 
     setFeedback('')
+    localStorage.removeItem('konecta@setup')
     router.push('/')
   }
 
