@@ -8,13 +8,13 @@
   --green: #85ff33;
   --white: #f8f0fb;
   --white-75: rgba(255, 255, 255, 0.75);
-  
-  --red-300: rgba(51, 22, 24, .5);
-  --red-350: rgba(51, 22, 24, .75);
+
+  --red-300: rgba(51, 22, 24, 0.5);
+  --red-350: rgba(51, 22, 24, 0.75);
   --red-400: #ef233c;
   --red-500: #d90429;
   --red-900: #331618;
-  
+
   --gray-50: rgba(113, 113, 111, 0.47);
   --gray-100: #b8b8b0;
   --gray: #72726f;
@@ -28,14 +28,19 @@
 
 ::-webkit-scrollbar {
   width: 0.5rem;
+  height: 0.5rem;
   background: #352f2f;
   border-radius: 0.35rem;
+}
+
+::-webkit-scrollbar-corner {
+  display: none;
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 0.4rem;
   background-color: #64595b;
-  height: 0.5rem;
+  // height: 0.5rem;
 
   &:focus {
     background-color: #eee;
@@ -92,7 +97,7 @@ h1 {
 h2 {
   font-size: 4.5rem;
 
-  span{
+  span {
     color: var(--red-400);
   }
 }

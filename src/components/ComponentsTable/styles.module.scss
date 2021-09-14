@@ -6,6 +6,8 @@
   margin-bottom: 4rem;
   
   table{
+    min-width: 900px;
+
     width: 100%;
     border-spacing: 0 .5rem;
     border-collapse: collapse;
@@ -105,4 +107,18 @@
     }
   }
 
+}
+
+@media (max-width: 1080px) {
+  .container{
+    table{
+      tbody tr td{
+        font-size: .9rem;
+
+        &:first-child{
+          max-width: 300px;
+        }
+      }
+    }
+  }
 }
