@@ -40,7 +40,7 @@ export default function Home() {
             onChange={e => setUser(e.target.value)}
           />
           <input
-            type="text"
+            type="password"
             placeholder="Chave de acesso"
             value={password}
             onChange={e => setPassword(e.target.value)}
