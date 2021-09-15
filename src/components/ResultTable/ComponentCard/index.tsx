@@ -56,15 +56,15 @@ export function ComponentCard({ componentName, component, imageUrl }) {
             <p>Frequência: {component.ListOfComponents[0].frequencyInMhz} Mhz</p>
           </>
         )}
-        {/* {componentName === 'Hard Disk' && (
+        {componentName === 'Hard Disk' && (
           <>
             <p>Memória: {component.ListOfComponents.reduce((ac, el) =>{
               if(typeof ac === 'number') return ac + el.sizeInGb
               return ac.sizeInGb + el.sizeInGb
             })} Gb</p>
           </>
-        )} */}
-        {/* {componentName === 'SSD' && (
+        )} 
+        {componentName === 'SSD' && (
           <>
             <p>Memória: {component.ListOfComponents.reduce((ac, el) =>{
               if(typeof ac === 'number') return ac + el.sizeInGb
@@ -72,7 +72,7 @@ export function ComponentCard({ componentName, component, imageUrl }) {
               return ac.sizeInGb + el.sizeInGb
             })} Gb</p>
           </>
-        )} */}
+        )}
         {componentName === 'Water Cooler' && (
           <p>Soquete(s): {component.socketCompatibility.join(', ')}</p>
         )}

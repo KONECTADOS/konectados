@@ -8,7 +8,7 @@ export function Subtotal() {
     <p className={styles.subtotal}>
       Valor total:
       <span>{
-        new Intl.NumberFormat('en-US', {
+        new Intl.NumberFormat('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         }).format(setupPrice)

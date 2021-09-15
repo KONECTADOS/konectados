@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useComputer } from '../../hooks/useComputer';
 import styles from './styles.module.scss';
 import Image from 'next/image';
+import Link from 'next/link';
+import { SkipComponentButton } from '../SkipComponentButton';
 
 export function ComponentsTable({ products, componentName, onChoose, moreThanOne = false, maxItems = 1 }) {
   const { insertComponentIntoSetup, setup } = useComputer();
@@ -19,11 +21,11 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
       return
     }
 
-    const totalPrice = moreThanOne 
-      ? (ListOfComponents.length === 1 
-        ? ListOfComponents[0].price 
-        : [...ListOfComponents].reduce((ac, el, ind) =>{
-          if(typeof ac === 'number') return ac + el.price
+    const totalPrice = moreThanOne
+      ? (ListOfComponents.length === 1
+        ? ListOfComponents[0].price
+        : [...ListOfComponents].reduce((ac, el, ind) => {
+          if (typeof ac === 'number') return ac + el.price
           return ac.price + el.price
         }))
       : product.price;
@@ -32,7 +34,7 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
     router.push(onChoose.redirectTo)
   }
 
-  function handleRemoveItemFromSetupList (index: number) {
+  function handleRemoveItemFromSetupList(index: number) {
     const newList = [...ListOfComponents];
     newList.splice(index, 1);
 
@@ -121,17 +123,31 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
             {ListOfComponents?.map((el, index) => {
               return (
                 <li key={index}>
-                  <Image width="24px" height="24px" src="/icons/removeItem.svg" alt="" onClick={e => handleRemoveItemFromSetupList(index)}/> {el.name} • {el.price}
+                  <Image width="24px" height="24px" src="/icons/removeItem.svg" alt="" onClick={e => handleRemoveItemFromSetupList(index)} /> {el.name} • {el.price}
                 </li>
               )
             })}
           </ul>
 
-          <button type="button" onClick={e => {
+          <button type="button" className={styles.advance} onClick={e => {
             handleChoseComponent()
           }}>
             Avançar
           </button>
+
+          {
+            !ListOfComponents && componentName !== 'ramMemory' && (
+              // <Link href={onChoose.redirectTo} passHref>
+              //   <button className={styles.skipButton}>
+              //     Pular
+              //   </button>
+              // </Link>
+              <SkipComponentButton 
+                componentToSkip={componentName}
+                nextComponent={onChoose.redirectTo.replace('/montagem/', '')}
+              />
+            )
+          }
         </div>
       )}
     </section>
