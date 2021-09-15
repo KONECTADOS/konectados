@@ -27,10 +27,10 @@ export function ComponentCard({ componentName, component, imageUrl }) {
             componentName === 'Memória RAM'
               || componentName === 'Hard Disk'
               || componentName === 'SSD'
-              ? `${component.ListOfComponents.reduce((ac, el) => {
+              ? `${component.ListOfComponents.length > 1 ? component.ListOfComponents.reduce((ac, el) => {
                 if(typeof ac === 'string') return `${ac}, ${el.ramSizeInGb}`
                 return `${ac.name}, ${el.name}`
-              })} `
+              }): component.ListOfComponents[0].name} `
               : component.name
           }
         </p>
@@ -49,28 +49,28 @@ export function ComponentCard({ componentName, component, imageUrl }) {
         {componentName === 'Memória RAM' && (
           <>
             <p>Soquete: {component.ListOfComponents[0].ramSocket}</p>
-            <p>Memória: {component.ListOfComponents.reduce((ac, el) =>{
+            <p>Memória: {component.ListOfComponents.length > 1 ? component.ListOfComponents.reduce((ac, el) =>{
               if(typeof ac === 'number') return ac + el.ramSizeInGb
               return ac.ramSizeInGb + el.ramSizeInGb
-            })} Gb</p>
+            }) : component.ListOfComponents[0].ramSizeInGb} Gb</p>
             <p>Frequência: {component.ListOfComponents[0].frequencyInMhz} Mhz</p>
           </>
         )}
         {componentName === 'Hard Disk' && (
           <>
-            <p>Memória: {component.ListOfComponents.reduce((ac, el) =>{
+            <p>Memória: {component.ListOfComponents.length > 1 ? component.ListOfComponents.reduce((ac, el) =>{
               if(typeof ac === 'number') return ac + el.sizeInGb
               return ac.sizeInGb + el.sizeInGb
-            })} Gb</p>
+            }) : component.ListOfComponents[0].name} Gb</p>
           </>
         )} 
         {componentName === 'SSD' && (
           <>
-            <p>Memória: {component.ListOfComponents.reduce((ac, el) =>{
+            <p>Memória: {component.ListOfComponents.length > 1 ? component.ListOfComponents.reduce((ac, el) =>{
               if(typeof ac === 'number') return ac + el.sizeInGb
               console.log(ac)
               return ac.sizeInGb + el.sizeInGb
-            })} Gb</p>
+            }) : component.ListOfComponents[0].name} Gb</p>
           </>
         )}
         {componentName === 'Water Cooler' && (
