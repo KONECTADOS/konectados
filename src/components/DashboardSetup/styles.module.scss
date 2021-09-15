@@ -1,0 +1,26 @@
+.container{
+  width: 100vw;
+  padding: 4rem;
+
+  display: flex;
+  // justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem; 
+  header{
+    width: 100%;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+
+    p{
+      font-size: 2rem;
+      
+      span{
+        font-size: 3rem;
+        font-weight: bold;
+        color: var(--red-400);
+      }
+    }
+  }
+}

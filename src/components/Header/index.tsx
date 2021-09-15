@@ -25,7 +25,7 @@ export function Header() {
           </li>
           <li>
             <Link href={setup.cpu ? '/montagem/placamae' : ''}>
-            <a className={path === '/montagem/placamae' ? styles.currentComponent : (setup.motherboard && styles.choosed)}>
+              <a className={path === '/montagem/placamae' ? styles.currentComponent : (setup.motherboard && styles.choosed)}>
                 Placa mãe
               </a>
             </Link>
@@ -60,20 +60,20 @@ export function Header() {
           </li>
           <li>
             <Link href={setup.cpu && setup.ramMemory && setup.motherboard && setup.graphicCard ? '/montagem/ssd' : ''}>
-              <a className={path === '/montagem/ssd' ? styles.currentComponent : (setup.SSD && styles.choosed)}> 
+              <a className={path === '/montagem/ssd' ? styles.currentComponent : (setup.SSD && styles.choosed)}>
                 SSD
               </a>
             </Link>
           </li>
           <li>
-            <Link href={setup.cpu && setup.ramMemory && setup.motherboard && setup.graphicCard? '/montagem/fonte' : ''}>
+            <Link href={setup.cpu && setup.ramMemory && setup.motherboard && setup.graphicCard ? '/montagem/fonte' : ''}>
               <a className={path === '/montagem/fonte' ? styles.currentComponent : (setup.powerSupply && styles.choosed)}>
                 Fonte
               </a>
             </Link>
           </li>
           <li>
-            <Link href={setup.cpu && setup.ramMemory && setup.motherboard && setup.graphicCard && setup.powerSupply? '/montagem/gabinete' : ''}>
+            <Link href={setup.cpu && setup.ramMemory && setup.motherboard && setup.graphicCard && setup.powerSupply ? '/montagem/gabinete' : ''}>
               <a className={path === '/montagem/gabinete' ? styles.currentComponent : (setup.pcCabinet && styles.choosed)}>
                 Gabinete
               </a>
@@ -95,10 +95,13 @@ export function Header() {
   return (
     <header className={styles.header}>
       <Image src="/logo.svg" alt="Gamerzone" width="265px" height="54px" />
-
-      <Link href="/montagem">
-        <a className={styles.headerButton}>Monte seu PC</a>
-      </Link>
+      {path.search(/dashboard\/*/) !== -1 ? (
+        <></>
+      ) : (
+        <Link href="/montagem">
+          <a className={styles.headerButton}>Monte seu PC</a>
+        </Link>
+      )}
     </header>
   );
 }

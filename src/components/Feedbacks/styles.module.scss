@@ -1,0 +1,43 @@
+.container{
+  width: 30%;
+  position: relative;
+  overflow: auto;
+  margin: 1.5rem 0;
+  background: var(--gray-800);
+  padding: 2rem;
+  border-radius: .75rem;
+
+  h4{
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+
+  .feedback{
+    width: 100%;
+    position: relative;
+    span{
+      display: inline-block;
+      position: absolute;
+      font-size: 3rem;
+      opacity: .5;
+      line-height:2.5rem;
+      font-family: 'Poppins';
+
+      &.quoteLeft{
+        top: .5rem;
+        left: 0;
+      }
+      &.quoteRight{
+        bottom: 0.5rem;
+        right: 0;
+        transform: rotate(-180deg);
+      }
+    }
+    
+    font-size: 1.1rem;
+    color: var(--gray-100);
+    padding: 2rem 3rem;
+    border-bottom: 1px solid var(--gray-700);
+  }
+}

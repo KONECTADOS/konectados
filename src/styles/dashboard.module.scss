@@ -1,0 +1,20 @@
+.container{
+  width: 100vw;
+  padding: 4rem;
+}
+
+.dashboardContent{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  h2{
+    width: 100%;
+  }
+}
+
+@media (max-width: 1080px){
+  .container{
+    padding: 2rem;
+  }
+}

@@ -11,12 +11,13 @@ import styles from '../../styles/montagem.module.scss';
 export default function Resultado() {
   const [email, setEmail] = useState('')
   const router = useRouter()
-  const { setup } = useComputer();
+  const { setup, setupPrice } = useComputer();
 
   async function handleSendSetup() {
     const data = {
       email,
-      setup
+      setup,
+      price: setupPrice
     }
 
     try {
