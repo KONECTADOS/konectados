@@ -38,7 +38,7 @@ export default function MemoriaRam({ ramMemory }) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('/setup', {
+  const {data} = await api.get('', {
     params: {
       pesquisa: 'memoria',
       situacao: 'A'

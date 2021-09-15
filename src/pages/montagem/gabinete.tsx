@@ -32,7 +32,7 @@ export default function Gabinete({ pcCabinet }) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('/setup', {
+  const {data} = await api.get('', {
     params: {
       pesquisa: 'GABINETE',
       situacao: 'A'

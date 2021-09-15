@@ -16,7 +16,7 @@ export default function Home() {
   async function handleLogIn(event) {
     event.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:3000/api/auth', {
+      const { data } = await apiRoutes.post('/auth', {
         password, user
       })
        

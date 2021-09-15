@@ -34,7 +34,7 @@ export default function Montagem({ motherboards }) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('/setup', {
+  const {data} = await api.get('', {
     params: {
       pesquisa: 'Placa mãe',
       situacao: 'A'

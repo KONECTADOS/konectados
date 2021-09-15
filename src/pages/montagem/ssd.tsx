@@ -33,7 +33,7 @@ export default function MemoriaRam({ ssd }) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('/setup', {
+  const {data} = await api.get('', {
     params: {
       pesquisa: 'SSD',
       situacao: 'A'

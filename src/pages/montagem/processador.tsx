@@ -37,7 +37,7 @@ export default function Montagem({ cpus }) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('/setup', {
+  const {data} = await api.get('', {
     params: {
       pesquisa: 'Processador',
       situacao: 'A'
