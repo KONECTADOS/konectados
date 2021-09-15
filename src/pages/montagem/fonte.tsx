@@ -34,7 +34,7 @@ export default function PowerSupply({ powerSupply }) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('', {
+  const {data} = await api.get('/setup', {
     params: {
       pesquisa: 'FONTE ATX',
       situacao: 'A'

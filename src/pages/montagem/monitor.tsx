@@ -32,7 +32,7 @@ export default function Monitor({ monitor }) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('', {
+  const {data} = await api.get('/setup', {
     params: {
       pesquisa: 'MONITOR',
       situacao: 'A'

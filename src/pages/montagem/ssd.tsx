@@ -27,13 +27,13 @@ export default function MemoriaRam({ ssd }) {
         />
       </section>
 
-      <SkipComponentButton componentToSkip='SSD' nextComponent='fonte'/>
+      {/* <SkipComponentButton componentToSkip='SSD' nextComponent='fonte'/> */}
     </main>
   )
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('', {
+  const {data} = await api.get('/setup', {
     params: {
       pesquisa: 'SSD',
       situacao: 'A'

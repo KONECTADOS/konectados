@@ -136,7 +136,7 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
           </button>
 
           {
-            !ListOfComponents && componentName !== 'ramMemory' && (
+            !ListOfComponents || !ListOfComponents[0] && componentName !== 'ramMemory' && (
               // <Link href={onChoose.redirectTo} passHref>
               //   <button className={styles.skipButton}>
               //     Pular

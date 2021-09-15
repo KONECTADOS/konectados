@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
 import { ComponentsTable } from '../../components/ComponentsTable';
-// import { SkipComponentButton } from '../../components/SkipComponentButton';
+import { SkipComponentButton } from '../../components/SkipComponentButton';
 import { api } from '../../services/api';
 import { GetStaticProps } from 'next';
 import { getSocketCompatibility } from '../../utils/getSocketCompatibility';
 import { SideNavigation } from '../../components/SideNavigation';
+import setup from '../api/setup';
+import { useComputer } from '../../hooks/useComputer';
 
 export default function Montagem({ cpus }) {
+  const { setup } = useComputer();
   const [cpuList, setCpuList] = useState([...cpus])
 
   return (
@@ -29,13 +32,12 @@ export default function Montagem({ cpus }) {
         />
       </section>
 
-      {/* <SkipComponentButton nextComponent='motherboard'/> */}
     </main>
   )
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('', {
+  const {data} = await api.get('/setup', {
     params: {
       pesquisa: 'Processador',
       situacao: 'A'

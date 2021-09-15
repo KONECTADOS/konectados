@@ -35,7 +35,7 @@ export default function HardDisk({ hardDisk }) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('', {
+  const {data} = await api.get('/setup', {
     params: {
       pesquisa: 'HD ',
       situacao: 'A'

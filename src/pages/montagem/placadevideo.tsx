@@ -33,7 +33,7 @@ export default function MemoriaRam({graphicCards}) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('', {
+  const {data} = await api.get('/setup', {
     params: {
       pesquisa: 'Placa de video',
       situacao: 'A'

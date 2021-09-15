@@ -1,9 +1,18 @@
 import Link from 'next/link';
+import { useEffect } from 'react';
 import styles from '../../styles/montagem.module.scss';
 
 export default function Montagem() {
+  
+  useEffect(() => {
+    if(localStorage.getItem('konecta@setup')){
+      localStorage.removeItem('konecta@setup')
+    }
+  }, [])
+
   return (
     <main className={styles.container}>
+
       <section className={styles.contentHelp}>
 
         <h2>Como funciona a <br/> montagem do <span>PC?</span></h2>

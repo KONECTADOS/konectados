@@ -7,3 +7,7 @@ export const api = axios.create({
   },
   baseURL: process.env.TINY_API_URL,
 })
+
+export const apiRoutes = axios.create({
+  baseURL: process.env.API_URL,
+})

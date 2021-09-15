@@ -94,8 +94,10 @@ export function Header() {
 
   return (
     <header className={styles.header}>
-      <Image src="/logo.svg" alt="Gamerzone" width="265px" height="54px" />
-      {path.search(/dashboard\/*/) !== -1 ? (
+      <Link href="/" passHref>
+        <Image src="/logo.svg" alt="Gamerzone" width="265px" height="54px" />
+      </Link>
+      {path.search(/dashboard\/*/) !== -1 || path === '/auth' ? (
         <></>
       ) : (
         <Link href="/montagem">
