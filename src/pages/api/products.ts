@@ -7,9 +7,9 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   try {
     const { data } = await axios.get('https://api.tiny.com.br/api2/produtos.pesquisa.php', {
       params:{
-        token: '72394ca68dc81f914ef02db0b553c621d134df08',
+        token: '52d88c06628ec693ac741c9716e458f711859519',
         formato: 'json',
-        pesquisa: 'GABINETE',
+        pesquisa: 'PLACA DE VÍDEO',
       },
     });
     

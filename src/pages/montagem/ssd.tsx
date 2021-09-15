@@ -53,7 +53,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     }
   })
 
-  console.log(ssd)
   return{
     props:{
       ssd: ssd.filter(el => el !== null),

@@ -16,13 +16,19 @@ export default function Home() {
   async function handleLogIn(event) {
     event.preventDefault();
     try {
-      const { data } = await apiRoutes.post('/auth', {
+      const {data} = await axios.post('/api/auth', {
         password, user
       })
-       
+
+      if(!data.token){
+        toast.error('Usuário ou senha incorretos!')
+        return
+      }
+
       setCookie(null, 'token@konecta', data.token)
       router.push('/dashboard')
     } catch (error) {
+      console.log(error.message)
       toast.error('Usuário ou senha incorretos!')
     }
   }

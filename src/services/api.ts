@@ -9,5 +9,6 @@ export const api = axios.create({
 })
 
 export const apiRoutes = axios.create({
+  // baseURL: 'http://localhost:3000/api/auth',
   baseURL: process.env.API_URL,
 })
