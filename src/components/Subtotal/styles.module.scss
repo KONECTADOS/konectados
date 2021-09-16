@@ -12,3 +12,18 @@
     margin-left: 0.15em;
   }
 }
+
+@media (max-width:1080px){
+  .subtotal{
+    span{
+      font-size: 2.5rem;
+    }
+  }
+}
+@media (max-width: 375px){
+  .subtotal{
+    span{
+      font-size: 2rem;
+    }
+  }
+}

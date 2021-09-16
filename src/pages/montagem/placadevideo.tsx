@@ -43,6 +43,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const graphicCards = data.retorno.produtos.map(el => {
     const produto = el.produto;
 
+    // if (!produto.nome.includes(' - ')) return null
     const regExp = new RegExp(/SUPORTE/);
     if(produto.nome.search(regExp) !== -1) return null
 

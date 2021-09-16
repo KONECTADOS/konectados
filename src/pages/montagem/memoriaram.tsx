@@ -23,13 +23,17 @@ export default function MemoriaRam({ ramMemory }) {
       </section>
 
       <section className={styles.productTableSection}>
-        <ComponentsTable 
-          maxItems={4}
-          products={ramMemory}
-          componentName={'ramMemory'}
-          moreThanOne={true}
-          onChoose={{redirectTo: '/montagem/placadevideo'}}
-        />
+        {ramMemory && ramMemory[0] ? (
+          <ComponentsTable
+            maxItems={4}
+            products={ramMemory}
+            componentName={'ramMemory'}
+            moreThanOne={true}
+            onChoose={{ redirectTo: '/montagem/placadevideo' }}
+          />
+        ) : (
+          <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+        )}
       </section>
 
       {/* <SkipComponentButton nextComponent='placadevideo'/> */}
@@ -38,7 +42,7 @@ export default function MemoriaRam({ ramMemory }) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('', {
+  const { data } = await api.get('', {
     params: {
       pesquisa: 'memoria',
       situacao: 'A'
@@ -48,9 +52,10 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const ramMemory = data.retorno.produtos.map(el => {
     const produto = el.produto;
 
+    // if (!produto.nome.includes(' - ')) return null
     const sockets = getRAMSocketCompatibility(produto.nome)
-    if(produto.nome.includes("CARTÃO")) return null
-    return { 
+    if (produto.nome.includes("CARTÃO")) return null
+    return {
       name: produto.nome,
       price: produto.preco,
       ramSocket: sockets[0] || null,
@@ -59,8 +64,8 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     }
   })
 
-  return{
-    props:{
+  return {
+    props: {
       ramMemory: ramMemory.filter(el => el !== null),
     },
     revalidate: 1000 * 60 * 10 // 10 minutos 

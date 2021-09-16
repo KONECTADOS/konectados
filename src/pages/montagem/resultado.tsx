@@ -7,6 +7,7 @@ import { Subtotal } from "../../components/Subtotal";
 import { useComputer } from "../../hooks/useComputer"
 import { database } from "../../services/firebase";
 import styles from '../../styles/montagem.module.scss';
+import { apiRoutes } from "../../services/api";
 
 export default function Resultado() {
   const [email, setEmail] = useState('')
@@ -21,6 +22,10 @@ export default function Resultado() {
     }
 
     try {
+      await apiRoutes.post('/api/sendemail', {
+        data
+      })
+
       set(ref(database, 'setups/' + uuid()), {
         ...data
       });

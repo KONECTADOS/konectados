@@ -21,11 +21,15 @@ export default function Montagem({ motherboards }) {
       </section>
 
       <section className={styles.productTableSection}>
-        <ComponentsTable 
-          products={motherboardList}
-          componentName={'motherboard'}
-          onChoose={{redirectTo: '/montagem/watercooler'}}
-        />
+        {motherboardList && motherboardList[0] ? (
+          <ComponentsTable
+            products={motherboardList}
+            componentName={'motherboard'}
+            onChoose={{ redirectTo: '/montagem/watercooler' }}
+          />
+        ) : (
+          <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+        )}
       </section>
 
       {/* <SkipComponentButton nextComponent='waterCooler'/> */}
@@ -34,7 +38,7 @@ export default function Montagem({ motherboards }) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('', {
+  const { data } = await api.get('', {
     params: {
       pesquisa: 'Placa mãe',
       situacao: 'A'
@@ -44,12 +48,13 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const motherboards = data.retorno.produtos.map(el => {
     const produto = el.produto;
 
+    // if (!produto.nome.includes(' - ')) return null
     const coolerRegExp = new RegExp(/COOLER/);
-    if(produto.nome.search(coolerRegExp) !== -1) return null
+    if (produto.nome.search(coolerRegExp) !== -1) return null
 
     const sockets = getSocketCompatibility(produto.nome)
 
-    return { 
+    return {
       name: produto.nome,
       price: produto.preco,
       cpuSocket: sockets[0] || null,
@@ -57,8 +62,8 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     }
   })
 
-  return{
-    props:{
+  return {
+    props: {
       motherboards: motherboards.filter(el => el !== null),
     },
     revalidate: 1000 * 60 * 10 // 10 minutos 

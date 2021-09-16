@@ -19,20 +19,24 @@ export default function Monitor({ monitor }) {
       </section>
 
       <section className={styles.productTableSection}>
-        <ComponentsTable 
-          products={monitor}
-          componentName={'screen'}
-          onChoose={{redirectTo: '/montagem/resultado'}}
-        />
+        {monitor && monitor[0] ? (
+          <ComponentsTable
+            products={monitor}
+            componentName={'screen'}
+            onChoose={{ redirectTo: '/montagem/resultado' }}
+          />
+        ) : (
+          <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+        )}
       </section>
 
-      <SkipComponentButton componentToSkip='screen' nextComponent='resultado'/>
+      <SkipComponentButton componentToSkip='screen' nextComponent='resultado' />
     </main>
   )
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('', {
+  const { data } = await api.get('', {
     params: {
       pesquisa: 'MONITOR',
       situacao: 'A'
@@ -41,17 +45,18 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
   const monitor = data.retorno.produtos.map(el => {
     const produto = el.produto;
-    
-    if(produto.nome.includes('GABINETE')) return null
 
-    return { 
+    // if (!produto.nome.includes(' - ')) return null
+    if (produto.nome.includes('GABINETE')) return null
+
+    return {
       name: produto.nome,
       price: produto.preco,
     }
   })
 
-  return{
-    props:{
+  return {
+    props: {
       monitor: monitor.filter(el => el !== null),
     },
     revalidate: 1000 * 60 * 10 // 10 minutos 

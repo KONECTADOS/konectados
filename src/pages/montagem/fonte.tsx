@@ -21,11 +21,15 @@ export default function PowerSupply({ powerSupply }) {
       </section>
 
       <section className={styles.productTableSection}>
-        <ComponentsTable 
-          products={powerSupply}
-          componentName={'powerSupply'}
-          onChoose={{redirectTo: '/montagem/gabinete'}}
-        />
+        { powerSupply && powerSupply[0] ? (
+          <ComponentsTable 
+            products={powerSupply}
+            componentName={'powerSupply'}
+            onChoose={{redirectTo: '/montagem/gabinete'}}
+          />
+        ) : (
+          <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+        )}
       </section>
 
       {/* <SkipComponentButton nextComponent='gabinete'/> */}
@@ -43,7 +47,8 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
   const powerSupply = data.retorno.produtos.map(el => {
     const produto = el.produto;
-    
+
+    // if (!produto.nome.includes(' - ')) return null
     if(produto.nome.includes('GABINETE')) return null
 
     return { 

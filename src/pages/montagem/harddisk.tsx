@@ -21,12 +21,16 @@ export default function HardDisk({ hardDisk }) {
       </section>
 
       <section className={styles.productTableSection}>
-        <ComponentsTable 
-          products={hardDisk}
-          componentName={'hardDisk'}
-          moreThanOne={true}
-          onChoose={{redirectTo: '/montagem/ssd'}}
-        />
+        {hardDisk && hardDisk[0] ? (
+          <ComponentsTable
+            products={hardDisk}
+            componentName={'hardDisk'}
+            moreThanOne={true}
+            onChoose={{ redirectTo: '/montagem/ssd' }}
+          />
+        ) : (
+          <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+        )}
       </section>
 
       {/* <SkipComponentButton componentToSkip='hardDisk' nextComponent='ssd'/> */}
@@ -35,7 +39,7 @@ export default function HardDisk({ hardDisk }) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('', {
+  const { data } = await api.get('', {
     params: {
       pesquisa: 'HD ',
       situacao: 'A'
@@ -45,18 +49,19 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const hardDisk = data.retorno.produtos.map(el => {
     const produto = el.produto;
     
-    if(produto.nome.includes('PLACA')) return null
+    // if (!produto.nome.includes(' - ')) return null
+    if (produto.nome.includes('PLACA')) return null
     const sizeInGb = getSizeInGb(produto.nome)
-    if(sizeInGb === 0) return null
-    return { 
+    if (sizeInGb === 0) return null
+    return {
       name: produto.nome,
       price: produto.preco,
       sizeInGb
     }
   })
 
-  return{
-    props:{
+  return {
+    props: {
       hardDisk: hardDisk.filter(el => el !== null),
     },
     revalidate: 1000 * 60 * 10 // 10 minutos 

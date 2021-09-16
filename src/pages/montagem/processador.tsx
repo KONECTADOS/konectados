@@ -25,11 +25,15 @@ export default function Montagem({ cpus }) {
       </section>
 
       <section className={styles.productTableSection}>
-        <ComponentsTable 
-          products={cpuList}
-          componentName={'cpu'}
-          onChoose={{redirectTo: '/montagem/placamae'}}
-        />
+        {cpuList && cpuList[0] ? (
+          <ComponentsTable
+            products={cpuList}
+            componentName={'cpu'}
+            onChoose={{ redirectTo: '/montagem/placamae' }}
+          />
+        ) : (
+          <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+        )}
       </section>
 
     </main>
@@ -37,7 +41,7 @@ export default function Montagem({ cpus }) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('', {
+  const { data } = await api.get('', {
     params: {
       pesquisa: 'Processador',
       situacao: 'A'
@@ -47,20 +51,21 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const cpus = data.retorno.produtos.map(el => {
     const produto = el.produto;
 
+    // if (!produto.nome.includes(' - ')) return null
     const coolerRegExp = new RegExp(/COOLER/);
-    if(produto.nome.search(coolerRegExp) !== -1) return null
+    if (produto.nome.search(coolerRegExp) !== -1) return null
 
     const sockets = getSocketCompatibility(produto.nome)
 
-    return { 
+    return {
       name: produto.nome,
       price: produto.preco,
       cpuSocket: sockets[0] || null,
     }
   })
 
-  return{
-    props:{
+  return {
+    props: {
       cpus: cpus.filter(el => el !== null),
     },
     revalidate: 1000 * 60 * 10 // 10 minutos 

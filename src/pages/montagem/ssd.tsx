@@ -19,12 +19,16 @@ export default function MemoriaRam({ ssd }) {
       </section>
 
       <section className={styles.productTableSection}>
-        <ComponentsTable 
-          products={ssd}
-          componentName={'SSD'}
-          moreThanOne={true}
-          onChoose={{redirectTo: '/montagem/fonte'}}
-        />
+        {ssd && ssd[0] ? (
+          <ComponentsTable
+            products={ssd}
+            componentName={'SSD'}
+            moreThanOne={true}
+            onChoose={{ redirectTo: '/montagem/fonte' }}
+          />
+        ) : (
+          <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+        )}
       </section>
 
       {/* <SkipComponentButton componentToSkip='SSD' nextComponent='fonte'/> */}
@@ -33,7 +37,7 @@ export default function MemoriaRam({ ssd }) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('', {
+  const { data } = await api.get('', {
     params: {
       pesquisa: 'SSD',
       situacao: 'A'
@@ -42,19 +46,20 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
   const ssd = data.retorno.produtos.map(el => {
     const produto = el.produto;
-    
-    if(produto.nome.includes('PLACA')) return null
+
+    // if (!produto.nome.includes(' - ')) return null
+    if (produto.nome.includes('PLACA')) return null
     const sizeInGb = getSizeInGb(produto.nome)
-    if(sizeInGb === 0) return null
-    return { 
+    if (sizeInGb === 0) return null
+    return {
       name: produto.nome,
       price: produto.preco,
       sizeInGb
     }
   })
 
-  return{
-    props:{
+  return {
+    props: {
       ssd: ssd.filter(el => el !== null),
     },
     revalidate: 1000 * 60 * 10 // 10 minutos 

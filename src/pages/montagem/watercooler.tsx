@@ -21,21 +21,25 @@ export default function WaterCooler({ waterCoolers }) {
       </section>
 
       <section className={styles.productTableSection}>
-        <ComponentsTable 
-          products={coolerList}
-          componentName={'waterCooler'}
-          onChoose={{redirectTo: '/montagem/memoriaram'}}
-        />
+        {coolerList && coolerList[0] ? (
+          <ComponentsTable
+            products={coolerList}
+            componentName={'waterCooler'}
+            onChoose={{ redirectTo: '/montagem/memoriaram' }}
+          />
+        ) : (
+          <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+        )}
       </section>
 
-      <SkipComponentButton componentToSkip='waterCooler' nextComponent='memoriaram'/>
+      <SkipComponentButton componentToSkip='waterCooler' nextComponent='memoriaram' />
     </main>
   )
 }
 
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('', {
+  const { data } = await api.get('', {
     params: {
       pesquisa: 'Water Cooler',
       situacao: 'A'
@@ -47,15 +51,17 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
     const sockets = getSocketCompatibility(produto.nome)
 
-    return { 
+    // if (!produto.nome.includes(' - ')) return null
+
+    return {
       name: produto.nome,
       price: produto.preco,
       socketCompatibility: sockets[0] ? sockets : ['Universal'],
     }
   })
 
-  return{
-    props:{
+  return {
+    props: {
       waterCoolers: waterCoolers.filter(el => el !== null),
     },
     revalidate: 1000 * 60 * 10 // 10 minutos 

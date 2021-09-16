@@ -19,11 +19,15 @@ export default function Gabinete({ pcCabinet }) {
       </section>
 
       <section className={styles.productTableSection}>
-        <ComponentsTable 
-          products={pcCabinet}
-          componentName={'pcCabinet'}
-          onChoose={{redirectTo: '/montagem/monitor'}}
-        />
+        {pcCabinet && pcCabinet[0] ? (
+          <ComponentsTable
+            products={pcCabinet}
+            componentName={'pcCabinet'}
+            onChoose={{ redirectTo: '/montagem/monitor' }}
+          />
+        ) : (
+          <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+        )}
       </section>
 
       {/* <SkipComponentButton nextComponent='monitor'/> */}
@@ -32,7 +36,7 @@ export default function Gabinete({ pcCabinet }) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {data} = await api.get('', {
+  const { data } = await api.get('', {
     params: {
       pesquisa: 'GABINETE',
       situacao: 'A'
@@ -41,20 +45,21 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
   const pcCabinet = data.retorno.produtos.map(el => {
     const produto = el.produto;
-    
-    if(produto.nome.includes('C/FONTE')) return null
-    if(produto.nome.includes('SUPORTE PARA GABINETE')) return null
-    if(produto.nome.includes('COOLER PARA')) return null
-    if(produto.nome.includes('COOLER FAN PARA')) return null
 
-    return { 
+    // if (!produto.nome.includes(' - ')) return null
+    if (produto.nome.includes('C/FONTE')) return null
+    if (produto.nome.includes('SUPORTE PARA GABINETE')) return null
+    if (produto.nome.includes('COOLER PARA')) return null
+    if (produto.nome.includes('COOLER FAN PARA')) return null
+
+    return {
       name: produto.nome,
       price: produto.preco,
     }
   })
 
-  return{
-    props:{
+  return {
+    props: {
       pcCabinet: pcCabinet.filter(el => el !== null),
     },
     revalidate: 1000 * 60 * 10 // 10 minutos 

@@ -95,8 +95,8 @@
   button.advance{
     cursor: pointer;
     height: 3rem;
-    background: var(--red-400);
-    border: none;
+    border: 1px solid var(--red-400);
+    background: transparent;
     color: var(--white);
     width: 200px;
     border-radius: .5rem;
@@ -123,6 +123,24 @@
 
         &:first-child{
           max-width: 300px;
+        }
+      }
+    }
+
+    .listOfItems{
+      padding: .5rem 2rem;
+      button{
+        width: 80px;
+      }
+      ul li{
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 200px;
+
+        > div{
+          transform: translateY(.4rem);
         }
       }
     }

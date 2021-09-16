@@ -57,6 +57,9 @@
 
 @media(max-width: 767px){
   .header{
+    nav{
+      display: none;
+    }
     .headerButton{
       display: none;
     }
