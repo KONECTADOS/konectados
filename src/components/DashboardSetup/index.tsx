@@ -39,7 +39,7 @@ export function DashboardSetup({ userSetup }) {
         component={setup.graphicCard}
       />
 
-      {setup.hardDisk.ListOfComponents.map((el, index) => (
+      {setup.hardDisk?.ListOfComponents?.map((el, index) => (
         <>
           {el.name !== 'skipped' && (
             <SetupCard
@@ -50,7 +50,7 @@ export function DashboardSetup({ userSetup }) {
         </>
       ))}
 
-      {setup.SSD.ListOfComponents.map((el, index) => (
+      {setup.SSD?.ListOfComponents?.map((el, index) => (
         <>
           {el.name !== 'skipped' && (
             <SetupCard
