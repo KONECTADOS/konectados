@@ -18,7 +18,7 @@ export default function Monitor({ monitor }) {
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
             <h2>Monitor</h2>
-            <p>Escolha um processador para continuar.</p>
+            <p>Escolha um monitor ou pule esta etapa.</p>
           </div>
           <Subtotal />
         </section>
@@ -27,7 +27,7 @@ export default function Monitor({ monitor }) {
           {monitor && monitor[0] ? (
             <ComponentsTable
               products={monitor}
-              componentName={'screen'}
+              componentName={'monitor'}
               onChoose={{ redirectTo: '/montagem/resultado' }}
             />
           ) : (
@@ -35,7 +35,7 @@ export default function Monitor({ monitor }) {
           )}
         </section>
 
-        <SkipComponentButton componentToSkip='screen' nextComponent='resultado' />
+        <SkipComponentButton componentToSkip='monitor' nextComponent='resultado' />
       </main>
     </>
   )

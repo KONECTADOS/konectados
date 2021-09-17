@@ -184,7 +184,7 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
       {product.graphicCardSizeInCm && (<td>{product.graphicCardSizeInCm} cm</td>)}
       {product.cabinetSizeInCm && (<td>{product.cabinetSizeInCm} cm</td>)}
       {moreThanOne && (
-        <td>
+        <td style={{textAlign: 'right'}}>
           <div className={styles.inputWrapper}>
             <input type="number" value={amount} min={1} max={4} onChange={e => setAmount(Number(e.target.value))} />
             <button className={styles.plus} onClick={e => amount < 4 && setAmount(amount + 1)}>+</button>

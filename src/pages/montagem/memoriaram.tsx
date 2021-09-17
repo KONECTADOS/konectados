@@ -22,7 +22,7 @@ export default function MemoriaRam({ ramMemory }) {
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
             <h2>Memória RAM</h2>
-            <p>Escolha um processador para continuar.</p>
+            <p>Escolha uma memória RAM para continuar.</p>
           </div>
           <Subtotal />
         </section>
@@ -58,8 +58,8 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const ramMemory = data.retorno.produtos.map(el => {
     const produto = el.produto;
 
-    // if (!produto.nome.includes(' - ')) return null
     const sockets = getRAMSocketCompatibility(produto.nome)
+    if (produto.nome.includes('NOTEBOOK')) return null
     if (produto.nome.includes("CARTÃO")) return null
     return {
       name: produto.nome,

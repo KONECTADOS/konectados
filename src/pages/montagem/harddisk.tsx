@@ -20,7 +20,7 @@ export default function HardDisk({ hardDisk }) {
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
             <h2>Hard Disk</h2>
-            <p>Escolha um processador para continuar.</p>
+            <p>Escolha um ou mais HDs ou pule esta etapa.</p>
           </div>
           <Subtotal />
         </section>

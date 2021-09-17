@@ -31,8 +31,8 @@ export function Header() {
             </Link>
           </li>
           <li>
-            <Link href={setup.cpu && setup.motherboard ? '/montagem/watercooler' : ''}>
-              <a className={path === '/montagem/watercooler' ? styles.currentComponent : (setup.waterCooler && styles.choosed)}>
+            <Link href={setup.cpu && setup.motherboard ? '/montagem/cooler' : ''}>
+              <a className={path === '/montagem/cooler' ? styles.currentComponent : (setup.waterCooler && styles.choosed)}>
                 Water Cooler
               </a>
             </Link>
@@ -80,8 +80,15 @@ export function Header() {
             </Link>
           </li>
           <li>
-            <Link href={setup.cpu && setup.ramMemory && setup.motherboard && setup.graphicCard && setup.powerSupply && setup.powerSupply ? '/montagem/monitor' : ''}>
-              <a className={path === '/montagem/monitor' ? styles.currentComponent : (setup.screen && styles.choosed)}>
+            <Link href={setup.cpu && setup.ramMemory && setup.motherboard && setup.graphicCard && setup.powerSupply && setup.pcCabinet ? '/montagem/fan' : ''}>
+              <a className={path === '/montagem/fan' ? styles.currentComponent : (setup.pcCabinet && styles.choosed)}>
+                Fan
+              </a>
+            </Link>
+          </li>
+          <li>
+            <Link href={setup.cpu && setup.ramMemory && setup.motherboard && setup.graphicCard && setup.powerSupply && setup.fan && setup.pcCabinet ? '/montagem/monitor' : ''}>
+              <a className={path === '/montagem/monitor' ? styles.currentComponent : (setup.monitor && styles.choosed)}>
                 Monitor
               </a>
             </Link>

@@ -58,7 +58,8 @@ interface UserSetup{
   SSD: HardDisk;
   powerSupply: PowerSupply;
   pcCabinet: PcCabinet;
-  screen: PcComponent;
+  monitor: PcComponent;
+  fan: PcComponent[];
 }
 
 interface ComputerContextProps{

@@ -45,6 +45,7 @@
               border: none;
               color: var(--white);
               width: 100%;
+              min-width: 130px;
               border-radius: .5rem;
               transition: .3s; 
               
@@ -118,7 +119,8 @@
 .inputWrapper{
   position: relative;
   height: 2.5rem;
-  // max-width: 100px;
+  width: 120px;
+  margin-left: auto;
   
   input, button{
     height: 2.5rem;

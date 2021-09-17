@@ -19,7 +19,7 @@ export default function PlacaDeVideo({ graphicCards }) {
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
             <h2>Placa de Vídeo</h2>
-            <p>Escolha um processador para continuar.</p>
+            <p>Escolha uma placa de vídeo para continuar.</p>
           </div>
           <Subtotal />
         </section>

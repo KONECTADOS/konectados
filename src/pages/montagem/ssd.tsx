@@ -18,7 +18,7 @@ export default function MemoriaRam({ ssd }) {
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
             <h2>SSD</h2>
-            <p>Escolha um processador para continuar.</p>
+            <p>Escolha um ou mais SSDs ou pule esta etapa.</p>
           </div>
           <Subtotal />
         </section>

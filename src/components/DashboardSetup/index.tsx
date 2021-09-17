@@ -68,9 +68,9 @@ export function DashboardSetup({ userSetup }) {
         component={setup.pcCabinet}
       />
 
-      {setup.screen.name !== 'skipped' && (
+      {setup.monitor.name !== 'skipped' && (
         <SetupCard
-          component={setup.screen}
+          component={setup.monitor}
         />
       )}
 

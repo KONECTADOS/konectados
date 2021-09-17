@@ -68,11 +68,11 @@ export function ResultTable() {
         component={setup.pcCabinet}
       />
 
-      {setup.screen.name !== 'skipped' && (
+      {setup.monitor.name !== 'skipped' && (
         <ComponentCard
           imageUrl='/icons/monitor.svg'
           componentName='Monitor'
-          component={setup.screen}
+          component={setup.monitor}
         />
       )}
     </section>

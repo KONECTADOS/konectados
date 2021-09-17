@@ -8,8 +8,8 @@ import { api } from '../../services/api';
 import { getSocketCompatibility } from '../../utils/getSocketCompatibility';
 import Head from 'next/head';
 
-export default function WaterCooler({ waterCoolers }) {
-  const [coolerList, setCoolerList] = useState([...waterCoolers])
+export default function Cooler({ coolers }) {
+  const [coolerList, setCoolerList] = useState([...coolers])
 
   return (
     <>
@@ -19,8 +19,8 @@ export default function WaterCooler({ waterCoolers }) {
       <main className={styles.container}>
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
-            <h2>Water Cooler</h2>
-            <p>Escolha um processador para continuar.</p>
+            <h2>Cooler</h2>
+            <p>Escolha um cooler para continuar.</p>
           </div>
           <Subtotal />
         </section>
@@ -47,17 +47,19 @@ export default function WaterCooler({ waterCoolers }) {
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { data } = await api.get('', {
     params: {
-      pesquisa: 'Water Cooler',
+      pesquisa: 'Cooler',
       situacao: 'A'
     },
   })
 
-  const waterCoolers = data.retorno.produtos.map(el => {
+  const coolers = data.retorno.produtos.map(el => {
     const produto = el.produto;
 
     const sockets = getSocketCompatibility(produto.nome)
 
-    // if (!produto.nome.includes(' - ')) return null
+    if (produto.nome.includes('CABO')) return null
+    if (produto.nome.includes('GABINETE')) return null
+    if (!produto.nome.includes('PROCESSADOR') && !produto.nome.includes('WATER')) return null
 
     return {
       name: produto.nome,
@@ -68,7 +70,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
   return {
     props: {
-      waterCoolers: waterCoolers.filter(el => el !== null),
+      coolers: coolers.filter(el => el !== null),
     },
     revalidate: 1000 * 60 * 10 // 10 minutos 
   }

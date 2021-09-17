@@ -20,7 +20,7 @@ export default function PowerSupply({ powerSupply }) {
       <section className={styles.componentInfo}>
         <div className={styles.componentName}>
           <h2>Fonte</h2>
-          <p>Escolha um processador para continuar.</p>
+          <p>Escolha uma fonte para continuar.</p>
         </div>
         <Subtotal />
       </section>

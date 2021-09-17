@@ -18,7 +18,7 @@ export default function Gabinete({ pcCabinet }) {
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
             <h2>Gabinete</h2>
-            <p>Escolha um processador para continuar.</p>
+            <p>Escolha um gabinete para continuar.</p>
           </div>
           <Subtotal />
         </section>
