@@ -100,9 +100,7 @@ export function Header() {
       {path.search(/dashboard\/*/) !== -1 || path === '/auth' ? (
         <></>
       ) : (
-        <Link href="/montagem">
-          <a className={styles.headerButton}>Monte seu PC</a>
-        </Link>
+        <a href="https://www.konectados.com.br/" target="_blank" rel="noreferrer" className={styles.headerButton}>Visite nossa loja</a>
       )}
     </header>
   );

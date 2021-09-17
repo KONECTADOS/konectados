@@ -15,6 +15,7 @@
       position: sticky;
       top: 0;
       left: 0; 
+      z-index: 9;
       background: var(--gray-800);
       tr{
         th{
@@ -43,7 +44,7 @@
               background: var(--red-400);
               border: none;
               color: var(--white);
-              width: 100px;
+              width: 100%;
               border-radius: .5rem;
               transition: .3s; 
               
@@ -112,7 +113,47 @@
     // border: 1px solid var(--red-400);
     // background: transparent;
   }
+}
 
+.inputWrapper{
+  position: relative;
+  height: 2.5rem;
+  // max-width: 100px;
+  
+  input, button{
+    height: 2.5rem;
+    border: 2px solid var(--red-500);
+    color: #fff;
+    border-radius: .75rem;
+
+    &:focus{
+      outline: none;
+    }
+  }
+  
+  input{
+    width: 120px;
+    padding-left: 54px;
+    background: transparent;
+  }
+
+  button{
+    position: absolute;
+    top: 0;
+    width: 40px;
+    background: var(--red-500);
+    transition: .2s;
+    &.minus{
+      left: 0;
+    }
+    &.plus{
+      right: 0;
+    }
+
+    &:hover{
+      filter: brightness(.9);
+    }
+  }
 }
 
 @media (max-width: 1080px) {
