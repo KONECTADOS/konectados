@@ -28,9 +28,9 @@ export function ComponentCard({ componentName, component, imageUrl }) {
               || componentName === 'Hard Disk'
               || componentName === 'SSD'
               ? `${component.ListOfComponents.length > 1 ? component.ListOfComponents.reduce((ac, el) => {
-                if(typeof ac === 'string') return `${ac}, ${el.ramSizeInGb}`
-                return `${ac.name}, ${el.name}`
-              }): component.ListOfComponents[0].name} `
+                if(typeof ac === 'string') return `${ac} | ${el.ramSizeInGb}`
+                return `${ac.amount}x ${ac.name} | ${el.amount}x ${el.name}`
+              }): `${component.ListOfComponents[0].amount}x ${component.ListOfComponents[0].name}`} `
               : component.name
           }
         </p>
@@ -50,27 +50,26 @@ export function ComponentCard({ componentName, component, imageUrl }) {
           <>
             <p>Soquete: {component.ListOfComponents[0].ramSocket}</p>
             <p>Memória: {component.ListOfComponents.length > 1 ? component.ListOfComponents.reduce((ac, el) =>{
-              if(typeof ac === 'number') return ac + el.ramSizeInGb
-              return ac.ramSizeInGb + el.ramSizeInGb
-            }) : component.ListOfComponents[0].ramSizeInGb} Gb</p>
+              if(typeof ac === 'number') return ac + (el.ramSizeInGb * el.amount)
+              return (ac.ramSizeInGb * ac.amount) + (el.ramSizeInGb * el.amount)
+            }) : component.ListOfComponents[0].ramSizeInGb * component.ListOfComponents[0].amount } Gb</p>
             <p>Frequência: {component.ListOfComponents[0].frequencyInMhz} Mhz</p>
           </>
         )}
         {componentName === 'Hard Disk' && (
           <>
             <p>Memória: {component.ListOfComponents.length > 1 ? component.ListOfComponents.reduce((ac, el) =>{
-              if(typeof ac === 'number') return ac + el.sizeInGb
-              return ac.sizeInGb + el.sizeInGb
-            }) : component.ListOfComponents[0].name} Gb</p>
+              if(typeof ac === 'number') return ac + (el.sizeInGb * el.amount)
+              return (ac.sizeInGb * ac.amount) + (el.sizeInGb * el.amount)
+            }) : component.ListOfComponents[0].sizeInGb * component.ListOfComponents[0].amount} Gb</p>
           </>
         )} 
         {componentName === 'SSD' && (
           <>
             <p>Memória: {component.ListOfComponents.length > 1 ? component.ListOfComponents.reduce((ac, el) =>{
-              if(typeof ac === 'number') return ac + el.sizeInGb
-              console.log(ac)
-              return ac.sizeInGb + el.sizeInGb
-            }) : component.ListOfComponents[0].name} Gb</p>
+              if(typeof ac === 'number') return ac + (el.sizeInGb * el.amount)
+              return (ac.sizeInGb * ac.amount) + (el.sizeInGb * el.amount)
+            }) : component.ListOfComponents[0].sizeInGb * component.ListOfComponents[0].amount} Gb</p>
           </>
         )}
         {componentName === 'Water Cooler' && (
@@ -84,9 +83,9 @@ export function ComponentCard({ componentName, component, imageUrl }) {
           }
           </>
         )}
-        {componentName === 'Gabinete' && (
+        {/* {componentName === 'Gabinete' && (
           <p>Tamanho: {component.cabinetSizeInCm} cm</p>
-        )}
+        )} */}
       </main>
 
       <footer>
@@ -95,7 +94,7 @@ export function ComponentCard({ componentName, component, imageUrl }) {
             new Intl.NumberFormat('pt-BR', {
               style: 'currency',
               currency: 'BRL',
-            }).format(component.price)
+            }).format(component.totalPrice || component.price)
           }
         </span>
       </footer>
