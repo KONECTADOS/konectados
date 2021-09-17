@@ -8,9 +8,14 @@ import { ComponentsTable } from '../../components/ComponentsTable';
 import { GetStaticProps } from 'next';
 import { api } from '../../services/api';
 import { getPowerInWatts } from '../../utils/getPowerInWatts';
+import Head from 'next/head';
 
 export default function PowerSupply({ powerSupply }) {
   return (
+    <>
+    <Head>
+        <title>Fonte | Konectados</title>
+      </Head>
     <main className={styles.container}>
       <section className={styles.componentInfo}>
         <div className={styles.componentName}>
@@ -34,6 +39,7 @@ export default function PowerSupply({ powerSupply }) {
 
       {/* <SkipComponentButton nextComponent='gabinete'/> */}
     </main>
+    </>
   )
 }
 

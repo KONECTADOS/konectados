@@ -6,32 +6,38 @@ import { ComponentsTable } from '../../components/ComponentsTable';
 import { SkipComponentButton } from '../../components/SkipComponentButton';
 import { GetStaticProps } from 'next';
 import { api } from '../../services/api';
+import Head from 'next/head';
 
 export default function Gabinete({ pcCabinet }) {
   return (
-    <main className={styles.container}>
-      <section className={styles.componentInfo}>
-        <div className={styles.componentName}>
-          <h2>Gabinete</h2>
-          <p>Escolha um processador para continuar.</p>
-        </div>
-        <Subtotal />
-      </section>
+    <>
+      <Head>
+        <title>Gabinete | Konectados</title>
+      </Head>
+      <main className={styles.container}>
+        <section className={styles.componentInfo}>
+          <div className={styles.componentName}>
+            <h2>Gabinete</h2>
+            <p>Escolha um processador para continuar.</p>
+          </div>
+          <Subtotal />
+        </section>
 
-      <section className={styles.productTableSection}>
-        {pcCabinet && pcCabinet[0] ? (
-          <ComponentsTable
-            products={pcCabinet}
-            componentName={'pcCabinet'}
-            onChoose={{ redirectTo: '/montagem/monitor' }}
-          />
-        ) : (
-          <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
-        )}
-      </section>
+        <section className={styles.productTableSection}>
+          {pcCabinet && pcCabinet[0] ? (
+            <ComponentsTable
+              products={pcCabinet}
+              componentName={'pcCabinet'}
+              onChoose={{ redirectTo: '/montagem/monitor' }}
+            />
+          ) : (
+            <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+          )}
+        </section>
 
-      {/* <SkipComponentButton nextComponent='monitor'/> */}
-    </main>
+        {/* <SkipComponentButton nextComponent='monitor'/> */}
+      </main>
+    </>
   )
 }
 

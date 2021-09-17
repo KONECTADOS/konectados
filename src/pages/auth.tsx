@@ -6,6 +6,8 @@ import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { apiRoutes } from '../services/api';
 import styles from '../styles/auth.module.scss';
+import Head from 'next/head';
+
 
 export default function Home() {
   const [user, setUser] = useState('')
@@ -16,11 +18,11 @@ export default function Home() {
   async function handleLogIn(event) {
     event.preventDefault();
     try {
-      const {data} = await axios.post('/api/auth', {
+      const { data } = await axios.post('/api/auth', {
         password, user
       })
 
-      if(!data.token){
+      if (!data.token) {
         toast.error('Usuário ou senha incorretos!')
         return
       }
@@ -34,26 +36,31 @@ export default function Home() {
   }
 
   return (
-    <main className={styles.container}>
-      <Toaster />
-      <section className={styles.content}>
-        <h3>Seja bem-vindo!</h3>
-        <form action="">
-          <input
-            type="text"
-            placeholder="Usuário"
-            value={user}
-            onChange={e => setUser(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Chave de acesso"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-          <button onClick={handleLogIn}>Entrar</button>
-        </form>
-      </section>
-    </main>
+    <>
+      <Head>
+        <title>Autenticação | Konectados</title>
+      </Head>
+      <main className={styles.container}>
+        <Toaster />
+        <section className={styles.content}>
+          <h3>Seja bem-vindo!</h3>
+          <form action="">
+            <input
+              type="text"
+              placeholder="Usuário"
+              value={user}
+              onChange={e => setUser(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Chave de acesso"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
+            <button onClick={handleLogIn}>Entrar</button>
+          </form>
+        </section>
+      </main>
+    </>
   )
 }

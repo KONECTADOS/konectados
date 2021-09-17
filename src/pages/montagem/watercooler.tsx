@@ -6,34 +6,40 @@ import { SkipComponentButton } from '../../components/SkipComponentButton';
 import { GetStaticProps } from 'next';
 import { api } from '../../services/api';
 import { getSocketCompatibility } from '../../utils/getSocketCompatibility';
+import Head from 'next/head';
 
 export default function WaterCooler({ waterCoolers }) {
   const [coolerList, setCoolerList] = useState([...waterCoolers])
 
   return (
-    <main className={styles.container}>
-      <section className={styles.componentInfo}>
-        <div className={styles.componentName}>
-          <h2>Water Cooler</h2>
-          <p>Escolha um processador para continuar.</p>
-        </div>
-        <Subtotal />
-      </section>
+    <>
+      <Head>
+        <title>Coolers | Konectados</title>
+      </Head>
+      <main className={styles.container}>
+        <section className={styles.componentInfo}>
+          <div className={styles.componentName}>
+            <h2>Water Cooler</h2>
+            <p>Escolha um processador para continuar.</p>
+          </div>
+          <Subtotal />
+        </section>
 
-      <section className={styles.productTableSection}>
-        {coolerList && coolerList[0] ? (
-          <ComponentsTable
-            products={coolerList}
-            componentName={'waterCooler'}
-            onChoose={{ redirectTo: '/montagem/memoriaram' }}
-          />
-        ) : (
-          <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
-        )}
-      </section>
+        <section className={styles.productTableSection}>
+          {coolerList && coolerList[0] ? (
+            <ComponentsTable
+              products={coolerList}
+              componentName={'waterCooler'}
+              onChoose={{ redirectTo: '/montagem/memoriaram' }}
+            />
+          ) : (
+            <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+          )}
+        </section>
 
-      <SkipComponentButton componentToSkip='waterCooler' nextComponent='memoriaram' />
-    </main>
+        <SkipComponentButton componentToSkip='waterCooler' nextComponent='memoriaram' />
+      </main>
+    </>
   )
 }
 

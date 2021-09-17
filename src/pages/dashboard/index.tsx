@@ -7,6 +7,7 @@ import { Feedbacks } from '../../components/Feedbacks';
 import { SetupsTable } from '../../components/SetupsTable';
 import { database } from '../../services/firebase';
 import styles from '../../styles/dashboard.module.scss';
+import Head from 'next/head';
 
 export default function Dashboard() {
   const [setups, setSetups] = useState([])

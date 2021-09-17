@@ -6,34 +6,40 @@ import { GetStaticProps } from 'next';
 import { api } from '../../services/api';
 import { getSocketCompatibility } from '../../utils/getSocketCompatibility';
 import { getRAMSocketCompatibility } from '../../utils/getRAMSocketCompatibility';
+import Head from 'next/head';
 
-export default function Montagem({ motherboards }) {
+export default function PlacaMae({ motherboards }) {
   const [motherboardList, setMotherboardList] = useState([...motherboards])
 
   return (
-    <main className={styles.container}>
-      <section className={styles.componentInfo}>
-        <div className={styles.componentName}>
-          <h2>Placa mãe</h2>
-          <p>Escolha um processador para continuar.</p>
-        </div>
-        <Subtotal />
-      </section>
+    <>
+      <Head>
+        <title>Placa mãe | Konectados</title>
+      </Head>
+      <main className={styles.container}>
+        <section className={styles.componentInfo}>
+          <div className={styles.componentName}>
+            <h2>Placa mãe</h2>
+            <p>Escolha um processador para continuar.</p>
+          </div>
+          <Subtotal />
+        </section>
 
-      <section className={styles.productTableSection}>
-        {motherboardList && motherboardList[0] ? (
-          <ComponentsTable
-            products={motherboardList}
-            componentName={'motherboard'}
-            onChoose={{ redirectTo: '/montagem/watercooler' }}
-          />
-        ) : (
-          <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
-        )}
-      </section>
+        <section className={styles.productTableSection}>
+          {motherboardList && motherboardList[0] ? (
+            <ComponentsTable
+              products={motherboardList}
+              componentName={'motherboard'}
+              onChoose={{ redirectTo: '/montagem/watercooler' }}
+            />
+          ) : (
+            <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+          )}
+        </section>
 
-      {/* <SkipComponentButton nextComponent='waterCooler'/> */}
-    </main>
+        {/* <SkipComponentButton nextComponent='waterCooler'/> */}
+      </main>
+    </>
   )
 }
 

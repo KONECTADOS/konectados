@@ -9,34 +9,40 @@ import { getSocketCompatibility } from '../../utils/getSocketCompatibility';
 import { SideNavigation } from '../../components/SideNavigation';
 import setup from '../api/setup';
 import { useComputer } from '../../hooks/useComputer';
+import Head from 'next/head';
 
-export default function Montagem({ cpus }) {
+export default function Processador({ cpus }) {
   const { setup } = useComputer();
   const [cpuList, setCpuList] = useState([...cpus])
 
   return (
-    <main className={styles.container}>
-      <section className={styles.componentInfo}>
-        <div className={styles.componentName}>
-          <h2>Processador</h2>
-          <p>Escolha um processador para continuar.</p>
-        </div>
-        <Subtotal />
-      </section>
+    <>
+      <Head>
+        <title>Processador | Konectados</title>
+      </Head>
+      <main className={styles.container}>
+        <section className={styles.componentInfo}>
+          <div className={styles.componentName}>
+            <h2>Processador</h2>
+            <p>Escolha um processador para continuar.</p>
+          </div>
+          <Subtotal />
+        </section>
 
-      <section className={styles.productTableSection}>
-        {cpuList && cpuList[0] ? (
-          <ComponentsTable
-            products={cpuList}
-            componentName={'cpu'}
-            onChoose={{ redirectTo: '/montagem/placamae' }}
-          />
-        ) : (
-          <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
-        )}
-      </section>
+        <section className={styles.productTableSection}>
+          {cpuList && cpuList[0] ? (
+            <ComponentsTable
+              products={cpuList}
+              componentName={'cpu'}
+              onChoose={{ redirectTo: '/montagem/placamae' }}
+            />
+          ) : (
+            <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+          )}
+        </section>
 
-    </main>
+      </main>
+    </>
   )
 }
 

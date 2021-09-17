@@ -5,6 +5,7 @@ import { parseCookies } from "nookies";
 import { DashboardSetup } from "../../components/DashboardSetup";
 import { ResultTable } from "../../components/ResultTable";
 import { database } from "../../services/firebase";
+import Head from 'next/head';
 
 export default function Setup ({ setup }) {
   return (

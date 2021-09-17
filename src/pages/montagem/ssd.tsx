@@ -6,33 +6,39 @@ import { SkipComponentButton } from '../../components/SkipComponentButton';
 import { api } from '../../services/api';
 import { GetStaticProps } from 'next';
 import { getSizeInGb } from '../../utils/getSizeInGb';
+import Head from 'next/head';
 
 export default function MemoriaRam({ ssd }) {
   return (
-    <main className={styles.container}>
-      <section className={styles.componentInfo}>
-        <div className={styles.componentName}>
-          <h2>SSD</h2>
-          <p>Escolha um processador para continuar.</p>
-        </div>
-        <Subtotal />
-      </section>
+    <>
+      <Head>
+        <title>Memória RAM | Konectados</title>
+      </Head>
+      <main className={styles.container}>
+        <section className={styles.componentInfo}>
+          <div className={styles.componentName}>
+            <h2>SSD</h2>
+            <p>Escolha um processador para continuar.</p>
+          </div>
+          <Subtotal />
+        </section>
 
-      <section className={styles.productTableSection}>
-        {ssd && ssd[0] ? (
-          <ComponentsTable
-            products={ssd}
-            componentName={'SSD'}
-            moreThanOne={true}
-            onChoose={{ redirectTo: '/montagem/fonte' }}
-          />
-        ) : (
-          <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
-        )}
-      </section>
+        <section className={styles.productTableSection}>
+          {ssd && ssd[0] ? (
+            <ComponentsTable
+              products={ssd}
+              componentName={'SSD'}
+              moreThanOne={true}
+              onChoose={{ redirectTo: '/montagem/fonte' }}
+            />
+          ) : (
+            <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+          )}
+        </section>
 
-      {/* <SkipComponentButton componentToSkip='SSD' nextComponent='fonte'/> */}
-    </main>
+        {/* <SkipComponentButton componentToSkip='SSD' nextComponent='fonte'/> */}
+      </main>
+    </>
   )
 }
 
