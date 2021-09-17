@@ -1,18 +1,17 @@
 .container{
   width: 100vw;
   padding: 4rem;
-
   display: flex;
-  // justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem; 
+  
   header{
     width: 100%;
     margin-bottom: 2rem;
     display: flex;
     justify-content: space-between;
-
+    flex-wrap: wrap;
     p{
       font-size: 2rem;
       
@@ -20,6 +19,28 @@
         font-size: 3rem;
         font-weight: bold;
         color: var(--red-400);
+      }
+    }
+  }
+}
+
+@media (max-width:1080px){
+  .container{
+    padding: 1rem;
+    header{
+      margin-top: 2rem;
+      h2{
+        font-size: 3rem;
+        width: 100%;
+      }
+
+      p{
+        margin-top: 1.5rem;
+        font-size: 1rem;
+
+        span{
+          font-size: 2rem;
+        }
       }
     }
   }

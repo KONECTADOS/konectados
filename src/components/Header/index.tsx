@@ -102,6 +102,12 @@ export function Header() {
       ) : (
         <a href="https://www.konectados.com.br/" target="_blank" rel="noreferrer" className={styles.headerButton}>Visite nossa loja</a>
       )}
+
+      {
+        (path === '/dashboard' || path === '/dashboard#feedbacks') && (
+          <a href="#feedbacks">Feedbacks</a>
+        )
+      }
     </header>
   );
 }

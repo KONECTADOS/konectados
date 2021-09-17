@@ -3,10 +3,11 @@
   position: relative;
   overflow: auto;
   margin: 1.5rem 0 4rem;
+  height: 600px;
+  overflow: auto;
   
   table{
     min-width: 500px;
-
     width: 100%;
     border-spacing: 0 .5rem;
     border-collapse: collapse;
