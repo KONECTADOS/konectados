@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
 import { ComponentsTable } from '../../components/ComponentsTable';
@@ -7,9 +7,28 @@ import { api } from '../../services/api';
 import { getSocketCompatibility } from '../../utils/getSocketCompatibility';
 import { getRAMSocketCompatibility } from '../../utils/getRAMSocketCompatibility';
 import Head from 'next/head';
+import { useComputer } from '../../hooks/useComputer';
+import { getCPUGenCompatibility } from '../../utils/getCPUGenCompatibility';
 
 export default function PlacaMae({ motherboards }) {
   const [motherboardList, setMotherboardList] = useState([...motherboards])
+  const { setup } = useComputer();
+
+  useEffect(() => {
+    const cpu = getCPUGenCompatibility(setup.cpu?.name);
+    console.log(motherboards);
+    
+    const list = [...motherboardList].filter((el, index) => {
+      for (const model of cpu) {
+        console.log(model, el.name)
+        if(el.name.includes(model)) return el;
+      }
+
+      return null
+    })
+
+    setMotherboardList(list)
+  }, [])
 
   return (
     <>
