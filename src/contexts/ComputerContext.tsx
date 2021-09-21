@@ -59,7 +59,7 @@ interface UserSetup{
   powerSupply: PowerSupply;
   pcCabinet: PcCabinet;
   monitor: PcComponent;
-  fan: PcComponent[];
+  fan: PcComponent;
 }
 
 interface ComputerContextProps{

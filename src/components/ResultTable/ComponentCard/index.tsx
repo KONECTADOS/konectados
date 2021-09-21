@@ -27,6 +27,7 @@ export function ComponentCard({ componentName, component, imageUrl }) {
             componentName === 'Memória RAM'
               || componentName === 'Hard Disk'
               || componentName === 'SSD'
+              || componentName === 'Fan'
               ? `${component.ListOfComponents.length > 1 ? component.ListOfComponents.reduce((ac, el) => {
                 if(typeof ac === 'string') return `${ac} | ${el.ramSizeInGb}`
                 return `${ac.amount}x ${ac.name} | ${el.amount}x ${el.name}`

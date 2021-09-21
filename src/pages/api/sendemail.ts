@@ -29,30 +29,41 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     },
   });
 
+  const fanNames = setup.fan.ListOfComponents.reduce((ac, el) => {
+    return ac === '' ? el.name : `${ac}, ${el.name}`
+  }, '')
   const ramMemoryNames = setup.ramMemory.ListOfComponents.reduce((ac, el) => {
-    return `${ac.name}, ${el.name}`
-  })
+    return ac === '' ? el.name : `${ac}, ${el.name}`
+  }, '')
   const ramMemorySizeInGb = setup.ramMemory.ListOfComponents.reduce((ac, el) => {
-    if(typeof ac === 'number') return ac + el.ramSizeInGb;
-    return ac.ramSizeInGb + el.ramSizeInGb
-  })
+    return ac + (el.ramSizeInGb * el.amount);
+  }, 0)
 
   const hdNames = !(setup.hardDisk.name === 'skipped')  ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
-    return `${ac.name}, ${el.name}`
-  }) : null
+    return ac === '' ? el.name : `${ac}, ${el.name}`
+  }, '') : null
   const hdSizeInGb = !(setup.hardDisk.name === 'skipped') ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
-    if(typeof ac === 'number') return ac + el.sizeInGb;
-    return ac.sizeInGb + el.sizeInGb
-  }) : null
+    return ac + (el.sizeInGb * el.amount);
+  }, 0) : null
 
   const ssdNames = !(setup.SSD.name === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
-    return `${ac.name}, ${el.name}`
-  }) : null
+    return ac === '' ? el.name : `${ac}, ${el.name}`
+  }, '') : null
 
   const ssdSizeInGb = !(setup.SSD.name === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
-    if(typeof ac === 'number') return ac + el.sizeInGb;
-    return ac.sizeInGb + el.sizeInGb
-  }) : null
+    return ac + (el.sizeInGb * el.amount);
+  }, 0) : null
+
+  // console.log('html')
+  // // console.log(ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb);
+  // console.log(setup.cpu.name)
+  // console.log(setup.waterCooler.name)
+  // console.log(setup.motherboard.name)
+  // // console.log(setup.ramMemory.name)
+  // console.log(setup.graphicCard.name)
+  // console.log(setup.powerSupply.name)
+  // console.log(setup.pcCabinet.name)
+  // console.log(setup.monitor.name)
 
   const html = (
     `
@@ -164,9 +175,9 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
               </tr>
             `) : ''}
             <tr>
-              <td>${ramMemoryNames.name || ramMemoryNames}</td>
+              <td>${ramMemoryNames}</td>
               <td>${setup.ramMemory.ListOfComponents[0].ramSocket}</td>
-              <td>${ramMemorySizeInGb.ramSizeInGb || ramMemorySizeInGb} Gb</td>
+              <td>${ramMemorySizeInGb} Gb</td>
               <td>${
                 new Intl.NumberFormat('pt-BR', {
                   style: 'currency',
@@ -189,9 +200,9 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
               hdNames ?
               (
                 `<tr>
-                  <td>${hdNames.name || hdNames}</td>
+                  <td>${hdNames}</td>
                   <td>-</td>
-                  <td>${hdSizeInGb.sizeInGb || hdSizeInGb} Gb</td>
+                  <td>${hdSizeInGb} Gb</td>
                   <td>${
                     new Intl.NumberFormat('pt-BR', {
                       style: 'currency',
@@ -207,9 +218,9 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
               (
                 `
                 <tr>
-                  <td>${ssdNames.name || ssdNames}</td>
+                  <td>${ssdNames}</td>
                   <td>-</td>
-                  <td>${ssdSizeInGb.sizeInGb || ssdSizeInGb} Gb</td>
+                  <td>${ssdSizeInGb} Gb</td>
                   <td>${
                     new Intl.NumberFormat('pt-BR', {
                       style: 'currency',
@@ -244,17 +255,34 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
             </tr>
 
             ${
-              setup.screen.name !== 'skipped' ? (
+              setup.fan?.name !== 'skipped' ? (
                 `
                 <tr>
-                  <td>${setup.screen.name}</td>
+                  <td>${fanNames}</td>
                   <td>-</td>
                   <td>-</td>
                   <td>${
                     new Intl.NumberFormat('pt-BR', {
                       style: 'currency',
                       currency: 'BRL',
-                    }).format(setup.screen.price)
+                    }).format(setup.fan.price)
+                  }</td>
+                </tr>
+                `
+              ) : ''
+            }
+            ${
+              setup.monitor?.name !== 'skipped' ? (
+                `
+                <tr>
+                  <td>${setup.monitor.name}</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>${
+                    new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    }).format(setup.monitor.price)
                   }</td>
                 </tr>
                 `
@@ -279,6 +307,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     console.log("Message sent: %s", sendEmail.messageId);
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(sendEmail));
   } catch (error) {
+    console.log('aqui')
     console.log(error)
   }
   return response.json({ status: 'send' })

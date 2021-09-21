@@ -7,6 +7,10 @@ export function SideNavigation() {
 
   if (!router.asPath.includes('/montagem/')) return (<></>)
 
+  if(router.asPath === '/montagem/resultado'){
+    return null
+  }
+
   return (
     <div className={styles.sideNavigationContainer}>
       <Link href={router.asPath !== '/montagem/processador' ? '/montagem/processador' : ''}>

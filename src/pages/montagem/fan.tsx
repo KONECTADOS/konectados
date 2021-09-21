@@ -31,13 +31,14 @@ export default function Fans({ fans }) {
               products={fans}
               componentName={'fan'}
               onChoose={{ redirectTo: '/montagem/monitor' }}
+              moreThanOne
             />
           ) : (
             <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
           )}
         </section>
 
-        <SkipComponentButton componentToSkip='waterCooler' nextComponent='memoriaram' />
+        {/* <SkipComponentButton componentToSkip='waterCooler' nextComponent='memoriaram' /> */}
       </main>
     </>
   )
@@ -57,7 +58,11 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
     const sockets = getSocketCompatibility(produto.nome)
 
-    // if (!produto.nome.includes(' - ')) return null
+    if (produto.nome.includes('SUPORTE')) return null
+    if (produto.nome.includes('CABO')) return null
+    if (produto.nome.includes('GABINETE GAMER')) return null
+    if (produto.nome.includes('MOUSE')) return null
+    if (produto.nome.includes('CONTROLADORA')) return null
 
     return {
       name: produto.nome,

@@ -28,7 +28,7 @@ export default function Gabinete({ pcCabinet }) {
             <ComponentsTable
               products={pcCabinet}
               componentName={'pcCabinet'}
-              onChoose={{ redirectTo: '/montagem/monitor' }}
+              onChoose={{ redirectTo: '/montagem/fan' }}
             />
           ) : (
             <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>

@@ -20,7 +20,6 @@ export default function PlacaMae({ motherboards }) {
     
     const list = [...motherboardList].filter((el, index) => {
       for (const model of cpu) {
-        console.log(model, el.name)
         if(el.name.includes(model)) return el;
       }
 
@@ -56,7 +55,6 @@ export default function PlacaMae({ motherboards }) {
           )}
         </section>
 
-        {/* <SkipComponentButton nextComponent='waterCooler'/> */}
       </main>
     </>
   )
@@ -73,7 +71,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const motherboards = data.retorno.produtos.map(el => {
     const produto = el.produto;
 
-    // if (!produto.nome.includes(' - ')) return null
     const coolerRegExp = new RegExp(/COOLER/);
     if (produto.nome.search(coolerRegExp) !== -1) return null
 

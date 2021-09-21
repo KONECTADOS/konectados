@@ -99,11 +99,14 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
             })}
           </ul>
 
-          <button type="button" className={styles.advance} onClick={e => {
-            handleChoseComponent()
-          }}>
-            Avançar
-          </button>
+          {
+            ListOfComponents[0] ?
+              (<button type="button" className={styles.advance} onClick={e => {
+                handleChoseComponent()
+              }}>
+                Avançar
+              </button>) : (<></>)
+          }
 
           {
             !ListOfComponents || !ListOfComponents[0] && componentName !== 'ramMemory' && (
@@ -147,11 +150,11 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
   }
 
   function handleChoseComponent() {
-    moreThanOne && (product.amount = amount)
     if (moreThanOne) {
+      product.amount = amount
       const newListOfComponents = [...listOfComponents.components];
       product.totalPrice = newListOfComponents.length > 0 ? newListOfComponents.reduce((ac, el, index) => {
-        if(typeof ac === 'number') return ac + (el.price * el.amount)
+        if (typeof ac === 'number') return ac + (el.price * el.amount)
         return (ac.price * ac.amount) + (el.price * el.amount)
       }) : product.price * product.amount
 
@@ -184,7 +187,7 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
       {product.graphicCardSizeInCm && (<td>{product.graphicCardSizeInCm} cm</td>)}
       {product.cabinetSizeInCm && (<td>{product.cabinetSizeInCm} cm</td>)}
       {moreThanOne && (
-        <td style={{textAlign: 'right'}}>
+        <td style={{ textAlign: 'right' }}>
           <div className={styles.inputWrapper}>
             <input type="number" value={amount} min={1} max={4} onChange={e => setAmount(Number(e.target.value))} />
             <button className={styles.plus} onClick={e => amount < 4 && setAmount(amount + 1)}>+</button>

@@ -27,7 +27,7 @@ export function ResultTable() {
       {setup.waterCooler.name !== 'skipped' && (
         <ComponentCard
           imageUrl='/icons/fan.svg'
-          componentName='Water Cooler'
+          componentName='Cooler'
           component={setup.waterCooler}
         />
       )}
@@ -68,6 +68,13 @@ export function ResultTable() {
         component={setup.pcCabinet}
       />
 
+      {setup.fan.name !== 'skipped' && (
+        <ComponentCard
+          imageUrl='/icons/fan.svg'
+          componentName='Fan'
+          component={setup.fan}
+        />
+      )}
       {setup.monitor.name !== 'skipped' && (
         <ComponentCard
           imageUrl='/icons/monitor.svg'
