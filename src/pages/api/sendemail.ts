@@ -16,6 +16,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   //     pass: process.env.EMAIL_ACCOUNT_PASSWORD,
   //   },
   // });
+
   let testAccount = await nodemailer.createTestAccount();
 
   // create reusable transporter object using the default SMTP transport
@@ -76,6 +77,20 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         flex-direction: column;
         align-items: center;
       }
+
+      a{
+        display: inline-block;
+        padding: 1rem 0;
+        width: 100%;
+        color: #fff;
+        background: #ef233c;
+        text-decoration: none;
+        font-size: 1rem;
+        border-radius: .5rem;
+        text-align: center;
+        margin-top: 16px;
+      }
+
       table{
         margin-top: 32px;
         border-collapse: collapse;
@@ -127,7 +142,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
           }).format(price)
         }</span></p>
 
-        <p class="message">Mensagem para o usuário<p>
+        ${ /*<p class="message">Mensagem para o usuário<p> */ ''}
 
         <table>
           <thead>
@@ -290,6 +305,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
             }
           </tbody>
         </table>
+
+        <a href="https://www.konectados.com.br/" target="_blank" rel="noreferrer">Visite nossa loja</a>
       </div>
     `
   )

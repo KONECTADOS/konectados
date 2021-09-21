@@ -107,6 +107,10 @@ a {
   text-decoration: none;
 }
 
+button:disabled{
+  opacity: .7;
+  cursor: default;
+}
 
 #nprogress {
   pointer-events: none;

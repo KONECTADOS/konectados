@@ -10,18 +10,28 @@ import styles from '../../styles/montagem.module.scss';
 import { apiRoutes } from "../../services/api";
 import Head from 'next/head';
 import toast, { Toaster } from "react-hot-toast";
+import { validateEmail } from "../../utils/validateEmail";
 
 export default function Resultado() {
   const [email, setEmail] = useState('')
-  // const [isLoading, setIsLoading] = useState(false)
-  const [sendToEmail, setSendToEmail] = useState(true)
+  const [isEmailValid, setIsEmailValid] = useState(false)
+ const [sendToEmail, setSendToEmail] = useState(true)
   const router = useRouter()
   const { setup, setupPrice } = useComputer();
 
+  function handleChangeEmail(email) {
+    const isAValidEmail = validateEmail(email);
+    if(isAValidEmail){
+      setIsEmailValid(true)
+    } else {
+      setIsEmailValid(false)
+    }
+    setEmail(email)
+  }
+
   async function handleSendSetup() {
-    // setIsLoading(true)
     const data = {
-      email,
+      email: email.toLowerCase(),
       setup,
       price: setupPrice
     }
@@ -77,12 +87,12 @@ export default function Resultado() {
         <section className={styles.sendSetup} id="sendSetup">
           <h3>Terminou de montar o <span>PC dos seus sonhos</span>? Envie agora mesmo para um de nossos vendedores</h3>
           <div className={styles.sendSetupForm}>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Digite aqui o seu email!" />
+            <input type="email" value={email} onChange={e => handleChangeEmail(e.target.value)} placeholder="Digite aqui o seu email!" />
             <div>
               <input type="checkbox" name="" checked={sendToEmail} onChange={e => setSendToEmail(!sendToEmail)} id="sendEmail" />
               <label htmlFor="sendEmail">Enviar setup para meu e-mail.</label>
             </div>
-            <button type="button" onClick={handleSendSetup}>
+            <button type="button" onClick={handleSendSetup} disabled={!isEmailValid}>
               Enviar para um vendedor
             </button>
           </div>
