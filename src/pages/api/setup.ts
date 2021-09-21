@@ -5,9 +5,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
   const { data } = request.body
-  console.log(data)
+
   if(request.method === 'POST'){
-    console.log('POST')
     try {
       const database = getDatabase();
       set(ref(database, 'setups/' + data.email), {
