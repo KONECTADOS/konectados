@@ -3,8 +3,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useComputer } from '../../hooks/useComputer';
+import { useState } from 'react';
 
 export function Header() {
+  const [isVisible, setIsVisible] = useState(false)
   const router = useRouter();
   const path = router.asPath
 
@@ -15,7 +17,16 @@ export function Header() {
   if (path.search(pathRegExp) !== -1) {
     return (
       <header className={styles.header}>
-        <nav>
+        <button 
+          className={`hamburger hamburger--collapse ${isVisible && 'is-active'}`}
+          onClick={e => setIsVisible(!isVisible)} 
+          type="button"
+        >
+          <span className="hamburger-box">
+            <span className="hamburger-inner"></span>
+          </span>
+        </button>
+        <nav className={isVisible ? styles.visible : ''}>
           <li>
             <Link href={'/montagem/processador'}>
               <a className={path === '/montagem/processador' ? styles.currentComponent : (setup.cpu && styles.choosed)}>
