@@ -3,9 +3,7 @@ import { ref } from "firebase/database";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
 import { DashboardSetup } from "../../components/DashboardSetup";
-import { ResultTable } from "../../components/ResultTable";
 import { database } from "../../services/firebase";
-import Head from 'next/head';
 
 export default function Setup ({ setup }) {
   return (
@@ -34,6 +32,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.params
   const data = await get(ref(database, 'setups/' + id))
   const setup = data.val()
+
+  if(!setup){
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/dashboard'
+      }
+    }  
+  }
+
   return {
     props: {
       setup

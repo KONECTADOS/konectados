@@ -1,12 +1,7 @@
-import { useRouter } from 'next/dist/client/router';
-import React, { useState } from 'react';
-import { useComputer } from '../../hooks/useComputer';
 import styles from './styles.module.scss';
 import Link from 'next/link';
 
 export function SetupsTable({ setups }) {
-  const { insertComponentIntoSetup } = useComputer();
-  const router = useRouter()
 
   return (
     <section className={styles.container}>

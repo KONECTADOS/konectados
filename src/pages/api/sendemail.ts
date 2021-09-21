@@ -7,28 +7,30 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   const { data } = request.body
   const {setup, email, price} = data
 
-  // const transporter = nodemailer.createTransport({
-  //   host: process.env.EMAIL_HOST,
-  //   port: process.env.EMAIL_PORT,
-  //   secure: false,
-  //   auth: {
-  //     user: process.env.EMAIL_ACCOUNT_USER,
-  //     pass: process.env.EMAIL_ACCOUNT_PASSWORD,
-  //   },
-  // });
-
-  let testAccount = await nodemailer.createTestAccount();
-
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false, // true for 465, false for other ports
+  // PRODUÇÃO
+  const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    secure: true,
     auth: {
-      user: testAccount.user, // generated ethereal user
-      pass: testAccount.pass, // generated ethereal password
+      user: process.env.EMAIL_ACCOUNT_USER,
+      pass: process.env.EMAIL_ACCOUNT_PASSWORD,
     },
   });
+
+  // DESENVOLVIMENTO
+  // let testAccount = await nodemailer.createTestAccount();
+
+  // // create reusable transporter object using the default SMTP transport
+  // let transporter = nodemailer.createTransport({
+  //   host: "smtp.ethereal.email",
+  //   port: 587,
+  //   secure: false, // true for 465, false for other ports
+  //   auth: {
+  //     user: testAccount.user, // generated ethereal user
+  //     pass: testAccount.pass, // generated ethereal password
+  //   },
+  // });
 
   const fanNames = setup.fan.ListOfComponents.reduce((ac, el) => {
     return ac === '' ? el.name : `${ac}, ${el.name}`

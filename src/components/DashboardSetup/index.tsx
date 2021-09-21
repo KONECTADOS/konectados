@@ -68,7 +68,17 @@ export function DashboardSetup({ userSetup }) {
         component={setup.pcCabinet}
       />
 
-      {setup.monitor.name !== 'skipped' && (
+      {setup.fan?.name !== 'skipped' &&
+        setup.fan?.ListOfComponents.map((el, index) => {
+          return (
+            <SetupCard
+              component={setup.fan}
+              key={index}
+            />
+          )
+        }
+        )}
+      {setup.monitor?.name !== 'skipped' && (
         <SetupCard
           component={setup.monitor}
         />

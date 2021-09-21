@@ -5,6 +5,7 @@
   margin: 1.5rem 0 4rem;
   height: 600px;
   overflow: auto;
+  border: 1px solid var(--gray-800); 
   
   table{
     min-width: 500px;
@@ -111,6 +112,7 @@
 
 @media (max-width: 1080px) {
   .container{
+    width: 100%;
     table{
       tbody tr td{
         font-size: .9rem;
