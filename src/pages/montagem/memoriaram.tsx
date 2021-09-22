@@ -1,10 +1,6 @@
-import React from 'react';
-// import { useComputer } from '../../hooks/useComputer';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
-// import memoriaRam from '../../../memoriaram.json';
 import { ComponentsTable } from '../../components/ComponentsTable';
-// import { SkipComponentButton } from '../../components/SkipComponentButton';
 import { getRAMSocketCompatibility } from '../../utils/getRAMSocketCompatibility';
 import { GetStaticProps } from 'next';
 import { api } from '../../services/api';

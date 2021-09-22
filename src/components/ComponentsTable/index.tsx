@@ -23,8 +23,8 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
 
     const totalPrice = moreThanOne
       ? [...ListOfComponents].reduce((ac, el, ind) => {
-          return ac + (el.price * el.amount)
-        }, 0)
+        return ac + (el.price * el.amount)
+      }, 0)
       : product.price;
 
     insertComponentIntoSetup(
@@ -90,7 +90,15 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
             {ListOfComponents?.map((el, index) => {
               return (
                 <li key={index}>
-                  <Image width="24px" height="24px" src="/icons/removeItem.svg" alt="" onClick={e => handleRemoveItemFromSetupList(index)} /> {el.amount}x • {el.name} • {el.price}
+                  <Image width="24px" height="24px" src="/icons/removeItem.svg" alt="" onClick={e => handleRemoveItemFromSetupList(index)} />
+                  {componentName === 'ramMemory' 
+                    ? el.amount * el.ramSizeInGb 
+                    : el.amount * el.sizeInGb} Gb | {el.amount}x • {el.name} • {
+                    new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    }).format(el.price)
+                  }
                 </li>
               )
             })}
