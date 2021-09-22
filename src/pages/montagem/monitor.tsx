@@ -7,6 +7,7 @@ import { SkipComponentButton } from '../../components/SkipComponentButton';
 import { GetStaticProps } from 'next';
 import { api } from '../../services/api';
 import Head from 'next/head';
+import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
 
 export default function Monitor({ monitor }) {
   return (
@@ -54,6 +55,10 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
     // if (!produto.nome.includes(' - ')) return null
     if (produto.nome.includes('GABINETE')) return null
+
+    const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
+    
+    if(!hasInStock) return null
 
     return {
       name: produto.nome,

@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
 import { ComponentsTable } from '../../components/ComponentsTable';
-import { SkipComponentButton } from '../../components/SkipComponentButton';
 import { api } from '../../services/api';
 import { GetStaticProps } from 'next';
 import { getSocketCompatibility } from '../../utils/getSocketCompatibility';
-import { SideNavigation } from '../../components/SideNavigation';
-import setup from '../api/setup';
 import { useComputer } from '../../hooks/useComputer';
 import Head from 'next/head';
+import estoque from '../../../estoque.json';
+import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
 
 export default function Processador({ cpus }) {
   const { setup } = useComputer();
@@ -50,7 +49,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const { data } = await api.get('', {
     params: {
       pesquisa: 'Processador',
-      situacao: 'A'
+      // situacao: 'A'
     },
   })
 
@@ -62,6 +61,9 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     if (produto.nome.search(coolerRegExp) !== -1) return null
 
     const sockets = getSocketCompatibility(produto.nome)
+    const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
+    
+    if(!hasInStock) return null
 
     return {
       name: produto.nome,

@@ -10,6 +10,7 @@ import { getSizeInGb } from '../../utils/getSizeInGb';
 import Head from 'next/head';
 import { useComputer } from '../../hooks/useComputer';
 import { getHasIntegratedGraphics } from '../../utils/getHasIntegratedGraphics';
+import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
 
 export default function PlacaDeVideo({ graphicCards }) {
   const [isGraphicCardRequired, setIsGraphicCardRequired] = useState(false);
@@ -62,11 +63,12 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const graphicCards = data.retorno.produtos.map(el => {
     const produto = el.produto;
 
-    // if (!produto.nome.includes(' - ')) return null
     const regExp = new RegExp(/SUPORTE/);
     if (produto.nome.search(regExp) !== -1) return null
 
-    // const sockets = getSocketCompatibility(produto.nome)
+    const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
+    
+    if(!hasInStock) return null
 
     return {
       name: produto.nome,

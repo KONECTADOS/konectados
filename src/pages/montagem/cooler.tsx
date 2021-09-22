@@ -7,6 +7,7 @@ import { GetStaticProps } from 'next';
 import { api } from '../../services/api';
 import { getSocketCompatibility } from '../../utils/getSocketCompatibility';
 import Head from 'next/head';
+import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
 
 export default function Cooler({ coolers }) {
   const [coolerList, setCoolerList] = useState([...coolers])
@@ -60,6 +61,10 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     if (produto.nome.includes('CABO')) return null
     if (produto.nome.includes('GABINETE')) return null
     if (!produto.nome.includes('PROCESSADOR') && !produto.nome.includes('WATER')) return null
+
+    const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
+    
+    if(!hasInStock) return null
 
     return {
       name: produto.nome,

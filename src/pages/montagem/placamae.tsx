@@ -9,6 +9,7 @@ import { getRAMSocketCompatibility } from '../../utils/getRAMSocketCompatibility
 import Head from 'next/head';
 import { useComputer } from '../../hooks/useComputer';
 import { getCPUGenCompatibility } from '../../utils/getCPUGenCompatibility';
+import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
 
 export default function PlacaMae({ motherboards }) {
   const [motherboardList, setMotherboardList] = useState([...motherboards])
@@ -75,6 +76,10 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     if (produto.nome.search(coolerRegExp) !== -1) return null
 
     const sockets = getSocketCompatibility(produto.nome)
+    const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
+    
+    if(!hasInStock) return null
+
 
     return {
       name: produto.nome,

@@ -7,6 +7,7 @@ import { api } from '../../services/api';
 import { GetStaticProps } from 'next';
 import { getSizeInGb } from '../../utils/getSizeInGb';
 import Head from 'next/head';
+import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
 
 export default function MemoriaRam({ ssd }) {
   return (
@@ -57,6 +58,13 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     if (produto.nome.includes('PLACA')) return null
     const sizeInGb = getSizeInGb(produto.nome)
     if (sizeInGb === 0) return null
+
+    const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
+    
+    if(!hasInStock) return null
+
+
+
     return {
       name: produto.nome,
       price: produto.preco,

@@ -56,6 +56,9 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
     // if (!produto.nome.includes(' - ')) return null
     if(produto.nome.includes('GABINETE')) return null
+    const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
+    
+    if(!hasInStock) return null
 
     return { 
       name: produto.nome,
