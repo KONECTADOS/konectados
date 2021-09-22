@@ -61,6 +61,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     if (produto.nome.includes('SUPORTE')) return null
     if (produto.nome.includes('CABO')) return null
     if (produto.nome.includes('GABINETE GAMER')) return null
+    if (produto.nome.includes('GABINETE 1 BAIA')) return null
     if (produto.nome.includes('MOUSE')) return null
     if (produto.nome.includes('CONTROLADORA')) return null
 

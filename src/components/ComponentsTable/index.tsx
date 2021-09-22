@@ -22,12 +22,9 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
     }
 
     const totalPrice = moreThanOne
-      ? (ListOfComponents.length === 1
-        ? ListOfComponents[0].price
-        : [...ListOfComponents].reduce((ac, el, ind) => {
-          if (typeof ac === 'number') return ac + (el.price * el.amount)
-          return ac.price + (el.price * el.amount)
-        }))
+      ? [...ListOfComponents].reduce((ac, el, ind) => {
+          return ac + (el.price * el.amount)
+        }, 0)
       : product.price;
 
     insertComponentIntoSetup(
@@ -153,10 +150,9 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
     if (moreThanOne) {
       product.amount = amount
       const newListOfComponents = [...listOfComponents.components];
-      product.totalPrice = newListOfComponents.length > 0 ? newListOfComponents.reduce((ac, el, index) => {
-        if (typeof ac === 'number') return ac + (el.price * el.amount)
-        return (ac.price * ac.amount) + (el.price * el.amount)
-      }) : product.price * product.amount
+      product.totalPrice = newListOfComponents ? newListOfComponents.reduce((ac, el, index) => {
+        return ac + (el.price * el.amount)
+      }, 0) : product.price * product.amount
 
       console.log(product)
       newListOfComponents.push(product);
