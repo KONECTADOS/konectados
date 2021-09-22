@@ -14,10 +14,10 @@ import { getHasIntegratedGraphics } from '../../utils/getHasIntegratedGraphics';
 export default function PlacaDeVideo({ graphicCards }) {
   const [isGraphicCardRequired, setIsGraphicCardRequired] = useState(false);
   const {setup} = useComputer();
+
   useEffect(() => {
-    const isRequired = getHasIntegratedGraphics(setup.cpu?.name);
-    console.log(isRequired)
-    setIsGraphicCardRequired(isRequired);
+    const hasIntegratedGraphics = getHasIntegratedGraphics(setup.cpu?.name);
+    setIsGraphicCardRequired(!hasIntegratedGraphics);
   }, [])
 
   return (
