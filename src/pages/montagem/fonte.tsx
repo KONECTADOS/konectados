@@ -9,6 +9,7 @@ import { GetStaticProps } from 'next';
 import { api } from '../../services/api';
 import { getPowerInWatts } from '../../utils/getPowerInWatts';
 import Head from 'next/head';
+import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
 
 export default function PowerSupply({ powerSupply }) {
   return (
