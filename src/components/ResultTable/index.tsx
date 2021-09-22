@@ -36,11 +36,14 @@ export function ResultTable() {
         componentName='Memória RAM'
         component={setup.ramMemory}
       />
-      <ComponentCard
-        imageUrl='/icons/gpu.svg'
-        componentName='Placa de vídeo'
-        component={setup.graphicCard}
-      />
+
+      {setup.graphicCard.name !== 'skipped' && (
+        <ComponentCard
+          imageUrl='/icons/gpu.svg'
+          componentName='Placa de vídeo'
+          component={setup.graphicCard}
+        />
+      )}
 
       {setup.hardDisk.name !== 'skipped' && (
         <ComponentCard

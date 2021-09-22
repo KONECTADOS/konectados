@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
 // import video from '../../../video.json';
 import { ComponentsTable } from '../../components/ComponentsTable';
-// import { SkipComponentButton } from '../../components/SkipComponentButton';
+import { SkipComponentButton } from '../../components/SkipComponentButton';
 import { api } from '../../services/api';
 import { GetStaticProps } from 'next';
 import { getSizeInGb } from '../../utils/getSizeInGb';
 import Head from 'next/head';
+import { useComputer } from '../../hooks/useComputer';
+import { getHasIntegratedGraphics } from '../../utils/getHasIntegratedGraphics';
 
 export default function PlacaDeVideo({ graphicCards }) {
+  const [isGraphicCardRequired, setIsGraphicCardRequired] = useState(false);
+  const {setup} = useComputer();
+  useEffect(() => {
+    const isRequired = getHasIntegratedGraphics(setup.cpu?.name);
+    console.log(isRequired)
+    setIsGraphicCardRequired(isRequired);
+  }, [])
+
   return (
     <>
       <Head>
@@ -19,7 +29,10 @@ export default function PlacaDeVideo({ graphicCards }) {
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
             <h2>Placa de Vídeo</h2>
-            <p>Escolha uma placa de vídeo para continuar.</p>
+            {isGraphicCardRequired 
+              ? <p>Escolha uma placa de vídeo para continuar.</p> 
+              : <p>Escolha uma placa de vídeo ou pule esta etapa.</p>
+            }
           </div>
           <Subtotal />
         </section>
@@ -32,7 +45,7 @@ export default function PlacaDeVideo({ graphicCards }) {
           />
         </section>
 
-        {/* <SkipComponentButton nextComponent='memoriaram'/> */}
+        {!isGraphicCardRequired && <SkipComponentButton componentToSkip='graphicCard' nextComponent='harddisk'/>}
       </main>
     </>
   )

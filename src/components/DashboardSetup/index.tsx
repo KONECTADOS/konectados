@@ -35,9 +35,11 @@ export function DashboardSetup({ userSetup }) {
         />
       ))}
 
-      <SetupCard
-        component={setup.graphicCard}
-      />
+      {setup.graphicCard.name !== 'skipped' && (
+        <SetupCard
+          component={setup.graphicCard}
+        />
+      )}
 
       {setup.hardDisk?.ListOfComponents?.map((el, index) => (
         <>
