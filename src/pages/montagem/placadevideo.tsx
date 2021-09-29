@@ -1,25 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
-// import video from '../../../video.json';
 import { ComponentsTable } from '../../components/ComponentsTable';
 import { SkipComponentButton } from '../../components/SkipComponentButton';
-import { api } from '../../services/api';
-import { GetStaticProps } from 'next';
-import { getSizeInGb } from '../../utils/getSizeInGb';
 import Head from 'next/head';
 import { useComputer } from '../../hooks/useComputer';
 import { getHasIntegratedGraphics } from '../../utils/getHasIntegratedGraphics';
-import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
+import { fetchStock } from '../../services/fetchStock';
 
-export default function PlacaDeVideo({ graphicCards }) {
+export default function PlacaDeVideo() {
   const [isGraphicCardRequired, setIsGraphicCardRequired] = useState(false);
+  const [graphicCardsList, setGraphicCardsList] = useState([]);
   const {setup} = useComputer();
 
   useEffect(() => {
-    const hasIntegratedGraphics = getHasIntegratedGraphics(setup.cpu?.name);
+    const hasIntegratedGraphics = getHasIntegratedGraphics(setup.cpu?.name || '');
     setIsGraphicCardRequired(!hasIntegratedGraphics);
-  }, [])
+
+    const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
+
+    if(!estoqueEmCache){
+      fetchStock('graphicCards', setGraphicCardsList).then(() => console.log('Carregado!'))
+    } else {
+      console.log(estoqueEmCache.graphicCards)
+      setGraphicCardsList(estoqueEmCache.graphicCards)
+    }
+
+  }, [setup.cpu.name])
 
   return (
     <>
@@ -40,7 +47,7 @@ export default function PlacaDeVideo({ graphicCards }) {
 
         <section className={styles.productTableSection}>
           <ComponentsTable
-            products={graphicCards}
+            products={graphicCardsList}
             componentName={'graphicCard'}
             onChoose={{ redirectTo: '/montagem/harddisk' }}
           />
@@ -52,35 +59,35 @@ export default function PlacaDeVideo({ graphicCards }) {
   )
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { data } = await api.get('', {
-    params: {
-      pesquisa: 'Placa de video',
-      situacao: 'A'
-    },
-  })
+// export const getStaticProps: GetStaticProps = async (ctx) => {
+//   const { data } = await api.get('', {
+//     params: {
+//       pesquisa: 'Placa de video',
+//       situacao: 'A'
+//     },
+//   })
 
-  const graphicCards = data.retorno.produtos.map(el => {
-    const produto = el.produto;
+//   const graphicCards = data.retorno.produtos.map(el => {
+//     const produto = el.produto;
 
-    const regExp = new RegExp(/SUPORTE/);
-    if (produto.nome.search(regExp) !== -1) return null
+//     const regExp = new RegExp(/SUPORTE/);
+//     if (produto.nome.search(regExp) !== -1) return null
 
-    const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
+//     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
     
-    if(!hasInStock) return null
+//     if(!hasInStock) return null
 
-    return {
-      name: produto.nome,
-      price: produto.preco,
-      vRamSizeInGb: getSizeInGb(produto.nome)
-    }
-  })
+//     return {
+//       name: produto.nome,
+//       price: produto.preco,
+//       vRamSizeInGb: getSizeInGb(produto.nome)
+//     }
+//   })
 
-  return {
-    props: {
-      graphicCards: graphicCards.filter(el => el !== null),
-    },
-    revalidate: 1000 * 60 * 10 // 10 minutos 
-  }
-}
+//   return {
+//     props: {
+//       graphicCards: graphicCards.filter(el => el !== null),
+//     },
+//     revalidate: 1000 * 60 * 10 // 10 minutos 
+//   }
+// }

@@ -17,9 +17,9 @@ export function Header() {
   if (path.search(pathRegExp) !== -1) {
     return (
       <header className={styles.header}>
-        <button 
+        <button
           className={`hamburger hamburger--collapse ${isVisible && 'is-active'}`}
-          onClick={e => setIsVisible(!isVisible)} 
+          onClick={e => setIsVisible(!isVisible)}
           type="button"
         >
           <span className="hamburger-box">
@@ -123,7 +123,21 @@ export function Header() {
 
       {
         (path === '/dashboard' || path === '/dashboard#feedbacks') && (
-          <a href="#feedbacks">Feedbacks</a>
+          <div>
+            <a href="#feedbacks">Feedbacks</a>
+            <Link href='/dashboard/estoque'>
+              <a style={{marginLeft: '2rem'}}>Atualizar estoque</a>
+            </Link>
+          </div>
+        )
+      }
+      {
+        path === '/dashboard/estoque' && (
+          <div>
+            <Link href='/dashboard'>
+              <a>Dashboard</a>
+            </Link>
+          </div>
         )
       }
     </header>

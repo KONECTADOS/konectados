@@ -1,5 +1,5 @@
+import { getFirestore } from "@firebase/firestore";
 import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
 import { getDatabase, ref, set } from "firebase/database";
 
 const firebaseConfig = {
@@ -23,6 +23,7 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig);
 export const database = getDatabase(app)
+export const firestore = getFirestore(app)
 // Get a reference to the database service
 
 

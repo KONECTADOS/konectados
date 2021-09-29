@@ -4,11 +4,14 @@ import Head from 'next/head';
 import { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import styles from '../styles/index.module.scss';
+import { useComputer } from '../hooks/useComputer';
 
 export default function Home() {
+  const { fetchEstoque } = useComputer();
 
   useEffect(() => {
     if(localStorage.getItem('konecta@setup')) toast.success('Obrigado por montar seu PC conosco!')
+    // fetchEstoque()
   }, [])
 
   return (

@@ -1,15 +1,23 @@
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
 import { ComponentsTable } from '../../components/ComponentsTable';
-import { getRAMSocketCompatibility } from '../../utils/getRAMSocketCompatibility';
-import { GetStaticProps } from 'next';
-import { api } from '../../services/api';
-import { getRamFrequencyInMhz } from '../../utils/getRAMFrequencyInMhz';
-import { getSizeInGb } from '../../utils/getSizeInGb';
 import Head from 'next/head';
-import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
+import { useEffect, useState } from 'react';
+import { fetchStock } from '../../services/fetchStock';
 
-export default function MemoriaRam({ ramMemory }) {
+export default function MemoriaRam() {
+  const [ramMemoryList, setRamMemoryList] = useState([]);
+
+  useEffect(() => {
+    const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
+
+    if(!estoqueEmCache){
+      fetchStock('ramMemories', setRamMemoryList).then(() => console.log('Carregado!'))
+    } else {
+      setRamMemoryList(estoqueEmCache.ramMemories)
+    }
+  }, [])
+
   return (
     <>
       <Head>
@@ -25,10 +33,10 @@ export default function MemoriaRam({ ramMemory }) {
         </section>
 
         <section className={styles.productTableSection}>
-          {ramMemory && ramMemory[0] ? (
+          {ramMemoryList && ramMemoryList[0] ? (
             <ComponentsTable
               maxItems={4}
-              products={ramMemory}
+              products={ramMemoryList}
               componentName={'ramMemory'}
               moreThanOne={true}
               onChoose={{ redirectTo: '/montagem/placadevideo' }}
@@ -44,40 +52,40 @@ export default function MemoriaRam({ ramMemory }) {
   )
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { data } = await api.get('', {
-    params: {
-      pesquisa: 'memoria',
-      situacao: 'A'
-    },
-  })
+// export const getStaticProps: GetStaticProps = async (ctx) => {
+//   const { data } = await api.get('', {
+//     params: {
+//       pesquisa: 'memoria',
+//       situacao: 'A'
+//     },
+//   })
 
-  const ramMemory = data.retorno.produtos.map(el => {
-    const produto = el.produto;
+//   const ramMemory = data.retorno.produtos.map(el => {
+//     const produto = el.produto;
 
-    const sockets = getRAMSocketCompatibility(produto.nome)
-    if (produto.nome.includes('NOTEBOOK')) return null
-    if (produto.nome.includes("CARTÃO")) return null
+//     const sockets = getRAMSocketCompatibility(produto.nome)
+//     if (produto.nome.includes('NOTEBOOK')) return null
+//     if (produto.nome.includes("CARTÃO")) return null
 
-    const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
+//     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
     
-    if(!hasInStock) return null
+//     if(!hasInStock) return null
 
 
 
-    return {
-      name: produto.nome,
-      price: produto.preco,
-      ramSocket: sockets[0] || null,
-      ramSizeInGb: getSizeInGb(produto.nome),
-      frequencyInMhz: getRamFrequencyInMhz(produto.nome),
-    }
-  })
+//     return {
+//       name: produto.nome,
+//       price: produto.preco,
+//       ramSocket: sockets[0] || null,
+//       ramSizeInGb: getSizeInGb(produto.nome),
+//       frequencyInMhz: getRamFrequencyInMhz(produto.nome),
+//     }
+//   })
 
-  return {
-    props: {
-      ramMemory: ramMemory.filter(el => el !== null),
-    },
-    revalidate: 1000 * 60 * 10 // 10 minutos 
-  }
-}
+//   return {
+//     props: {
+//       ramMemory: ramMemory.filter(el => el !== null),
+//     },
+//     revalidate: 1000 * 60 * 10 // 10 minutos 
+//   }
+// }

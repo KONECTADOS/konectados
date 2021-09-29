@@ -140,6 +140,8 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
 
   if (componentName === 'motherboard') {
     if (setup.cpu?.cpuSocket !== product.cpuSocket) return null
+    
+    if(setup.cpu?.cpuGenCompatibility.indexOf(product.cpuSocketGen) === -1) return null
   }
   if (componentName === 'ramMemory') {
     if (setup.motherboard?.ramSocket !== product.ramSocket) return null
@@ -173,7 +175,7 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
 
   return (
     <tr>
-      <td>{product.name}</td>
+      <td>{product.description}</td>
       <td>{
         new Intl.NumberFormat('pt-BR', {
           style: 'currency',

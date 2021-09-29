@@ -1,15 +1,23 @@
-import React from 'react';
-import { useComputer } from '../../hooks/useComputer';
+import React, { useEffect, useState } from 'react';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
 import { ComponentsTable } from '../../components/ComponentsTable';
-import { SkipComponentButton } from '../../components/SkipComponentButton';
-import { GetStaticProps } from 'next';
-import { api } from '../../services/api';
 import Head from 'next/head';
-import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
+import { fetchStock } from '../../services/fetchStock';
 
-export default function Gabinete({ pcCabinet }) {
+export default function Gabinete() {
+  const [pcCabinetList, setPcCabinetList] = useState([]);
+
+  useEffect(() => {
+    const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
+
+    if(!estoqueEmCache){
+      fetchStock('pcCabinets', setPcCabinetList).then(() => console.log('Carregado!'))
+    } else {
+      setPcCabinetList(estoqueEmCache.pcCabinets)
+    }
+  }, [])
+
   return (
     <>
       <Head>
@@ -25,9 +33,9 @@ export default function Gabinete({ pcCabinet }) {
         </section>
 
         <section className={styles.productTableSection}>
-          {pcCabinet && pcCabinet[0] ? (
+          {pcCabinetList && pcCabinetList[0] ? (
             <ComponentsTable
-              products={pcCabinet}
+              products={pcCabinetList}
               componentName={'pcCabinet'}
               onChoose={{ redirectTo: '/montagem/fan' }}
             />
@@ -42,37 +50,37 @@ export default function Gabinete({ pcCabinet }) {
   )
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { data } = await api.get('', {
-    params: {
-      pesquisa: 'GABINETE',
-      situacao: 'A'
-    },
-  })
+// export const getStaticProps: GetStaticProps = async (ctx) => {
+//   const { data } = await api.get('', {
+//     params: {
+//       pesquisa: 'GABINETE',
+//       situacao: 'A'
+//     },
+//   })
 
-  const pcCabinet = data.retorno.produtos.map(el => {
-    const produto = el.produto;
+//   const pcCabinet = data.retorno.produtos.map(el => {
+//     const produto = el.produto;
 
-    // if (!produto.nome.includes(' - ')) return null
-    if (produto.nome.includes('C/FONTE')) return null
-    if (produto.nome.includes('SUPORTE PARA GABINETE')) return null
-    if (produto.nome.includes('COOLER PARA')) return null
-    if (produto.nome.includes('COOLER FAN PARA')) return null
+//     // if (!produto.nome.includes(' - ')) return null
+//     if (produto.nome.includes('C/FONTE')) return null
+//     if (produto.nome.includes('SUPORTE PARA GABINETE')) return null
+//     if (produto.nome.includes('COOLER PARA')) return null
+//     if (produto.nome.includes('COOLER FAN PARA')) return null
 
-    const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
+//     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
     
-    if(!hasInStock) return null
+//     if(!hasInStock) return null
 
-    return {
-      name: produto.nome,
-      price: produto.preco,
-    }
-  })
+//     return {
+//       name: produto.nome,
+//       price: produto.preco,
+//     }
+//   })
 
-  return {
-    props: {
-      pcCabinet: pcCabinet.filter(el => el !== null),
-    },
-    revalidate: 1000 * 60 * 10 // 10 minutos 
-  }
-}
+//   return {
+//     props: {
+//       pcCabinet: pcCabinet.filter(el => el !== null),
+//     },
+//     revalidate: 1000 * 60 * 10 // 10 minutos 
+//   }
+// }

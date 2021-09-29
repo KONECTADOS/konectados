@@ -6,6 +6,9 @@ export function getRAMSocketCompatibility(produto: string) {
   if(produto.includes('DDR3')){
     sockets.push('DDR3');
   }
+  if(produto.includes('DDR2')){
+    sockets.push('DDR2');
+  }
 
 
   return sockets

@@ -1,4 +1,7 @@
+import { get, ref } from "@firebase/database";
+import { setCookie } from "nookies";
 import { createContext, useEffect, useState } from "react";
+import { database } from "../services/firebase";
 
 
 interface PcComponent {
@@ -8,47 +11,49 @@ interface PcComponent {
   amount?: number;
 }
 
-interface CPU extends PcComponent{
+interface CPU extends PcComponent {
   // maxRamFrequencyInMhz: number;
   // maxRamSizeInGb: number;
+  cpuGenCompatibility: string[]
   cpuSocket: string;
 }
 
-interface Motherboard extends CPU{
+interface Motherboard extends PcComponent {
+  cpuSocket: string;
   ramSocket: string;
 }
 
-interface WaterCooler extends PcComponent{
+interface WaterCooler extends PcComponent {
   socketCompatibility: string[];
 }
-interface RamMemory extends PcComponent{
+interface RamMemory extends PcComponent {
   ramSocket: string;
   frequencyInMhz: number;
   ramSizeInGb: number;
 }
 
-interface GraphicCard extends PcComponent{
+interface GraphicCard extends PcComponent {
   graphicCardSizeInCm?: number;
   vRamSizeInGb: number;
 }
 
-interface PcCabinet extends PcComponent{
+interface PcCabinet extends PcComponent {
   cabinetSizeInCm: number;
 }
 
-interface HardDisk extends PcComponent{
+interface HardDisk extends PcComponent {
   sizeInGb: number;
 }
 
-interface PowerSupply extends PcComponent{
+interface PowerSupply extends PcComponent {
   powerInWatts: number;
 }
 
-type CurrentComponent = 'Processador' | 'Placa mãe' | 'Water Cooler' | 'Memória RAM' 
-| 'Placa de vídeo' | 'Hard Disk' | 'SSD' | 'Fonte' | 'Gabinete' | 'Monitor';
+type CurrentComponent = 'Processador' | 'Placa mãe' | 'Water Cooler' | 'Memória RAM'
+  | 'Placa de vídeo' | 'Hard Disk' | 'SSD' | 'Fonte' | 'Gabinete' | 'Monitor';
 
 
-interface UserSetup{
+interface UserSetup {
   cpu: CPU;
   motherboard: Motherboard;
   waterCooler: WaterCooler;
@@ -62,36 +67,49 @@ interface UserSetup{
   fan: PcComponent;
 }
 
-interface ComputerContextProps{
+interface Estoque {
+  criadoEm: string;
+  data: any[];
+  files: [{
+    name: string;
+    size: number;
+  }]
+}
+
+interface ComputerContextProps {
   currentComponentAmount: number;
   setup: UserSetup;
   setupPrice: number;
+  estoque: Estoque;
+  fetchEstoque: () => Promise<void>;
+  setEstoque: (estoque: Estoque) => void;
   changeCurrentComponentAmount: (componentAmount: string | number) => void;
   skipComponent: (componentName: CurrentComponent) => void;
   insertComponentIntoSetup: (
-    componentName: CurrentComponent, 
+    componentName: CurrentComponent,
     product: PcComponent | PcCabinet | GraphicCard | RamMemory | Motherboard | CPU
-    ) => void;
+  ) => void;
   changeComponentIntoSetup: (
-    componentName: CurrentComponent, 
+    componentName: CurrentComponent,
     product: PcComponent | PcCabinet | GraphicCard | RamMemory | Motherboard | CPU
-    ) => void;
+  ) => void;
   removeComponentIntoSetup: (
-    componentName: CurrentComponent, 
+    componentName: CurrentComponent,
     product: PcComponent | PcCabinet | GraphicCard | RamMemory | Motherboard | CPU
-    ) => void;
+  ) => void;
 }
 
 export const ComputerContext = createContext({} as ComputerContextProps)
 
-export function ComputerContextProvider ({ children } ) {
+export function ComputerContextProvider({ children }) {
   const [currentComponentAmount, setCurrentComponentAmount] = useState(1)
   const [setup, setSetup] = useState<UserSetup>({} as UserSetup)
-  const [setupPrice, setSetupPrice] = useState(0)
+  const [setupPrice, setSetupPrice] = useState(0);
+  const [estoque, setEstoque] = useState<Estoque>({} as Estoque);
 
   useEffect(() => {
     const savedSetup = JSON.parse(localStorage.getItem('konecta@setup'))
-    if(!savedSetup) return
+    if (!savedSetup) return
     let currentSetupPrice: number = 0
 
     for (const key in savedSetup) {
@@ -99,20 +117,29 @@ export function ComputerContextProvider ({ children } ) {
         currentSetupPrice += savedSetup[key].price;
       }
     }
+
+    fetchEstoque()
     setSetupPrice(currentSetupPrice)
     setSetup(savedSetup);
   }, [])
 
-  function changeCurrentComponentAmount (componentAmount: string | number) {
+  async function fetchEstoque() {
+    const data = await get(ref(database, 'estoque'))
+    const stock = data.val()
+    setCookie(null, 'konectados@stock', stock)
+    setEstoque(stock);
+  }
+
+  function changeCurrentComponentAmount(componentAmount: string | number) {
     setCurrentComponentAmount(Number(componentAmount))
   }
 
-  function insertComponentIntoSetup (
-    componentName: CurrentComponent, 
+  function insertComponentIntoSetup(
+    componentName: CurrentComponent,
     product: PcComponent | PcCabinet | GraphicCard | RamMemory | Motherboard | CPU
   ) {
-    const newSetup = {...setup};
-    newSetup[componentName] = {...product}
+    const newSetup = { ...setup };
+    newSetup[componentName] = { ...product }
     let currentSetupPrice: number = 0
 
     for (const key in newSetup) {
@@ -126,12 +153,12 @@ export function ComputerContextProvider ({ children } ) {
     setSetupPrice(currentSetupPrice)
     setSetup(newSetup)
   }
-  
-  function changeComponentIntoSetup (
-    componentName: CurrentComponent, 
+
+  function changeComponentIntoSetup(
+    componentName: CurrentComponent,
     product: PcComponent | PcCabinet | GraphicCard | RamMemory | Motherboard | CPU
   ) {
-    const newSetup = {...setup};
+    const newSetup = { ...setup };
     newSetup[componentName] = product;
     let currentSetupPrice: number = 0
 
@@ -145,10 +172,10 @@ export function ComputerContextProvider ({ children } ) {
     setSetup(newSetup);
   }
 
-  function removeComponentIntoSetup (
+  function removeComponentIntoSetup(
     componentName: CurrentComponent
   ) {
-    const newSetup = {...setup};
+    const newSetup = { ...setup };
     newSetup[componentName] = {};
     let currentSetupPrice: number = 0
 
@@ -161,19 +188,22 @@ export function ComputerContextProvider ({ children } ) {
     setSetup(newSetup);
   }
 
-  function skipComponent(componentName: string){
-    const newSetup = {...setup};
-    newSetup[componentName] = {name: "skipped", price: 0}
-    
+  function skipComponent(componentName: string) {
+    const newSetup = { ...setup };
+    newSetup[componentName] = { name: "skipped", price: 0 }
+
     localStorage.setItem('konecta@setup', JSON.stringify(newSetup))
     setSetup(newSetup)
   }
 
-  return ( 
+  return (
     <ComputerContext.Provider value={{
       currentComponentAmount,
       setup,
       setupPrice,
+      estoque,
+      setEstoque,
+      fetchEstoque,
       insertComponentIntoSetup,
       changeComponentIntoSetup,
       removeComponentIntoSetup,
@@ -183,5 +213,5 @@ export function ComputerContextProvider ({ children } ) {
       {children}
     </ComputerContext.Provider>
   )
-  
+
 }

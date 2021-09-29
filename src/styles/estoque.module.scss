@@ -1,0 +1,92 @@
+.container{
+  width: 100vw;
+  padding: 4rem;
+}
+
+.content{
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  > div.currentStock{
+    width: calc(50% - 1rem);
+    min-width: 300px;
+    p span{
+      font-size: 1.1rem;
+      color: var(--white);
+    }
+  }
+  
+  h3{
+    font-size: 2.5rem;
+    color: var(--red-400);
+    // opacity: .5;
+  }
+  h2{
+    width: 100%;
+    // font-size: 3rem;
+    margin-bottom: 3rem;
+  }
+  
+  form{
+    min-width: 300px;
+    width: calc(50% - 1rem);
+  }
+  
+  input[type="file"]{
+    display: none;
+  }
+
+  label{
+    cursor: pointer;
+    // max-width: 360px;
+    padding: 4rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed var(--gray-800);
+    border-radius: 1rem;
+
+    &.choosed{
+      // color: transparent;
+      background: var(--red-400);
+      border: none;
+    }
+  }
+
+  p{
+    margin-top: 1rem;
+    color: var(--white-75);
+
+    & + p {
+      margin-top: 0;
+    }
+  }
+}
+
+@media (max-width: 1080px){
+  .container{
+    padding: 2rem;
+  }
+}
+@media (max-width: 768px){
+  .content{
+    h2{
+      font-size: 3rem;
+    }
+
+    h3{
+      font-size: 2.5rem;
+    }
+    > div.currentStock, form{
+      width: 100%;
+    }
+
+    form{
+      margin-top: 2rem;
+    }
+  }
+}

@@ -1,15 +1,24 @@
-import React from 'react';
-import { useComputer } from '../../hooks/useComputer';
+import { useEffect, useState } from 'react';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
 import { ComponentsTable } from '../../components/ComponentsTable';
 import { SkipComponentButton } from '../../components/SkipComponentButton';
-import { GetStaticProps } from 'next';
-import { api } from '../../services/api';
 import Head from 'next/head';
-import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
+import { fetchStock } from '../../services/fetchStock';
 
-export default function Monitor({ monitor }) {
+export default function Monitor() {
+  const [monitorList, setMonitorList] = useState([])
+
+  useEffect(() => {
+    const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
+
+    if(!estoqueEmCache){
+      fetchStock('monitors', setMonitorList).then(() => console.log('Carregado!'))
+    } else {
+      setMonitorList(estoqueEmCache.monitors)
+    }
+  }, [])
+
   return (
     <>
       <Head>
@@ -25,9 +34,9 @@ export default function Monitor({ monitor }) {
         </section>
 
         <section className={styles.productTableSection}>
-          {monitor && monitor[0] ? (
+          {monitorList && monitorList[0] ? (
             <ComponentsTable
-              products={monitor}
+              products={monitorList}
               componentName={'monitor'}
               onChoose={{ redirectTo: '/montagem/resultado' }}
             />
@@ -42,34 +51,34 @@ export default function Monitor({ monitor }) {
   )
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { data } = await api.get('', {
-    params: {
-      pesquisa: 'MONITOR',
-      situacao: 'A'
-    },
-  })
+// export const getStaticProps: GetStaticProps = async (ctx) => {
+//   const { data } = await api.get('', {
+//     params: {
+//       pesquisa: 'MONITOR',
+//       situacao: 'A'
+//     },
+//   })
 
-  const monitor = data.retorno.produtos.map(el => {
-    const produto = el.produto;
+//   const monitor = data.retorno.produtos.map(el => {
+//     const produto = el.produto;
 
-    // if (!produto.nome.includes(' - ')) return null
-    if (produto.nome.includes('GABINETE')) return null
+//     // if (!produto.nome.includes(' - ')) return null
+//     if (produto.nome.includes('GABINETE')) return null
 
-    const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
+//     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
     
-    if(!hasInStock) return null
+//     if(!hasInStock) return null
 
-    return {
-      name: produto.nome,
-      price: produto.preco,
-    }
-  })
+//     return {
+//       name: produto.nome,
+//       price: produto.preco,
+//     }
+//   })
 
-  return {
-    props: {
-      monitor: monitor.filter(el => el !== null),
-    },
-    revalidate: 1000 * 60 * 10 // 10 minutos 
-  }
-}
+//   return {
+//     props: {
+//       monitor: monitor.filter(el => el !== null),
+//     },
+//     revalidate: 1000 * 60 * 10 // 10 minutos 
+//   }
+// }

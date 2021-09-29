@@ -34,5 +34,6 @@ export function getSocketCompatibility(produto: string) {
     sockets.push('FM2');
   }
 
+  if(!sockets[0]) sockets[0] = '-'
   return sockets
 }

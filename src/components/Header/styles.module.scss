@@ -8,6 +8,13 @@
   border-bottom: 1px solid var(--gray-50);
   position: relative;
 
+  >div a{
+    transition: .2s;
+    &:hover{
+      color: var(--red-400);
+    }
+  }
+
   img{
     cursor: pointer;
   }

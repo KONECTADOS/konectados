@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
 import { ComponentsTable } from '../../components/ComponentsTable';
-import { SkipComponentButton } from '../../components/SkipComponentButton';
-import { GetStaticProps } from 'next';
-import { api } from '../../services/api';
-import { getSocketCompatibility } from '../../utils/getSocketCompatibility';
 import Head from 'next/head';
-import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
+import { fetchStock } from '../../services/fetchStock';
 
-export default function Fans({ fans }) {
-  // const [coolerList, setCoolerList] = useState([...fans])
+export default function Fans() {
+  const [coolerList, setCoolerList] = useState([])
+
+  useEffect(() => {
+    const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
+
+    if(!estoqueEmCache){
+      fetchStock('fans', setCoolerList).then(() => console.log('Carregado!'))
+    } else {
+      setCoolerList(estoqueEmCache.fans)
+    }
+  }, [])
 
   return (
     <>
@@ -27,9 +33,9 @@ export default function Fans({ fans }) {
         </section>
 
         <section className={styles.productTableSection}>
-          {fans && fans[0] ? (
+          {coolerList && coolerList[0] ? (
             <ComponentsTable
-              products={fans}
+              products={coolerList}
               componentName={'fan'}
               onChoose={{ redirectTo: '/montagem/monitor' }}
               moreThanOne
@@ -46,41 +52,41 @@ export default function Fans({ fans }) {
 }
 
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { data } = await api.get('', {
-    params: {
-      pesquisa: 'Fan',
-      situacao: 'A'
-    },
-  })
+// export const getStaticProps: GetStaticProps = async (ctx) => {
+//   const { data } = await api.get('', {
+//     params: {
+//       pesquisa: 'Fan',
+//       situacao: 'A'
+//     },
+//   })
 
-  const fans = data.retorno.produtos.map(el => {
-    const produto = el.produto;
+//   const fans = data.retorno.produtos.map(el => {
+//     const produto = el.produto;
 
-    const sockets = getSocketCompatibility(produto.nome)
+//     const sockets = getSocketCompatibility(produto.nome)
 
-    if (produto.nome.includes('SUPORTE')) return null
-    if (produto.nome.includes('CABO')) return null
-    if (produto.nome.includes('GABINETE GAMER')) return null
-    if (produto.nome.includes('GABINETE 1 BAIA')) return null
-    if (produto.nome.includes('MOUSE')) return null
-    if (produto.nome.includes('CONTROLADORA')) return null
+//     if (produto.nome.includes('SUPORTE')) return null
+//     if (produto.nome.includes('CABO')) return null
+//     if (produto.nome.includes('GABINETE GAMER')) return null
+//     if (produto.nome.includes('GABINETE 1 BAIA')) return null
+//     if (produto.nome.includes('MOUSE')) return null
+//     if (produto.nome.includes('CONTROLADORA')) return null
 
-    const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
+//     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
     
-    if(!hasInStock) return null
+//     if(!hasInStock) return null
 
-    return {
-      name: produto.nome,
-      price: produto.preco,
-      socketCompatibility: sockets[0] ? sockets : ['Universal'],
-    }
-  })
+//     return {
+//       name: produto.nome,
+//       price: produto.preco,
+//       socketCompatibility: sockets[0] ? sockets : ['Universal'],
+//     }
+//   })
 
-  return {
-    props: {
-      fans: fans.filter(el => el !== null),
-    },
-    revalidate: 1000 * 60 * 10 // 10 minutos 
-  }
-}
+//   return {
+//     props: {
+//       fans: fans.filter(el => el !== null),
+//     },
+//     revalidate: 1000 * 60 * 10 // 10 minutos 
+//   }
+// }

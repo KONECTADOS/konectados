@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
 import { ComponentsTable } from '../../components/ComponentsTable';
@@ -8,8 +8,21 @@ import { GetStaticProps } from 'next';
 import { getSizeInGb } from '../../utils/getSizeInGb';
 import Head from 'next/head';
 import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
+import { fetchStock } from '../../services/fetchStock';
 
-export default function MemoriaRam({ ssd }) {
+export default function MemoriaRam() {
+  const [ssdList, setSsdList] = useState([])
+
+  useEffect(() => {
+    const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
+
+    if(!estoqueEmCache){
+      fetchStock('SSDs', setSsdList).then(() => console.log('Carregado!'))
+    } else {
+      setSsdList(estoqueEmCache.SSDs)
+    }
+  }, [])
+
   return (
     <>
       <Head>
@@ -25,9 +38,9 @@ export default function MemoriaRam({ ssd }) {
         </section>
 
         <section className={styles.productTableSection}>
-          {ssd && ssd[0] ? (
+          {ssdList && ssdList[0] ? (
             <ComponentsTable
-              products={ssd}
+              products={ssdList}
               componentName={'SSD'}
               moreThanOne={true}
               onChoose={{ redirectTo: '/montagem/fonte' }}

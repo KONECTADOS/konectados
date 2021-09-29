@@ -1,17 +1,24 @@
-import React from 'react';
-import { useComputer } from '../../hooks/useComputer';
+import React, { useEffect, useState } from 'react';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
-// import hd from '../../../hd.json';
 import { ComponentsTable } from '../../components/ComponentsTable';
-import { SkipComponentButton } from '../../components/SkipComponentButton';
-import { GetStaticProps } from 'next';
-import { api } from '../../services/api';
-import { getSizeInGb } from '../../utils/getSizeInGb';
 import Head from 'next/head';
-import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
+import { fetchStock } from '../../services/fetchStock';
 
-export default function HardDisk({ hardDisk }) {
+export default function HardDisk() {
+  const [hddList, setHddList] = useState([]);
+
+  useEffect(() => {
+    const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
+
+    if(!estoqueEmCache){
+      fetchStock('hardDisks', setHddList).then(() => console.log('Carregado!'))
+    } else {
+      setHddList(estoqueEmCache.hardDisks)
+    }
+  }, [])
+
+
   return (
     <>
       <Head>
@@ -27,9 +34,9 @@ export default function HardDisk({ hardDisk }) {
         </section>
 
         <section className={styles.productTableSection}>
-          {hardDisk && hardDisk[0] ? (
+          {hddList && hddList[0] ? (
             <ComponentsTable
-              products={hardDisk}
+              products={hddList}
               componentName={'hardDisk'}
               moreThanOne={true}
               onChoose={{ redirectTo: '/montagem/ssd' }}
@@ -45,38 +52,38 @@ export default function HardDisk({ hardDisk }) {
   )
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { data } = await api.get('', {
-    params: {
-      pesquisa: 'HD ',
-      situacao: 'A'
-    },
-  })
+// export const getStaticProps: GetStaticProps = async (ctx) => {
+//   const { data } = await api.get('', {
+//     params: {
+//       pesquisa: 'HD ',
+//       situacao: 'A'
+//     },
+//   })
 
-  const hardDisk = data.retorno.produtos.map(el => {
-    const produto = el.produto;
+//   const hardDisk = data.retorno.produtos.map(el => {
+//     const produto = el.produto;
 
-    // if (!produto.nome.includes(' - ')) return null
-    if (produto.nome.includes('PLACA')) return null
-    const sizeInGb = getSizeInGb(produto.nome)
-    if (sizeInGb === 0) return null
+//     // if (!produto.nome.includes(' - ')) return null
+//     if (produto.nome.includes('PLACA')) return null
+//     const sizeInGb = getSizeInGb(produto.nome)
+//     if (sizeInGb === 0) return null
 
-    const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
+//     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
     
-    if(!hasInStock) return null
+//     if(!hasInStock) return null
 
 
-    return {
-      name: produto.nome,
-      price: produto.preco,
-      sizeInGb
-    }
-  })
+//     return {
+//       name: produto.nome,
+//       price: produto.preco,
+//       sizeInGb
+//     }
+//   })
 
-  return {
-    props: {
-      hardDisk: hardDisk.filter(el => el !== null),
-    },
-    revalidate: 1000 * 60 * 10 // 10 minutos 
-  }
-}
+//   return {
+//     props: {
+//       hardDisk: hardDisk.filter(el => el !== null),
+//     },
+//     revalidate: 1000 * 60 * 10 // 10 minutos 
+//   }
+// }

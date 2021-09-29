@@ -2,32 +2,23 @@ import { useEffect, useState } from 'react';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
 import { ComponentsTable } from '../../components/ComponentsTable';
-import { GetStaticProps } from 'next';
-import { api } from '../../services/api';
-import { getSocketCompatibility } from '../../utils/getSocketCompatibility';
-import { getRAMSocketCompatibility } from '../../utils/getRAMSocketCompatibility';
 import Head from 'next/head';
 import { useComputer } from '../../hooks/useComputer';
 import { getCPUGenCompatibility } from '../../utils/getCPUGenCompatibility';
-import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
+import { fetchStock } from '../../services/fetchStock';
 
-export default function PlacaMae({ motherboards }) {
-  const [motherboardList, setMotherboardList] = useState([...motherboards])
+export default function PlacaMae({  }) {
+  const [motherboardList, setMotherboardList] = useState([])
   const { setup } = useComputer();
 
   useEffect(() => {
-    const cpu = getCPUGenCompatibility(setup.cpu?.name);
-    console.log(motherboards);
-    
-    const list = [...motherboardList].filter((el, index) => {
-      for (const model of cpu) {
-        if(el.name.includes(model)) return el;
-      }
+    const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
 
-      return null
-    })
-
-    setMotherboardList(list)
+    if(!estoqueEmCache){
+      fetchStock('motherboards', setMotherboardList).then(() => console.log('Carregado!'))
+    } else {
+      setMotherboardList(estoqueEmCache.motherboards)
+    }
   }, [])
 
   return (
@@ -61,38 +52,38 @@ export default function PlacaMae({ motherboards }) {
   )
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { data } = await api.get('', {
-    params: {
-      pesquisa: 'Placa mãe',
-      situacao: 'A'
-    },
-  })
+// export const getStaticProps: GetStaticProps = async (ctx) => {
+//   const { data } = await api.get('', {
+//     params: {
+//       pesquisa: 'Placa mãe',
+//       situacao: 'A'
+//     },
+//   })
 
-  const motherboards = data.retorno.produtos.map(el => {
-    const produto = el.produto;
+//   const motherboards = data.retorno.produtos.map(el => {
+//     const produto = el.produto;
 
-    const coolerRegExp = new RegExp(/COOLER/);
-    if (produto.nome.search(coolerRegExp) !== -1) return null
+//     const coolerRegExp = new RegExp(/COOLER/);
+//     if (produto.nome.search(coolerRegExp) !== -1) return null
 
-    const sockets = getSocketCompatibility(produto.nome)
-    const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
+//     const sockets = getSocketCompatibility(produto.nome)
+//     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
     
-    if(!hasInStock) return null
+//     if(!hasInStock) return null
 
 
-    return {
-      name: produto.nome,
-      price: produto.preco,
-      cpuSocket: sockets[0] || null,
-      ramSocket: [...getRAMSocketCompatibility(produto.nome)][0]
-    }
-  })
+//     return {
+//       name: produto.nome,
+//       price: produto.preco,
+//       cpuSocket: sockets[0] || null,
+//       ramSocket: [...getRAMSocketCompatibility(produto.nome)][0]
+//     }
+//   })
 
-  return {
-    props: {
-      motherboards: motherboards.filter(el => el !== null),
-    },
-    revalidate: 1000 * 60 * 10 // 10 minutos 
-  }
-}
+//   return {
+//     props: {
+//       motherboards: motherboards.filter(el => el !== null),
+//     },
+//     revalidate: 1000 * 60 * 10 // 10 minutos 
+//   }
+// }
