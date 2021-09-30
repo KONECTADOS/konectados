@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useComputer } from '../../hooks/useComputer';
 import styles from './styles.module.scss';
 import Image from 'next/image';
-import Link from 'next/link';
 import { SkipComponentButton } from '../SkipComponentButton';
 
 export function ComponentsTable({ products, componentName, onChoose, moreThanOne = false, maxItems = 1 }) {
@@ -53,8 +52,8 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
       <table>
         <thead>
           <tr>
+            <th>Foto do produto</th>
             <th>Componente</th>
-            <th>Preço</th>
             {products[0].cpuSocket && (<th>Soquete</th>)}
             {products[0].ramSocket && (<th>Soquete</th>)}
             {products[0].socketCompatibility && (<th>Compatibilidade</th>)}
@@ -63,6 +62,7 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
             {products[0].powerInWatts && (<th>Potência</th>)}
             {products[0].graphicCardSizeInCm && (<th>Tamanho (cm)</th>)}
             {products[0].cabinetSizeInCm && (<th>Tamanho (cm)</th>)}
+            <th>Preço</th>
             {moreThanOne && (<th></th>)}
             <th></th>
           </tr>
@@ -152,7 +152,7 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
 
   if (componentName === 'pcCabinet') {
     if (setup.graphicCard?.graphicCardSizeInCm > product.cabinetSizeInCm) {
-      console.log(setup, product.cabinetSizeInCm)
+      // console.log(setup, product.cabinetSizeInCm)
     }
   }
 
@@ -164,7 +164,7 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
         return ac + (el.price * el.amount)
       }, 0) : product.price * product.amount
 
-      console.log(product)
+      // console.log(product)
       newListOfComponents.push(product);
       listOfComponents.setComponents(newListOfComponents)
       return
@@ -175,13 +175,15 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
 
   return (
     <tr>
+      <td>
+        <div className={styles.productImage}>
+          <Image width="160px" height="160px" src={product.images[0]} alt={product.description} />
+          { product.images[1] !== '' ? (
+            <Image width="160px" height="160px" src={product.images[1]} className={styles.hiddenImg} alt={product.description} />
+          ) : (<></>)}
+        </div>
+      </td>
       <td>{product.description}</td>
-      <td>{
-        new Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }).format(product.price)
-      }</td>
       {product.cpuSocket && (<td>{product.cpuSocket}</td>)}
       {product.ramSocket && (<td>{product.ramSocket}</td>)}
       {product.ramSizeInGb && (<td>{product.ramSizeInGb} Gb</td>)}
@@ -192,6 +194,12 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
       {product.socketCompatibility && (<td>{product.socketCompatibility.join(', ')}</td>)}
       {product.graphicCardSizeInCm && (<td>{product.graphicCardSizeInCm} cm</td>)}
       {product.cabinetSizeInCm && (<td>{product.cabinetSizeInCm} cm</td>)}
+      <td className={styles.priceRow}>{
+        new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }).format(product.price)
+      }</td>
       {moreThanOne && (
         <td style={{ textAlign: 'right' }}>
           <div className={styles.inputWrapper}>

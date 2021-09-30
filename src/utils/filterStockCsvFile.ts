@@ -4,6 +4,7 @@ import { getRamFrequencyInMhz } from "./getRAMFrequencyInMhz";
 import { getSizeInGb } from "./getSizeInGb";
 import { getPowerInWatts } from "./getPowerInWatts";
 import { getCPUGenCompatibility } from "./getCPUGenCompatibility";
+import { getMotherboardSocketGen } from "./getMotherboardSocketGen";
 
 interface STOCK {
   cpus: any[];
@@ -34,6 +35,7 @@ interface CPU extends CLEANED_STOCK {
 interface Motherboard {
   cpuSocket: string;
   ramSocket: string;
+  cpuSocketGen: string;
 }
 interface COOLER extends CLEANED_STOCK {
   socketCompatibility: string[];
@@ -146,9 +148,10 @@ export async function cleanStockData(stock): Promise<Estoque> {
   const motherboards = stock.motherboards.map((el, index): Motherboard => {
     const [cpuSocket] = getSocketCompatibility(el['Descrição']);
     const [ramSocket] = getRAMSocketCompatibility(el['Descrição']);
+    const cpuSocketGen = getMotherboardSocketGen(el['Descrição']);
 
     const product = cleanStockProduct(el);
-    return product ? {...product, cpuSocket, ramSocket} : null;
+    return product ? {...product, cpuSocket, ramSocket, cpuSocketGen} : null;
   })
   const coolers = stock.coolers.map((el, index): COOLER => {
     const socketCompatibility = getSocketCompatibility(el['Descrição']);

@@ -30,9 +30,9 @@ export function ComponentCard({ componentName, component, imageUrl }) {
               || componentName === 'Fan'
               ? `${component.ListOfComponents.length > 1 ? component.ListOfComponents.reduce((ac, el) => {
                 if(typeof ac === 'string') return `${ac} | ${el.ramSizeInGb}`
-                return `${ac.amount}x ${ac.name} | ${el.amount}x ${el.name}`
-              }): `${component.ListOfComponents[0].amount}x ${component.ListOfComponents[0].name}`} `
-              : component.name
+                return `${ac.amount}x ${ac.description} | ${el.amount}x ${el.description}`
+              }): `${component.ListOfComponents[0].amount}x ${component.ListOfComponents[0].description}`} `
+              : component.description
           }
         </p>
 

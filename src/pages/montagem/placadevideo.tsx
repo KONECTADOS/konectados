@@ -11,7 +11,7 @@ import { fetchStock } from '../../services/fetchStock';
 export default function PlacaDeVideo() {
   const [isGraphicCardRequired, setIsGraphicCardRequired] = useState(false);
   const [graphicCardsList, setGraphicCardsList] = useState([]);
-  const {setup} = useComputer();
+  const { setup } = useComputer();
 
   useEffect(() => {
     const hasIntegratedGraphics = getHasIntegratedGraphics(setup.cpu?.name || '');
@@ -19,14 +19,13 @@ export default function PlacaDeVideo() {
 
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
 
-    if(!estoqueEmCache){
+    if (!estoqueEmCache) {
       fetchStock('graphicCards', setGraphicCardsList).then(() => console.log('Carregado!'))
     } else {
-      console.log(estoqueEmCache.graphicCards)
       setGraphicCardsList(estoqueEmCache.graphicCards)
     }
 
-  }, [setup.cpu.name])
+  }, [setup.cpu?.name])
 
   return (
     <>
@@ -37,8 +36,8 @@ export default function PlacaDeVideo() {
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
             <h2>Placa de Vídeo</h2>
-            {isGraphicCardRequired 
-              ? <p>Escolha uma placa de vídeo para continuar.</p> 
+            {isGraphicCardRequired
+              ? <p>Escolha uma placa de vídeo para continuar.</p>
               : <p>Escolha uma placa de vídeo ou pule esta etapa.</p>
             }
           </div>
@@ -46,14 +45,16 @@ export default function PlacaDeVideo() {
         </section>
 
         <section className={styles.productTableSection}>
-          <ComponentsTable
-            products={graphicCardsList}
-            componentName={'graphicCard'}
-            onChoose={{ redirectTo: '/montagem/harddisk' }}
-          />
+          {graphicCardsList[0] && (
+            <ComponentsTable
+              products={graphicCardsList}
+              componentName={'graphicCard'}
+              onChoose={{ redirectTo: '/montagem/harddisk' }}
+            />
+          )}
         </section>
 
-        {!isGraphicCardRequired && <SkipComponentButton componentToSkip='graphicCard' nextComponent='harddisk'/>}
+        {!isGraphicCardRequired && <SkipComponentButton componentToSkip='graphicCard' nextComponent='harddisk' />}
       </main>
     </>
   )
@@ -74,7 +75,7 @@ export default function PlacaDeVideo() {
 //     if (produto.nome.search(regExp) !== -1) return null
 
 //     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
-    
+
 //     if(!hasInStock) return null
 
 //     return {
