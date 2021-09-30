@@ -11,15 +11,22 @@ import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
 import { fetchStock } from '../../services/fetchStock';
 
 export default function MemoriaRam() {
-  const [ssdList, setSsdList] = useState([])
+  const [ssdList, setSsdList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
 
-    if(!estoqueEmCache){
-      fetchStock('SSDs', setSsdList).then(() => console.log('Carregado!'))
+    const promise = async () => {
+      setIsLoading(true)
+      await fetchStock("SSDs", setSsdList);
+    }
+
+    if (!estoqueEmCache) {
+      promise().then(() => setIsLoading(false))
     } else {
       setSsdList(estoqueEmCache.SSDs)
+      setIsLoading(false)
     }
   }, [])
 
@@ -38,7 +45,7 @@ export default function MemoriaRam() {
         </section>
 
         <section className={styles.productTableSection}>
-          {ssdList && ssdList[0] ? (
+          {!isLoading && ssdList[0] ? (
             <ComponentsTable
               products={ssdList}
               componentName={'SSD'}
@@ -46,7 +53,8 @@ export default function MemoriaRam() {
               onChoose={{ redirectTo: '/montagem/fonte' }}
             />
           ) : (
-            <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+            <div className="loading">
+            </div>
           )}
         </section>
 
@@ -73,8 +81,8 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     if (sizeInGb === 0) return null
 
     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
-    
-    if(!hasInStock) return null
+
+    if (!hasInStock) return null
 
 
 

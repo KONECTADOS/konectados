@@ -1,19 +1,32 @@
-// import { ref, set } from '@firebase/database';
+import { ref, set, get} from '@firebase/database';
 import { doc, setDoc } from "firebase/firestore";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import toast, { Toaster } from 'react-hot-toast';
-import { firestore } from '../../services/firebase';
+import { database, firestore } from '../../services/firebase';
 import styles from '../../styles/estoque.module.scss';
 import parseCSV from '../../utils/parseCSV';
 import { useComputer } from '../../hooks/useComputer';
 import { cleanStockData, divideProductsByCategory, removeUselessProducts, Estoque as EstoqueProps } from '../../utils/filterStockCsvFile';
+import { NumberOfComponents } from '../../components/NumberOfComponents';
 
 export default function Estoque() {
   const [csvFiles, setCsvFiles] = useState<FileList>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [numberOfProducts, setNumberOfProducts] = useState(null);
+
   const [estoqueData, setEstoqueData] = useState<EstoqueProps>({} as EstoqueProps);
   const { estoque } = useComputer();
+
+  useEffect(() => {
+    async function fetchEstoqueInfo(){
+      const snapshot = await get(ref(database, 'estoque/info'))
+      const data = snapshot.val();
+      setNumberOfProducts(data)      
+    }
+
+    fetchEstoqueInfo().then(() => console.log('Finalizado'));
+  }, [])
 
   async function saveStock(e) {
     e.preventDefault()
@@ -30,25 +43,49 @@ export default function Estoque() {
       })
     }
 
-    // console.log(estoqueData, date)
-
     try {
-      const promise = setDoc(doc(firestore, "estoque", "atual"), {
+      const promiseStockData = setDoc(doc(firestore, "estoque", "atual"), {
         estoque: estoqueData,
         criadoEm: date,
       });
+      const promiseStockInfo = set(ref(database, "estoque/info"), {
+        numeroDeProdutos: {
+          cpus: estoqueData.cpus.length,
+          motherboards: estoqueData.motherboards.length,
+          coolers: estoqueData.coolers.length,
+          ramMemories: estoqueData.ramMemories.length,
+          graphicCards: estoqueData.graphicCards.length,
+          hardDisks: estoqueData.hardDisks.length,
+          SSDs: estoqueData.SSDs.length,
+          powerSupplies: estoqueData.powerSupplies.length,
+          pcCabinets: estoqueData.pcCabinets.length,
+          monitors: estoqueData.monitors.length,
+          fans: estoqueData.fans.length,
+        }
+      });
   
-      toast.promise(promise, {
+      toast.promise(promiseStockData, {
         loading: 'Salvando estoque...',
         error: () => {
           setIsLoading(false)
           return 'Erro ao salvar estoque, tente reacarregar a página e enviar novamente.'
         } ,
         success: () => {
-          setIsLoading(false)
+          toast.promise(promiseStockInfo, {
+            loading: 'Salvando informações adicionais...',
+            error: () => {
+              setIsLoading(false)
+              return 'Erro ao salvar informações adicionais, tente reacarregar a página e enviar novamente.'
+            } ,
+            success: () => {
+              setIsLoading(false)
+              return 'Informações adicionais salvo!'
+            }
+          });
           return 'Estoque salvo!'
         }
       });
+      
       
     } catch (error) {
       console.log(error.message)
@@ -82,14 +119,7 @@ export default function Estoque() {
             'ONU GPON', 'PLACA SERIAL', 'SOFTWARE'
           ]
         )
-
-        // console.log(stockData, 'data')
         filesData.push(fileData)
-
-        // let a = Object.keys(filesData).reduce((ac, el) => {
-        //   return [...ac, ...filesData[el]]
-        // }, []);
-
 
         if (filesData.length === files.length) {
           const stock = Object.keys(filesData).reduce((ac, el) => {
@@ -97,6 +127,8 @@ export default function Estoque() {
           }, []);
           const stockData = await divideProductsByCategory(stock);
           const resumedData = await cleanStockData(stockData)
+          console.log(resumedData);
+          
           setCsvFiles(files)
           setEstoqueData(resumedData)
           setIsLoading(false)
@@ -112,18 +144,13 @@ export default function Estoque() {
       <section className={styles.content}>
         <h2>Atualizar estoque</h2>
         <div className={styles.currentStock}>
-          {estoque.files?.map((csvFile) => {
-            return (
-              <div key={csvFile.name}>
-                <p>Arquivo: {csvFile.name}</p>
-                <p>Tamanho: {Math.round(csvFile.size / 1024)} KB</p>
-              </div>
-            )
-          })}
+          {numberOfProducts?.numeroDeProdutos && (
+            <NumberOfComponents components={numberOfProducts.numeroDeProdutos}/>
+          )}
         </div>
 
         <form action="">
-          <input type="file" accept=".csv" multiple name="csvFile" onChange={handleChangeFile} id="csvFile" />
+          <input type="file" accept=".csv" multiple name="csvFile" onChange={handleChangeFile} id="csvFile" disabled={isLoading}/>
           <label htmlFor="csvFile" className={csvFiles ? styles.choosed : ''}>
             {!csvFiles ? (
               <>
@@ -134,16 +161,19 @@ export default function Estoque() {
               <Image width="36px" height="36px" src="/icons/file.svg" alt="Arquivo" />
             )}
           </label>
+
+          <button onClick={saveStock} className={styles.saveStockButton} disabled={isLoading}>Salvar</button>
+          
           {csvFiles && Array.from(csvFiles).map((csvFile) => {
             return (
-              <div key={csvFile.name}>
+              <div key={csvFile.name} className={styles.fileUploaded}>
+                <Image width="32px" height="32px" src="/icons/file.svg" alt="Arquivo" />
                 <p>Arquivo: {csvFile.name}</p>
                 <p>Tamanho: {Math.round(csvFile.size / 1024)} KB</p>
               </div>
             )
           })}
 
-          <button onClick={saveStock} disabled={isLoading}>Salvar</button>
         </form>
       </section>
     </main>

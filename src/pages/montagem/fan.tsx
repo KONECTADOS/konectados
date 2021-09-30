@@ -7,12 +7,17 @@ import { fetchStock } from '../../services/fetchStock';
 
 export default function Fans() {
   const [coolerList, setCoolerList] = useState([])
-
+  const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
 
-    if(!estoqueEmCache){
-      fetchStock('fans', setCoolerList).then(() => console.log('Carregado!'))
+    const promise = async () => {
+      setIsLoading(true)
+      await fetchStock("fans", setCoolerList);
+    }
+
+    if (!estoqueEmCache) {
+      promise().then(() => setIsLoading(false))
     } else {
       setCoolerList(estoqueEmCache.fans)
     }
@@ -33,7 +38,7 @@ export default function Fans() {
         </section>
 
         <section className={styles.productTableSection}>
-          {coolerList && coolerList[0] ? (
+          {!isLoading && coolerList[0] ? (
             <ComponentsTable
               products={coolerList}
               componentName={'fan'}
@@ -41,7 +46,7 @@ export default function Fans() {
               moreThanOne
             />
           ) : (
-            <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+            <div className="loading"></div>
           )}
         </section>
 
@@ -73,7 +78,7 @@ export default function Fans() {
 //     if (produto.nome.includes('CONTROLADORA')) return null
 
 //     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
-    
+
 //     if(!hasInStock) return null
 
 //     return {

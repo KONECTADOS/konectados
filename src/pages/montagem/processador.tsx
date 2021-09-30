@@ -16,10 +16,12 @@ interface CPUS {
 
 export default function Processador() {
   const [cpuList, setCpuList] = useState<CPUS[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
+    setIsLoading(true)
     // const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
-    fetchStock('cpus' ,setCpuList).then(() => console.log('Carregado!'))
+    fetchStock('cpus', setCpuList).then(() => setIsLoading(false))
   }, [])
 
   return (
@@ -37,14 +39,14 @@ export default function Processador() {
         </section>
 
         <section className={styles.productTableSection}>
-          {cpuList && cpuList[0] ? (
+          {!isLoading && cpuList[0] ? (
             <ComponentsTable
               products={cpuList}
               componentName={'cpu'}
               onChoose={{ redirectTo: '/montagem/placamae' }}
             />
           ) : (
-            <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+            <div className="loading"></div>
           )}
         </section>
 

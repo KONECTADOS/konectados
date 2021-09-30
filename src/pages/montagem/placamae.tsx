@@ -7,17 +7,24 @@ import { useComputer } from '../../hooks/useComputer';
 import { getCPUGenCompatibility } from '../../utils/getCPUGenCompatibility';
 import { fetchStock } from '../../services/fetchStock';
 
-export default function PlacaMae({  }) {
+export default function PlacaMae({ }) {
   const [motherboardList, setMotherboardList] = useState([])
-  const { setup } = useComputer();
+  const [isLoading, setIsLoading] = useState(false)
+
 
   useEffect(() => {
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
 
-    if(!estoqueEmCache){
-      fetchStock('motherboards', setMotherboardList).then(() => console.log('Carregado!'))
+    const promise = async () => {
+      setIsLoading(true)
+      await fetchStock("motherboards", setMotherboardList);
+    }
+
+    if (!estoqueEmCache) {
+      promise().then(() => setIsLoading(false))
     } else {
       setMotherboardList(estoqueEmCache.motherboards)
+      setIsLoading(false)
     }
   }, [])
 
@@ -36,14 +43,14 @@ export default function PlacaMae({  }) {
         </section>
 
         <section className={styles.productTableSection}>
-          {motherboardList && motherboardList[0] ? (
+          {!isLoading && motherboardList[0] ? (
             <ComponentsTable
               products={motherboardList}
               componentName={'motherboard'}
               onChoose={{ redirectTo: '/montagem/cooler' }}
             />
           ) : (
-            <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+            <div className="loading"></div>
           )}
         </section>
 
@@ -68,7 +75,7 @@ export default function PlacaMae({  }) {
 
 //     const sockets = getSocketCompatibility(produto.nome)
 //     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
-    
+
 //     if(!hasInStock) return null
 
 

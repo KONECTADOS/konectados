@@ -6,14 +6,20 @@ import { SkipComponentButton } from '../../components/SkipComponentButton';
 import Head from 'next/head';
 import { fetchStock } from '../../services/fetchStock';
 
-export default function Cooler({ coolers }) {
+export default function Cooler() {
   const [coolerList, setCoolerList] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
 
-    if(!estoqueEmCache){
-      fetchStock('coolers', setCoolerList).then(() => console.log('Carregado!'))
+    const promise = async () => {
+      setIsLoading(true)
+      await fetchStock("coolers", setCoolerList);
+    }
+
+    if (!estoqueEmCache) {
+      promise().then(() => setIsLoading(false))
     } else {
       setCoolerList(estoqueEmCache.coolers)
     }
@@ -34,14 +40,14 @@ export default function Cooler({ coolers }) {
         </section>
 
         <section className={styles.productTableSection}>
-          {coolerList && coolerList[0] ? (
+          {!isLoading && coolerList[0] ? (
             <ComponentsTable
               products={coolerList}
               componentName={'waterCooler'}
               onChoose={{ redirectTo: '/montagem/memoriaram' }}
             />
           ) : (
-            <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+            <div className="loading"></div>
           )}
         </section>
 
@@ -50,40 +56,3 @@ export default function Cooler({ coolers }) {
     </>
   )
 }
-
-
-// export const getStaticProps: GetStaticProps = async (ctx) => {
-//   const { data } = await api.get('', {
-//     params: {
-//       pesquisa: 'Cooler',
-//       situacao: 'A'
-//     },
-//   })
-
-//   const coolers = data.retorno.produtos.map(el => {
-//     const produto = el.produto;
-
-//     const sockets = getSocketCompatibility(produto.nome)
-
-//     if (produto.nome.includes('CABO')) return null
-//     if (produto.nome.includes('GABINETE')) return null
-//     if (!produto.nome.includes('PROCESSADOR') && !produto.nome.includes('WATER')) return null
-
-//     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
-    
-//     if(!hasInStock) return null
-
-//     return {
-//       name: produto.nome,
-//       price: produto.preco,
-//       socketCompatibility: sockets[0] ? sockets : ['Universal'],
-//     }
-//   })
-
-//   return {
-//     props: {
-//       coolers: coolers.filter(el => el !== null),
-//     },
-//     revalidate: 1000 * 60 * 10 // 10 minutos 
-//   }
-// }

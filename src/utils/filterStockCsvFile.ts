@@ -22,6 +22,7 @@ interface STOCK {
 
 interface CLEANED_STOCK {
   description: string;
+  aditionalDescription: string;
   price: number;
   skuCode: number;
   images: string[];
@@ -80,7 +81,6 @@ export async function removeUselessProducts(stock, productsToRemove: string[]) {
 }
 
 export async function divideProductsByCategory(stock): Promise<STOCK> {
-  // console.log(stock, typeof stock, stock ? true : false)
 
   const cpus = []
   const motherboards = []
@@ -214,86 +214,13 @@ export async function cleanStockData(stock): Promise<Estoque> {
   }
 }
 
-// export async function cleanStockData(stock): Promise<Estoque> {
-//   const cpus = stock.cpus.map((el, index) => {
-//     const [cpuSocket] = getSocketCompatibility(el['Descrição']);
-//     const product = cleanStockProduct(el);
-//     return product ?  {...product, cpuSocket} : null
-//   })
-//   const motherboards = stock.motherboards.map((el, index) => {
-//     const [cpuSocket] = getSocketCompatibility(el['Descrição']);
-//     const [ramSocket] = getRAMSocketCompatibility(el['Descrição']);
-//     const product = cleanStockProduct(el);
-//     return product ? {...product, cpuSocket, ramSocket} : null
-//   })
-//   const coolers = stock.coolers.map((el, index) => {
-//     const socketCompatibility = getSocketCompatibility(el['Descrição']);
-//     const product = cleanStockProduct(el);
-//     return product ? {...product, socketCompatibility: socketCompatibility[0] === '-' ? ['Universal'] : socketCompatibility} : null;
-//   })
-
-//   const ramMemories = stock.ramMemories.map((el, index) => {
-//     const [ramSocket] = getRAMSocketCompatibility(el['Descrição']);
-//     const frequencyInMhz = getRamFrequencyInMhz(el['Descrição']);
-//     const ramSizeInGb = getSizeInGb(el['Descrição']);
-//     const product = cleanStockProduct(el, true);
-//     return product ? {...product, frequencyInMhz, ramSizeInGb, ramSocket} : null
-//   })
-//   const graphicCards = stock.graphicCards.map((el, index) => {
-//     const product = cleanStockProduct(el);
-//     // const sizeInGb = getSizeInGb(el['Descrição'])
-//     return product
-//   })
-//   const hardDisks = stock.hardDisks.map((el, index) => {
-//     const product = cleanStockProduct(el, true);
-//     // const sizeInGb = getSizeInGb(el['Descrição'])
-//     return product
-//   })
-//   const SSDs = stock.SSDs.map((el, index) => {
-//     const product = cleanStockProduct(el, true);
-//     // const sizeInGb = getSizeInGb(el['Descrição'])
-//     return product
-//   })
-//   const powerSupplies = stock.powerSupplies.map((el, index) => {
-//     const powerInWatts = getPowerInWatts(el['Descrição']);
-//     const product = cleanStockProduct(el);
-//     return product
-//   })
-//   const pcCabinets = stock.pcCabinets.map((el, index): CLEANED_STOCK => {
-//     const product = cleanStockProduct(el);
-//     return product;
-//   })
-//   const fans = stock.fans.map((el, index): CLEANED_STOCK => {
-//     const product = cleanStockProduct(el, true);
-//     return product;
-//   })
-//   const monitors = stock.monitors.map((el, index): CLEANED_STOCK => {
-//     const product = cleanStockProduct(el);
-//     return product;
-//   })
-
-//   console.log(ramMemories)
-//   return {
-//     cpus: cpus.filter(el => el !== null),
-//     motherboards: motherboards.filter(el => el !== null),
-//     coolers: coolers.filter(el => el !== null),
-//     ramMemories: ramMemories.filter(el => el !== null),
-//     graphicCards: graphicCards.filter(el => el !== null),
-//     hardDisks: hardDisks.filter(el => el !== null),
-//     SSDs: SSDs.filter(el => el !== null),
-//     powerSupplies: powerSupplies.filter(el => el !== null),
-//     pcCabinets: pcCabinets.filter(el => el !== null),
-//     monitors: monitors.filter(el => el !== null),
-//     fans: fans.filter(el => el !== null),
-//   }
-
-// }
 
 function cleanStockProduct(product, isStockFiltered?: boolean): CLEANED_STOCK {
   if (Number(product['Estoque'].replace(',', '.')) <= 0) return null
   const images = [product['URL imagem 1'] ? product['URL imagem 1'] : '', product['URL imagem 2'] ? product['URL imagem 2'] : '']
   return {
     description: product['Descrição'],
+    aditionalDescription: product['Descrição complementar'],
     images,
     price: Number(product['Preço'].replace('.', '').replace(',', '.')),
     skuCode: Number(product['Código (SKU)']),

@@ -7,12 +7,18 @@ import { fetchStock } from '../../services/fetchStock';
 
 export default function Gabinete() {
   const [pcCabinetList, setPcCabinetList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
 
-    if(!estoqueEmCache){
-      fetchStock('pcCabinets', setPcCabinetList).then(() => console.log('Carregado!'))
+    const promise = async () => {
+      setIsLoading(true)
+      await fetchStock("pcCabinets", setPcCabinetList);
+    }
+
+    if (!estoqueEmCache) {
+      promise().then(() => setIsLoading(false))
     } else {
       setPcCabinetList(estoqueEmCache.pcCabinets)
     }
@@ -33,14 +39,14 @@ export default function Gabinete() {
         </section>
 
         <section className={styles.productTableSection}>
-          {pcCabinetList && pcCabinetList[0] ? (
+          {!isLoading && pcCabinetList[0] ? (
             <ComponentsTable
               products={pcCabinetList}
               componentName={'pcCabinet'}
               onChoose={{ redirectTo: '/montagem/fan' }}
             />
           ) : (
-            <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
+            <div className="loading"></div>
           )}
         </section>
 
@@ -68,7 +74,7 @@ export default function Gabinete() {
 //     if (produto.nome.includes('COOLER FAN PARA')) return null
 
 //     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
-    
+
 //     if(!hasInStock) return null
 
 //     return {

@@ -7,12 +7,18 @@ import { fetchStock } from '../../services/fetchStock';
 
 export default function MemoriaRam() {
   const [ramMemoryList, setRamMemoryList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
 
-    if(!estoqueEmCache){
-      fetchStock('ramMemories', setRamMemoryList).then(() => console.log('Carregado!'))
+    const promise = async () => {
+      setIsLoading(true)
+      await fetchStock("ramMemories", setRamMemoryList);
+    }
+
+    if (!estoqueEmCache) {
+      promise().then(() => setIsLoading(false))
     } else {
       setRamMemoryList(estoqueEmCache.ramMemories)
     }
@@ -33,9 +39,9 @@ export default function MemoriaRam() {
         </section>
 
         <section className={styles.productTableSection}>
-          {ramMemoryList && ramMemoryList[0] ? (
+          {!isLoading && ramMemoryList[0] ? (
             <ComponentsTable
-              maxItems={4}
+              // maxItems={4}
               products={ramMemoryList}
               componentName={'ramMemory'}
               moreThanOne={true}
@@ -68,7 +74,7 @@ export default function MemoriaRam() {
 //     if (produto.nome.includes("CARTÃO")) return null
 
 //     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
-    
+
 //     if(!hasInStock) return null
 
 

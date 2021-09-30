@@ -8,12 +8,18 @@ import { fetchStock } from '../../services/fetchStock';
 
 export default function Monitor() {
   const [monitorList, setMonitorList] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
+    
+    const promise = async () => {
+      setIsLoading(true)
+      await fetchStock("monitors", setMonitorList);
+    }
 
     if(!estoqueEmCache){
-      fetchStock('monitors', setMonitorList).then(() => console.log('Carregado!'))
+      promise().then(() => setIsLoading(false))
     } else {
       setMonitorList(estoqueEmCache.monitors)
     }
@@ -34,15 +40,15 @@ export default function Monitor() {
         </section>
 
         <section className={styles.productTableSection}>
-          {monitorList && monitorList[0] ? (
+          {!isLoading && monitorList[0] ? (
             <ComponentsTable
               products={monitorList}
               componentName={'monitor'}
               onChoose={{ redirectTo: '/montagem/resultado' }}
             />
           ) : (
-            <h3>Ops! Estamos realizando uma manutenção, logo a montagem estará disponível.</h3>
-          )}
+            <div className="loading"></div>
+            )}
         </section>
 
         <SkipComponentButton componentToSkip='monitor' nextComponent='resultado' />

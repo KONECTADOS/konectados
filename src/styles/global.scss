@@ -112,6 +112,22 @@ button:disabled{
   cursor: default;
 }
 
+.loading{
+  width: 10rem;
+  height: 10rem;
+  border-radius: 100%;
+  margin: 5rem auto 0;
+  border: 10px solid var(--gray-600);
+  border-bottom-color: var(--red-400);
+  animation: loading .75s ease infinite;
+}
+
+@keyframes loading {
+  to{
+    transform: rotate(360deg);
+  }
+}
+
 #nprogress {
   pointer-events: none;
 }

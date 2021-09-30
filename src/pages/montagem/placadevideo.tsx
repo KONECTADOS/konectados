@@ -11,6 +11,8 @@ import { fetchStock } from '../../services/fetchStock';
 export default function PlacaDeVideo() {
   const [isGraphicCardRequired, setIsGraphicCardRequired] = useState(false);
   const [graphicCardsList, setGraphicCardsList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
+
   const { setup } = useComputer();
 
   useEffect(() => {
@@ -19,8 +21,13 @@ export default function PlacaDeVideo() {
 
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
 
+    const promise = async () => {
+      setIsLoading(true)
+      await fetchStock("SSDs", setGraphicCardsList);
+    }
+
     if (!estoqueEmCache) {
-      fetchStock('graphicCards', setGraphicCardsList).then(() => console.log('Carregado!'))
+      promise().then(() => setIsLoading(false))
     } else {
       setGraphicCardsList(estoqueEmCache.graphicCards)
     }
@@ -45,12 +52,14 @@ export default function PlacaDeVideo() {
         </section>
 
         <section className={styles.productTableSection}>
-          {graphicCardsList[0] && (
+          {!isLoading && graphicCardsList[0] ? (
             <ComponentsTable
               products={graphicCardsList}
               componentName={'graphicCard'}
               onChoose={{ redirectTo: '/montagem/harddisk' }}
             />
+          ) : (
+            <div className="loading"></div>
           )}
         </section>
 
@@ -59,36 +68,3 @@ export default function PlacaDeVideo() {
     </>
   )
 }
-
-// export const getStaticProps: GetStaticProps = async (ctx) => {
-//   const { data } = await api.get('', {
-//     params: {
-//       pesquisa: 'Placa de video',
-//       situacao: 'A'
-//     },
-//   })
-
-//   const graphicCards = data.retorno.produtos.map(el => {
-//     const produto = el.produto;
-
-//     const regExp = new RegExp(/SUPORTE/);
-//     if (produto.nome.search(regExp) !== -1) return null
-
-//     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
-
-//     if(!hasInStock) return null
-
-//     return {
-//       name: produto.nome,
-//       price: produto.preco,
-//       vRamSizeInGb: getSizeInGb(produto.nome)
-//     }
-//   })
-
-//   return {
-//     props: {
-//       graphicCards: graphicCards.filter(el => el !== null),
-//     },
-//     revalidate: 1000 * 60 * 10 // 10 minutos 
-//   }
-// }

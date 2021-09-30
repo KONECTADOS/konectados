@@ -30,12 +30,14 @@
     tbody {
       tr {
         border-bottom: 1px solid var(--gray-50);
+        cursor: pointer;
+        &:hover{
+          transition: .2s;
+          background: var(--black-50);
+        }
         td {
           padding: 1rem 2rem;
-          &:nth-child(2) {
-            // font-weight: bold;
-            text-align: left;
-          }
+
           &:last-child {
             text-align: right;
 

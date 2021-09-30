@@ -5,7 +5,7 @@ import styles from './styles.module.scss';
 import Image from 'next/image';
 import { SkipComponentButton } from '../SkipComponentButton';
 
-export function ComponentsTable({ products, componentName, onChoose, moreThanOne = false, maxItems = 1 }) {
+export function ComponentsTable({ products, componentName, onChoose, moreThanOne = false }) {
   const { insertComponentIntoSetup, setup } = useComputer();
   const router = useRouter()
 
@@ -137,6 +137,7 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
   const { insertComponentIntoSetup, setup } = useComputer();
   const router = useRouter();
   const [amount, setAmount] = useState(1);
+  const [max, setMax] = useState(product.stock);
 
   if (componentName === 'motherboard') {
     if (setup.cpu?.cpuSocket !== product.cpuSocket) return null
@@ -167,11 +168,14 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
       // console.log(product)
       newListOfComponents.push(product);
       listOfComponents.setComponents(newListOfComponents)
+      setMax(max - amount)
       return
     }
     insertComponentIntoSetup(componentName, product)
     router.push(redirectTo)
   }
+
+  console.log(product)
 
   return (
     <tr>
@@ -179,7 +183,8 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
         <div className={styles.productImage}>
           <Image width="160px" height="160px" src={product.images[0]} alt={product.description} />
           { product.images[1] !== '' ? (
-            <Image width="160px" height="160px" src={product.images[1]} className={styles.hiddenImg} alt={product.description} />
+            // eslint-disable-next-line @next/next/no-img-element
+            <img width="160px" height="160px" src={product.images[1]} className={styles.hiddenImg} alt={product.description} />
           ) : (<></>)}
         </div>
       </td>
@@ -203,7 +208,7 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
       {moreThanOne && (
         <td style={{ textAlign: 'right' }}>
           <div className={styles.inputWrapper}>
-            <input type="number" value={amount} min={1} max={4} onChange={e => setAmount(Number(e.target.value))} />
+            <input type="number" value={amount} min={1} max={max < 4 ? max : 4} onChange={e => setAmount(Number(e.target.value))} />
             <button className={styles.plus} onClick={e => amount < 4 && setAmount(amount + 1)}>+</button>
             <button className={styles.minus} onClick={e => amount > 1 && setAmount(amount - 1)}>-</button>
           </div>
