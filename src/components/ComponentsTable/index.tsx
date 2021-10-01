@@ -1,5 +1,5 @@
 import { useRouter } from 'next/dist/client/router';
-import { useState } from 'react';
+import { createRef, useState } from 'react';
 import { useComputer } from '../../hooks/useComputer';
 import styles from './styles.module.scss';
 import Image from 'next/image';
@@ -140,6 +140,8 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
   const router = useRouter();
   const [amount, setAmount] = useState(1);
 
+  const buttonRef = createRef<HTMLButtonElement>();
+
   const [max, setMax] = useState(product.stock);
 
   if (componentName === 'motherboard') {
@@ -179,8 +181,8 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
   }
 
   return (
-    <tr onClick={() => handleOpenModal(product)}>
-      <td>
+    <tr>
+      <td onClick={(e) => handleOpenModal(product)}>
         <div className={styles.productImage}>
           <Image width="160px" height="160px" src={product.images[0]} alt={product.description} />
           { product.images[1] !== '' ? (
@@ -189,18 +191,18 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
           ) : (<></>)}
         </div>
       </td>
-      <td>{product.description}</td>
-      {product.cpuSocket && (<td>{product.cpuSocket}</td>)}
-      {product.ramSocket && (<td>{product.ramSocket}</td>)}
-      {product.ramSizeInGb && (<td>{product.ramSizeInGb} Gb</td>)}
-      {product.sizeInGb && (<td>{product.sizeInGb} Gb</td>)}
-      {product.vRamSizeInGb && (<td>{product.vRamSizeInGb} Gb</td>)}
-      {product.powerInWatts && (<td>{product.powerInWatts}W</td>)}
-      {product.frequencyInMhz && (<td>{product.frequencyInMhz} Mhz</td>)}
-      {product.socketCompatibility && (<td>{product.socketCompatibility.join(', ')}</td>)}
-      {product.graphicCardSizeInCm && (<td>{product.graphicCardSizeInCm} cm</td>)}
+      <td onClick={(e) => handleOpenModal(product)}>{product.description}</td>
+      {product.cpuSocket && (<td onClick={(e) => handleOpenModal(product)}>{product.cpuSocket}</td>)}
+      {product.ramSocket && (<td onClick={(e) => handleOpenModal(product)}>{product.ramSocket}</td>)}
+      {product.ramSizeInGb && (<td onClick={(e) => handleOpenModal(product)}>{product.ramSizeInGb} Gb</td>)}
+      {product.sizeInGb && (<td onClick={(e) => handleOpenModal(product)}>{product.sizeInGb} Gb</td>)}
+      {product.vRamSizeInGb && (<td onClick={(e) => handleOpenModal(product)}>{product.vRamSizeInGb} Gb</td>)}
+      {product.powerInWatts && (<td onClick={(e) => handleOpenModal(product)}>{product.powerInWatts}W</td>)}
+      {product.frequencyInMhz && (<td onClick={(e) => handleOpenModal(product)}>{product.frequencyInMhz} Mhz</td>)}
+      {product.socketCompatibility && (<td onClick={(e) => handleOpenModal(product)}>{product.socketCompatibility.join(', ')}</td>)}
+      {product.graphicCardSizeInCm && (<td onClick={(e) => handleOpenModal(product)}>{product.graphicCardSizeInCm} cm</td>)}
       {product.cabinetSizeInCm && (<td>{product.cabinetSizeInCm} cm</td>)}
-      <td className={styles.priceRow}>{
+      <td  onClick={(e) => handleOpenModal(product)} className={styles.priceRow}>{
         new Intl.NumberFormat('pt-BR', {
           style: 'currency',
           currency: 'BRL',
@@ -216,7 +218,7 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
         </td>
       )}
       <td>
-        <button type="button" onClick={handleChoseComponent}>
+        <button type="button" ref={buttonRef} onClick={handleChoseComponent}>
           Selecionar
           {/* {moreThanOne && ListOfComponents?.length === maxItems ? 'Avançar' : 'Escolher'} */}
         </button>

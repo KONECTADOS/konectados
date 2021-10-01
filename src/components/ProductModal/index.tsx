@@ -48,7 +48,7 @@ export function ProductModal ({ product, isOpen, changeStateFunction }: ProductM
         <main>
           <h2>{product.description}</h2>
           <p>{ ReactHtmlParser(product.aditionalDescription) }</p>
-          <span>{product.price}</span>
+          {/* <span>{product.price}</span> */}
 
           <button type="button" onClick={onRequestClose}>Fechar</button>
         </main>
