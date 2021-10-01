@@ -190,6 +190,9 @@
 }
 
 @media (max-width: 1080px) {
+  .inputWrapper{
+    margin: 0 auto;
+  }
   .container {
     .productImage {
       width: 240px;
@@ -229,6 +232,7 @@
             }
 
             &:last-child{
+              text-align: center;
               button{
                 margin-top: 0.5em;
                 width: 200px;
