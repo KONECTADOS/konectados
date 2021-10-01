@@ -6,6 +6,7 @@
   max-width: 500px;
   overflow-y: auto;
   max-height: 80vh;
+  align-items: center;
 
   main, header{
     padding: 2rem;
@@ -14,6 +15,10 @@
   img{
     width: 100%;
     height: 100%;
+    max-width: 400px;
+    max-height: 400px;
+    object-fit: cover;
+    margin: 0 auto;
     &:hover{
       &.hiddenImg{
         opacity: 1;
@@ -23,7 +28,8 @@
       transition: .2s;
       position: absolute;
       top: 2rem;
-      left: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
       // width: 100%;
       opacity: 0;
     }
