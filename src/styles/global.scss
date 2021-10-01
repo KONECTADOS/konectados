@@ -303,6 +303,10 @@ button:disabled{
     transform 0.13s 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
+.ReactModal__Overlay{
+  background: rgba(0,0,0,.75)!important;
+}
+
 @media(max-width: 768px) {
   .hamburger{
     display: inline-block;
