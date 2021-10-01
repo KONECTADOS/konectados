@@ -4,10 +4,18 @@ import { ComponentsTable } from '../../components/ComponentsTable';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { fetchStock } from '../../services/fetchStock';
+import { ProductModal } from '../../components/ProductModal';
 
 export default function MemoriaRam() {
   const [ramMemoryList, setRamMemoryList] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+  const [modalIsOpen, setIsModalOpen] = useState(false);
+  const [productModal, setProductModal] = useState(null);
+
+  function handleOpenModal(product) {
+    setProductModal(product)
+    setIsModalOpen(true)
+  }
 
   useEffect(() => {
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
@@ -29,6 +37,15 @@ export default function MemoriaRam() {
       <Head>
         <title>Memória RAM | Konectados</title>
       </Head>
+
+      {productModal && (
+        <ProductModal
+          isOpen={modalIsOpen}
+          product={productModal}
+          changeStateFunction={() =>  setIsModalOpen(false)}
+        />
+      )}
+
       <main className={styles.container}>
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
@@ -41,7 +58,7 @@ export default function MemoriaRam() {
         <section className={styles.productTableSection}>
           {!isLoading && ramMemoryList[0] ? (
             <ComponentsTable
-              // maxItems={4}
+              handleOpenModal={handleOpenModal}
               products={ramMemoryList}
               componentName={'ramMemory'}
               moreThanOne={true}

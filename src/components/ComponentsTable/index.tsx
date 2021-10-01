@@ -4,8 +4,9 @@ import { useComputer } from '../../hooks/useComputer';
 import styles from './styles.module.scss';
 import Image from 'next/image';
 import { SkipComponentButton } from '../SkipComponentButton';
+import { ProductModal } from '../ProductModal';
 
-export function ComponentsTable({ products, componentName, onChoose, moreThanOne = false }) {
+export function ComponentsTable({ products, componentName, onChoose, moreThanOne = false, handleOpenModal }) {
   const { insertComponentIntoSetup, setup } = useComputer();
   const router = useRouter()
 
@@ -75,6 +76,7 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
                 product={product}
                 componentName={componentName}
                 key={index}
+                handleOpenModal={handleOpenModal}
                 redirectTo={onChoose.redirectTo}
                 moreThanOne={moreThanOne}
                 listOfComponents={{ components: ListOfComponents || null, setComponents: setListOfComponents || null }}
@@ -133,10 +135,11 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
 }
 
 
-function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfComponents }) {
+function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfComponents, handleOpenModal }) {
   const { insertComponentIntoSetup, setup } = useComputer();
   const router = useRouter();
   const [amount, setAmount] = useState(1);
+
   const [max, setMax] = useState(product.stock);
 
   if (componentName === 'motherboard') {
@@ -175,10 +178,8 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
     router.push(redirectTo)
   }
 
-  console.log(product)
-
   return (
-    <tr>
+    <tr onClick={() => handleOpenModal(product)}>
       <td>
         <div className={styles.productImage}>
           <Image width="160px" height="160px" src={product.images[0]} alt={product.description} />

@@ -4,10 +4,18 @@ import styles from '../../styles/montagem.module.scss';
 import { ComponentsTable } from '../../components/ComponentsTable';
 import Head from 'next/head';
 import { fetchStock } from '../../services/fetchStock';
+import { ProductModal } from '../../components/ProductModal';
 
 export default function HardDisk() {
   const [hddList, setHddList] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+  const [modalIsOpen, setIsModalOpen] = useState(false);
+  const [productModal, setProductModal] = useState(null);
+
+  function handleOpenModal(product) {
+    setProductModal(product)
+    setIsModalOpen(true)
+  }
 
   useEffect(() => {
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
@@ -30,6 +38,15 @@ export default function HardDisk() {
       <Head>
         <title>Hard Disk | Konectados</title>
       </Head>
+
+      {productModal && (
+        <ProductModal
+          isOpen={modalIsOpen}
+          product={productModal}
+          changeStateFunction={() =>  setIsModalOpen(false)}
+        />
+      )}
+
       <main className={styles.container}>
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
@@ -45,6 +62,7 @@ export default function HardDisk() {
               products={hddList}
               componentName={'hardDisk'}
               moreThanOne={true}
+              handleOpenModal={handleOpenModal}
               onChoose={{ redirectTo: '/montagem/ssd' }}
             />
           ) : (

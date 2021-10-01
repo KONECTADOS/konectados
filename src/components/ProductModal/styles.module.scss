@@ -1,0 +1,50 @@
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  padding: 0;
+  max-width: 500px;
+  overflow-y: auto;
+  max-height: 80vh;
+
+  main, header{
+    padding: 2rem;
+  }
+
+  img{
+    width: 100%;
+    height: 100%;
+    &:hover{
+      &.hiddenImg{
+        opacity: 1;
+      }
+    }
+    &.hiddenImg{
+      transition: .2s;
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      // width: 100%;
+      opacity: 0;
+    }
+  }
+
+  h2{
+    font-size: 2rem;
+  }
+
+  button{ 
+    margin-top: 1rem;
+    width: 100%;
+    height: 3.5rem;
+    border-radius: .5rem;
+    background: transparent;
+    border: 2px solid var(--red-400);
+    color: var(--white);
+    transition: .2s;
+
+    &:hover{
+      background: var(--red-500);
+    }
+  }
+}

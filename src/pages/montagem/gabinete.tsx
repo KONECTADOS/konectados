@@ -4,10 +4,18 @@ import styles from '../../styles/montagem.module.scss';
 import { ComponentsTable } from '../../components/ComponentsTable';
 import Head from 'next/head';
 import { fetchStock } from '../../services/fetchStock';
+import { ProductModal } from '../../components/ProductModal';
 
 export default function Gabinete() {
   const [pcCabinetList, setPcCabinetList] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+  const [modalIsOpen, setIsModalOpen] = useState(false);
+  const [productModal, setProductModal] = useState(null);
+
+  function handleOpenModal(product) {
+    setProductModal(product)
+    setIsModalOpen(true)
+  }
 
   useEffect(() => {
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
@@ -29,6 +37,15 @@ export default function Gabinete() {
       <Head>
         <title>Gabinete | Konectados</title>
       </Head>
+
+      {productModal && (
+        <ProductModal
+          isOpen={modalIsOpen}
+          product={productModal}
+          changeStateFunction={() =>  setIsModalOpen(false)}
+        />
+      )}
+
       <main className={styles.container}>
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
@@ -42,6 +59,7 @@ export default function Gabinete() {
           {!isLoading && pcCabinetList[0] ? (
             <ComponentsTable
               products={pcCabinetList}
+              handleOpenModal={handleOpenModal}
               componentName={'pcCabinet'}
               onChoose={{ redirectTo: '/montagem/fan' }}
             />

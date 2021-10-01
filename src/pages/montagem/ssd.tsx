@@ -9,10 +9,18 @@ import { getSizeInGb } from '../../utils/getSizeInGb';
 import Head from 'next/head';
 import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
 import { fetchStock } from '../../services/fetchStock';
+import { ProductModal } from '../../components/ProductModal';
 
 export default function MemoriaRam() {
   const [ssdList, setSsdList] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+  const [modalIsOpen, setIsModalOpen] = useState(false);
+  const [productModal, setProductModal] = useState(null);
+
+  function handleOpenModal(product) {
+    setProductModal(product)
+    setIsModalOpen(true)
+  }
 
   useEffect(() => {
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
@@ -35,6 +43,15 @@ export default function MemoriaRam() {
       <Head>
         <title>Memória RAM | Konectados</title>
       </Head>
+
+      {productModal && (
+        <ProductModal
+          isOpen={modalIsOpen}
+          product={productModal}
+          changeStateFunction={() =>  setIsModalOpen(false)}
+        />
+      )}
+
       <main className={styles.container}>
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
@@ -49,6 +66,7 @@ export default function MemoriaRam() {
             <ComponentsTable
               products={ssdList}
               componentName={'SSD'}
+              handleOpenModal={handleOpenModal}
               moreThanOne={true}
               onChoose={{ redirectTo: '/montagem/fonte' }}
             />

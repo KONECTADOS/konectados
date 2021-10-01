@@ -5,10 +5,18 @@ import { ComponentsTable } from '../../components/ComponentsTable';
 import { SkipComponentButton } from '../../components/SkipComponentButton';
 import Head from 'next/head';
 import { fetchStock } from '../../services/fetchStock';
+import { ProductModal } from '../../components/ProductModal';
 
 export default function Monitor() {
   const [monitorList, setMonitorList] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [modalIsOpen, setIsModalOpen] = useState(false);
+  const [productModal, setProductModal] = useState(null);
+
+  function handleOpenModal(product){
+    setProductModal(product)
+    setIsModalOpen(true)
+  }
 
   useEffect(() => {
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
@@ -30,6 +38,15 @@ export default function Monitor() {
       <Head>
         <title>Monitor | Konectados</title>
       </Head>
+
+      {productModal && (
+        <ProductModal
+          isOpen={modalIsOpen}
+          product={productModal}
+          changeStateFunction={() =>  setIsModalOpen(false)}
+        />
+      )}
+
       <main className={styles.container}>
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
@@ -43,6 +60,7 @@ export default function Monitor() {
           {!isLoading && monitorList[0] ? (
             <ComponentsTable
               products={monitorList}
+              handleOpenModal={handleOpenModal}
               componentName={'monitor'}
               onChoose={{ redirectTo: '/montagem/resultado' }}
             />

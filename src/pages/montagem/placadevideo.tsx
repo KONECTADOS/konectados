@@ -7,13 +7,21 @@ import Head from 'next/head';
 import { useComputer } from '../../hooks/useComputer';
 import { getHasIntegratedGraphics } from '../../utils/getHasIntegratedGraphics';
 import { fetchStock } from '../../services/fetchStock';
+import { ProductModal } from '../../components/ProductModal';
 
 export default function PlacaDeVideo() {
   const [isGraphicCardRequired, setIsGraphicCardRequired] = useState(false);
   const [graphicCardsList, setGraphicCardsList] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+  const [modalIsOpen, setIsModalOpen] = useState(false);
+  const [productModal, setProductModal] = useState(null);
 
   const { setup } = useComputer();
+
+  function handleOpenModal(product){
+    setProductModal(product)
+    setIsModalOpen(true)
+  }
 
   useEffect(() => {
     const hasIntegratedGraphics = getHasIntegratedGraphics(setup.cpu?.name || '');
@@ -39,6 +47,14 @@ export default function PlacaDeVideo() {
       <Head>
         <title>Placa de vídeo | Konectados</title>
       </Head>
+
+      {productModal && (
+        <ProductModal
+          isOpen={modalIsOpen}
+          product={productModal}
+          changeStateFunction={() =>  setIsModalOpen(false)}
+        />
+      )}
       <main className={styles.container}>
         <section className={styles.componentInfo}>
           <div className={styles.componentName}>
@@ -55,6 +71,7 @@ export default function PlacaDeVideo() {
           {!isLoading && graphicCardsList[0] ? (
             <ComponentsTable
               products={graphicCardsList}
+              handleOpenModal={handleOpenModal}
               componentName={'graphicCard'}
               onChoose={{ redirectTo: '/montagem/harddisk' }}
             />
