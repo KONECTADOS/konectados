@@ -212,8 +212,12 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
         <td style={{ textAlign: 'right' }}>
           <div className={styles.inputWrapper}>
             <input type="number" value={amount} min={1} max={max < 4 ? max : 4} onChange={e => setAmount(Number(e.target.value))} />
-            <button className={styles.plus} onClick={e => amount < 4 && setAmount(amount + 1)}>+</button>
-            <button className={styles.minus} onClick={e => amount > 1 && setAmount(amount - 1)}>-</button>
+            <button className={styles.plus} onClick={e => amount < 4 && setAmount(amount + 1)}>
+              <Image width="20px" height="20px" src="/icons/plus.svg" alt="" />
+            </button>
+            <button className={styles.minus} onClick={e => amount > 1 && setAmount(amount - 1)}>
+              <Image width="20px" height="20px" src="/icons/minus.svg" alt="" />
+            </button>
           </div>
         </td>
       )}
