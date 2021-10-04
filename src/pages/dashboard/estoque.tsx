@@ -9,6 +9,7 @@ import parseCSV from '../../utils/parseCSV';
 import { useComputer } from '../../hooks/useComputer';
 import { cleanStockData, divideProductsByCategory, removeUselessProducts, Estoque as EstoqueProps } from '../../utils/filterStockCsvFile';
 import { NumberOfComponents } from '../../components/NumberOfComponents';
+import router from 'next/router';
 
 export default function Estoque() {
   const [csvFiles, setCsvFiles] = useState<FileList>(null);
@@ -82,6 +83,7 @@ export default function Estoque() {
               return 'Informações adicionais salvo!'
             }
           });
+          router.push('/dashboard')
           return 'Estoque salvo!'
         }
       });
@@ -162,7 +164,7 @@ export default function Estoque() {
             )}
           </label>
 
-          <button onClick={saveStock} className={styles.saveStockButton} disabled={isLoading}>Salvar</button>
+          <button onClick={saveStock} className={styles.saveStockButton} disabled={isLoading || csvFiles === null}>Salvar</button>
           
           {csvFiles && Array.from(csvFiles).map((csvFile) => {
             return (

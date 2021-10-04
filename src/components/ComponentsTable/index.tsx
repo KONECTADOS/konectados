@@ -162,6 +162,12 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
     }
   }
 
+  if(componentName === 'SSD'){
+    if(!setup.motherboard?.isCompatibleWithMTwo){
+      if(product.description.includes('M.2')) return null;
+    }
+  }
+
   function handleChoseComponent() {
     if (moreThanOne) {
       product.amount = amount

@@ -19,7 +19,7 @@ export default function Home() {
     event.preventDefault();
     try {
       const { data } = await axios.post('/api/auth', {
-        password, user
+        password, user: user.trim()
       })
 
       if (!data.token) {

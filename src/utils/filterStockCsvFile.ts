@@ -37,6 +37,7 @@ interface Motherboard {
   cpuSocket: string;
   ramSocket: string;
   cpuSocketGen: string;
+  isCompatibleWithMTwo: boolean;
 }
 interface COOLER extends CLEANED_STOCK {
   socketCompatibility: string[];
@@ -51,6 +52,7 @@ interface GraphicCard extends CLEANED_STOCK {
 }
 interface Storage extends CLEANED_STOCK {
   sizeInGb: number;
+  isMTwo?: boolean;
 }
 interface PowerSupply extends CLEANED_STOCK {
   powerInWatts: number;
@@ -148,10 +150,11 @@ export async function cleanStockData(stock): Promise<Estoque> {
   const motherboards = stock.motherboards.map((el, index): Motherboard => {
     const [cpuSocket] = getSocketCompatibility(el['Descrição']);
     const [ramSocket] = getRAMSocketCompatibility(el['Descrição']);
+    const isCompatibleWithMTwo = el['Descrição'].includes('M.2');
     const cpuSocketGen = getMotherboardSocketGen(el['Descrição']);
 
     const product = cleanStockProduct(el);
-    return product ? {...product, cpuSocket, ramSocket, cpuSocketGen} : null;
+    return product ? {...product, cpuSocket, ramSocket, cpuSocketGen, isCompatibleWithMTwo} : null;
   })
   const coolers = stock.coolers.map((el, index): COOLER => {
     const socketCompatibility = getSocketCompatibility(el['Descrição']);
@@ -176,9 +179,10 @@ export async function cleanStockData(stock): Promise<Estoque> {
     return product ? {...product, sizeInGb} : null;
   })
   const SSDs = stock.SSDs.map((el, index): Storage => {
-    const product = cleanStockProduct(el, true);
+    const product = cleanStockProduct(el);
     const sizeInGb = getSizeInGb(el['Descrição'])
-    return product ? {...product, sizeInGb} : null;
+    const isMTwo = el['Descrição'].includes('M.2')
+    return product ? {...product, sizeInGb, isMTwo} : null;
   })
   const powerSupplies = stock.powerSupplies.map((el, index): PowerSupply => {
     const powerInWatts = getPowerInWatts(el['Descrição']);
@@ -215,8 +219,11 @@ export async function cleanStockData(stock): Promise<Estoque> {
 }
 
 
-function cleanStockProduct(product, isStockFiltered?: boolean): CLEANED_STOCK {
+function cleanStockProduct(product, isHd?: boolean): CLEANED_STOCK {
   if (Number(product['Estoque'].replace(',', '.')) <= 0) return null
+  if(isHd){
+    if(product['Descrição'].includes('EXTERNO') || product['Descrição'].includes('EXT')) return null
+  }
   const images = [product['URL imagem 1'] ? product['URL imagem 1'] : '', product['URL imagem 2'] ? product['URL imagem 2'] : '']
   return {
     description: product['Descrição'],

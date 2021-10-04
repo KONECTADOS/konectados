@@ -21,6 +21,7 @@ interface CPU extends PcComponent {
 interface Motherboard extends PcComponent {
   cpuSocket: string;
   ramSocket: string;
+  isCompatibleWithMTwo?: boolean
 }
 
 interface WaterCooler extends PcComponent {
@@ -43,6 +44,7 @@ interface PcCabinet extends PcComponent {
 
 interface HardDisk extends PcComponent {
   sizeInGb: number;
+  isMTwo?: boolean;
 }
 
 interface PowerSupply extends PcComponent {
