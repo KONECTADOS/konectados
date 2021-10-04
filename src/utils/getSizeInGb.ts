@@ -4,11 +4,16 @@ export function getSizeInGb(produto: string): number {
   if (produto.includes('3000GB')) return 3000
   if (produto.includes('2000GB')) return 2000
   if (produto.includes('1000GB')) return 1000
+  if (produto.includes('960GB')) return 960
   if (produto.includes('512GB')) return 512
   if (produto.includes('500GB')) return 500
+  if (produto.includes('480GB')) return 480
   if (produto.includes('320GB')) return 320
   if (produto.includes('256GB')) return 256
+  if (produto.includes('240GB')) return 240
   if (produto.includes('128GB')) return 128
+  if (produto.includes('120GB')) return 120
+  if (produto.includes('60GB')) return 60
   if (produto.includes('32GB')) return 32
   if (produto.includes('16GB') && !produto.includes('32GB')) return 16
   if (produto.includes('12GB')) return 12
