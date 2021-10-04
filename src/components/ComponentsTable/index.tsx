@@ -95,7 +95,7 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
                   <Image width="24px" height="24px" src="/icons/removeItem.svg" alt="" onClick={e => handleRemoveItemFromSetupList(index)} />
                   {componentName === 'ramMemory' 
                     ? el.amount * el.ramSizeInGb 
-                    : el.amount * el.sizeInGb} Gb | {el.amount}x • {el.name} • {
+                    : (el.sizeInGb ? `${el.amount * el.sizeInGb} Gb |` : '')} {el.amount}x • {el.description} • {
                     new Intl.NumberFormat('pt-BR', {
                       style: 'currency',
                       currency: 'BRL',
