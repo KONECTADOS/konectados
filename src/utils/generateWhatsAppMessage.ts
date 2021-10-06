@@ -20,10 +20,10 @@ export function generateWhatsAppMessage(setup, name: string, phoneNumber: string
 
   Meu PC:
   *Processador:* ${setup.cpu?.description}
-  *Placa mãe: ${setup.motherboard?.description}
+  *Placa mãe:* ${setup.motherboard?.description}
   ${setup.waterCooler?.description === 'skipped' ? "" : `*Cooler:* ${setup.waterCooler?.description}`}
-  *Memória RAM: ${rmNames}
-  *Placa de vídeo: ${setup.graphicCard?.description}
+  *Memória RAM:* ${rmNames}
+  *Placa de vídeo:* ${setup.graphicCard?.description}
   ${setup.hardDisk?.description === 'skipped' ? "" : `*HDs:* ${hdNames}`}
   ${setup.SSD?.description === 'skipped' ? "" : `*SSDs:* ${ssdNames}`}
   *Fonte:* ${setup.powerSupply?.description}
