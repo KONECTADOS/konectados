@@ -11,8 +11,10 @@ import { cleanStockData, divideProductsByCategory, removeUselessProducts, Estoqu
 import { NumberOfComponents } from '../../components/NumberOfComponents';
 import router from 'next/router';
 import { useAuth } from '../../hooks/useAuth';
+import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies';
 
-export default function Estoque() {
+export default function Estoque({admin}) {
   const [csvFiles, setCsvFiles] = useState<FileList>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [numberOfProducts, setNumberOfProducts] = useState(null);
@@ -21,9 +23,10 @@ export default function Estoque() {
   const { user } = useAuth();
   
   useEffect(() => {
-    if(!user.id) {
+    if(user && user?.id && (user?.email !== admin.email || user?.id !== admin.id)){
       router.push('/auth')
     }
+
     async function fetchEstoqueInfo(){
       const snapshot = await get(ref(database, 'estoque/info'))
       const data = snapshot.val();
@@ -31,7 +34,7 @@ export default function Estoque() {
     }
 
     fetchEstoqueInfo().then(() => console.log('Finalizado'));
-  }, [user.id])
+  }, [user, admin])
 
   async function saveStock(e) {
     e.preventDefault()
@@ -94,7 +97,6 @@ export default function Estoque() {
       
       
     } catch (error) {
-      console.log(error.message)
       setIsLoading(false)
       
     }
@@ -133,7 +135,6 @@ export default function Estoque() {
           }, []);
           const stockData = await divideProductsByCategory(stock);
           const resumedData = await cleanStockData(stockData)
-          console.log(resumedData);
           
           setCsvFiles(files)
           setEstoqueData(resumedData)
@@ -184,4 +185,24 @@ export default function Estoque() {
       </section>
     </main>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { konectados } = parseCookies(ctx)
+
+  const admin = JSON.parse(konectados)
+  
+  if(!admin || !admin.email || !admin.id) {
+    return {
+      redirect:{
+        destination: '/auth',
+        permanent: false,
+      }
+    }
+  }
+  return {
+    props: {
+      admin,
+    }
+  }
 }

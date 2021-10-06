@@ -88,6 +88,38 @@
   }
 }
 
+.divider{
+  // width: 100%;
+  height: 100%;
+  max-width: 360px;
+  text-align: center;
+  margin: 0 1rem; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  &::before{
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 1.5px;
+    height: 40%;
+    background: var(--gray-800);
+    // transform: rotate(90deg);
+  }
+  &::after{
+    // transform: rotate(90deg);
+    content: '';
+    position: absolute;
+    right: 50%;
+    bottom: 0;
+    width: 1.5px;
+    height: 40%;
+    background: var(--gray-800);
+  }
+}
+
 .sendSetup {
   margin-top: 7rem;
   width: 100%;
@@ -100,7 +132,7 @@
 
   h3 {
     margin-bottom: 3rem;
-    font-size: 3rem;
+    font-size: 2.75rem;
     width: 100%;
     text-align: center;
     max-width: 800px;
@@ -109,12 +141,27 @@
     }
   }
 
-  .sendSetupForm {
+  .wrapper{
+    display: flex;
+    align-items: center;
+    // flex-wrap: wrap;
+    // justify-content: space-between;
+    max-width: calc(720px + 2rem);
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .sendSetupForm, .sendToWhatsapp {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    align-items: center;
+    width: 50%;
+    align-items: flex-start;
     justify-content: center;
+    gap: 1rem;
+
+    p{
+      color: var(--white-75);
+    }
 
     > input,
     button {
@@ -151,6 +198,30 @@
     > input {
       padding: 0 1rem;
       background: var(--gray-800);
+    }
+
+    a{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: .5rem;
+      width: 100%;
+      height: 3.5rem;
+      background: #128C7E;
+      transition: .2s;
+      font-weight: bold;
+      position: relative;
+
+      img{
+        position: absolute;
+        left: 5%;
+        top: 50%;
+        transform: translateY(-50%)
+      }
+      // gap: 1rem;
+      &:hover{
+        filter: brightness(.9);
+      }
     }
 
     button {
@@ -232,6 +303,34 @@
 
     .componentName {
       margin-bottom: 1rem;
+    }
+  }
+
+  .sendSetup .wrapper{
+    flex-direction: column;
+    max-width: 360px;
+
+    .sendSetupForm, .sendToWhatsapp{
+      width: 100%;
+      max-width: 500px;
+    }
+  }
+
+  .divider{
+    width: 100%;
+    height: auto;
+    margin: 1rem 0; 
+    &::before{
+      top: 50%;
+      left: 0;
+      height: 2px;
+      width: 40%;
+    }
+    &::after{
+      top: 50%;
+      right: 0;
+      height: 2px;
+      width: 40%;
     }
   }
 }

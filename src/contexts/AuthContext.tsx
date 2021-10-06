@@ -34,6 +34,11 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
           id: uid,
           email: email,
         })
+
+        setCookie(null, 'konectados', JSON.stringify({
+          id: uid,
+          email: email,
+        }))
       }
     })
 
@@ -50,6 +55,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         id: userCredential.user.uid
       };
 
+      setCookie(null, 'konectados', JSON.stringify(user))
       setUser(user);
 
       return  {

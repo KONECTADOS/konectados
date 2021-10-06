@@ -2,12 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Subtotal } from '../../components/Subtotal';
 import styles from '../../styles/montagem.module.scss';
 import { ComponentsTable } from '../../components/ComponentsTable';
-import { SkipComponentButton } from '../../components/SkipComponentButton';
-import { api } from '../../services/api';
-import { GetStaticProps } from 'next';
-import { getSizeInGb } from '../../utils/getSizeInGb';
 import Head from 'next/head';
-import { checkHasProductInStock } from '../../utils/checkHasProductInStock';
 import { fetchStock } from '../../services/fetchStock';
 import { ProductModal } from '../../components/ProductModal';
 

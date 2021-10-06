@@ -307,6 +307,25 @@ button:disabled{
   background: rgba(0,0,0,.75)!important;
 }
 
+.react-tel-input{
+  input.form-control{
+    border: none;
+    height: 3.5rem;
+    width: 100%;
+    background: var(--gray-800);
+    color: var(--white);
+  }
+  
+  .flag-dropdown{
+    background: transparent!important; 
+    border: none!important;
+
+    ul li .country-name{
+      color: var(--gray-800);
+    }
+  }
+}
+
 @media(max-width: 768px) {
   .hamburger{
     display: inline-block;

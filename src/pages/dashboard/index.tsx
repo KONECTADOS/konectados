@@ -5,22 +5,23 @@ import { Feedbacks } from '../../components/Feedbacks';
 import { SetupsTable } from '../../components/SetupsTable';
 import { database } from '../../services/firebase';
 import styles from '../../styles/dashboard.module.scss';
-import Head from 'next/head';
 import toast, { Toaster } from 'react-hot-toast';
 import router from 'next/router';
 import { useAuth } from '../../hooks/useAuth';
+import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies';
 
-export default function Dashboard() {
+export default function Dashboard({admin}) {
   const [setups, setSetups] = useState([])
   const [feedbacks, setFeedbacks] = useState([])
   const {user} = useAuth()
 
   useEffect(() => {
-    if(!user.id){
+    if(user && user?.id && (user?.email !== admin.email || user?.id !== admin.id)){
       router.push('/auth')
     }
 
-    const promise = (async () => {
+    const fetchData = async () => {
       await get(ref(database, 'setups/')).then(snapshot => {
         const data = snapshot.val()
         const newSetup = []
@@ -43,14 +44,19 @@ export default function Dashboard() {
         }
         setFeedbacks(newFeedbacks)
       });
-    })()
+    }
 
-    toast.promise(promise, {
+    const promise = user ? fetchData() : null
+
+    user && toast.promise(promise, {
       loading: 'Carregando...',
       success: 'Dashboard carregado!',
-      error: 'Erro ao carregar setups, tente recarregar a página.',
+      error: () => {
+        if(!user) router.push('/auth')
+        return 'Erro ao carregar setups, tente recarregar a página.'
+      },
     })
-  }, [])
+  }, [user, admin])
 
   return (
     <main className={styles.container}>
@@ -68,4 +74,25 @@ export default function Dashboard() {
       </section>
     </main>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { konectados } = parseCookies(ctx)
+
+  const admin = JSON.parse(konectados)
+  console.log(admin);
+  
+  if(!admin || !admin.email || !admin.id) {
+    return {
+      redirect:{
+        destination: '/auth',
+        permanent: false,
+      }
+    }
+  }
+  return {
+    props: {
+      admin,
+    }
+  }
 }
