@@ -3,12 +3,14 @@ import { setCookie } from "nookies";
 import { createContext, useEffect, useState } from "react";
 import { database } from "../services/firebase";
 
-
 interface PcComponent {
-  name: string;
+  description: string;
   price: number;
+  images: string[],
+  aditionalDescription?: string;
   amountInStock: number;
   amount?: number;
+  ListOfComponents?: any[]
 }
 
 interface CPU extends PcComponent {
@@ -59,7 +61,7 @@ interface UserSetup {
   cpu: CPU;
   motherboard: Motherboard;
   waterCooler: WaterCooler;
-  ramMemory: RamMemory[];
+  ramMemory: RamMemory;
   graphicCard: GraphicCard;
   hardDisk: HardDisk;
   SSD: HardDisk;
@@ -192,7 +194,7 @@ export function ComputerContextProvider({ children }) {
 
   function skipComponent(componentName: string) {
     const newSetup = { ...setup };
-    newSetup[componentName] = { name: "skipped", price: 0 }
+    newSetup[componentName] = { description: "skipped", price: 0 }
 
     localStorage.setItem('konecta@setup', JSON.stringify(newSetup))
     setSetup(newSetup)

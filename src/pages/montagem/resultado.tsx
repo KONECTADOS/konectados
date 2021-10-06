@@ -9,16 +9,20 @@ import { database } from "../../services/firebase";
 import styles from '../../styles/montagem.module.scss';
 import { apiRoutes } from "../../services/api";
 import Head from 'next/head';
+import Link from 'next/link';
 import toast, { Toaster } from "react-hot-toast";
 import { validateEmail } from "../../utils/validateEmail";
+import { generateWhatsAppMessage } from "../../utils/generateWhatsAppMessage";
 
 export default function Resultado() {
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('rafa@email.com')
+  const [name, setName] = useState('rafa')
+  const [phoneNumber, setPhoneNumber] = useState('999999999')
   const [isEmailValid, setIsEmailValid] = useState(false)
- const [sendToEmail, setSendToEmail] = useState(true)
+  const [sendToEmail, setSendToEmail] = useState(true)
   const router = useRouter()
-  const { setup, setupPrice } = useComputer();
-
+  const { setup, setupPrice } = useComputer(); 
+  
   function handleChangeEmail(email) {
     const isAValidEmail = validateEmail(email);
     if(isAValidEmail){
@@ -29,7 +33,16 @@ export default function Resultado() {
     setEmail(email)
   }
 
+  let message: string;
+
+  if(process.browser) {
+    message = window.encodeURI(generateWhatsAppMessage(setup, name, email, phoneNumber))
+    console.log(message);
+    
+  }
+
   async function handleSendSetup() {
+  
     const data = {
       email: email.toLowerCase(),
       setup,
@@ -57,7 +70,7 @@ export default function Resultado() {
     }
 
     setEmail('')
-    router.push('/finalizar')
+    router.push("/finalizar")
   }
 
 
@@ -92,6 +105,9 @@ export default function Resultado() {
               <input type="checkbox" name="" checked={sendToEmail} onChange={e => setSendToEmail(!sendToEmail)} id="sendEmail" />
               <label htmlFor="sendEmail">Enviar setup para meu e-mail.</label>
             </div>
+            <Link href={`https://wa.me/send?phone=${phoneNumber}&text=${message}`} passHref>
+              <a target="_blank" rel="noreferrer">Whats</a>
+            </Link>
             <button type="button" onClick={handleSendSetup} disabled={!isEmailValid}>
               Enviar para um vendedor
             </button>

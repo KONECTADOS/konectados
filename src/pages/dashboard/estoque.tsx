@@ -10,6 +10,7 @@ import { useComputer } from '../../hooks/useComputer';
 import { cleanStockData, divideProductsByCategory, removeUselessProducts, Estoque as EstoqueProps } from '../../utils/filterStockCsvFile';
 import { NumberOfComponents } from '../../components/NumberOfComponents';
 import router from 'next/router';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function Estoque() {
   const [csvFiles, setCsvFiles] = useState<FileList>(null);
@@ -17,9 +18,12 @@ export default function Estoque() {
   const [numberOfProducts, setNumberOfProducts] = useState(null);
 
   const [estoqueData, setEstoqueData] = useState<EstoqueProps>({} as EstoqueProps);
-  const { estoque } = useComputer();
-
+  const { user } = useAuth();
+  
   useEffect(() => {
+    if(!user.id) {
+      router.push('/auth')
+    }
     async function fetchEstoqueInfo(){
       const snapshot = await get(ref(database, 'estoque/info'))
       const data = snapshot.val();
@@ -27,7 +31,7 @@ export default function Estoque() {
     }
 
     fetchEstoqueInfo().then(() => console.log('Finalizado'));
-  }, [])
+  }, [user.id])
 
   async function saveStock(e) {
     e.preventDefault()

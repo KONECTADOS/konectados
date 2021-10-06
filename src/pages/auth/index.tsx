@@ -1,36 +1,27 @@
 /* eslint-disable @next/next/no-img-element */
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { setCookie } from 'nookies';
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { apiRoutes } from '../services/api';
-import styles from '../styles/auth.module.scss';
+import styles from '../../styles/auth.module.scss';
 import Head from 'next/head';
-
+import { auth } from '../../services/firebase';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function Home() {
-  const [user, setUser] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
+  const { signIn } = useAuth()
   const router = useRouter();
 
   async function handleLogIn(event) {
     event.preventDefault();
-    try {
-      const { data } = await axios.post('/api/auth', {
-        password, user: user.trim()
-      })
 
-      if (!data.token) {
-        toast.error('Usuário ou senha incorretos!')
-        return
-      }
+    const {isAuth} = await signIn(email, password)
 
-      setCookie(null, 'token@konecta', data.token)
+    if(isAuth){
       router.push('/dashboard')
-    } catch (error) {
-      console.log(error.message)
+    } else {
       toast.error('Usuário ou senha incorretos!')
     }
   }
@@ -47,9 +38,9 @@ export default function Home() {
           <form action="">
             <input
               type="text"
-              placeholder="Usuário"
-              value={user}
-              onChange={e => setUser(e.target.value)}
+              placeholder="Email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
             />
             <input
               type="password"

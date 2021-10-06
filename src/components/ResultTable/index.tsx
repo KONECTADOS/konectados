@@ -24,7 +24,7 @@ export function ResultTable() {
         componentName='Placa mãe'
         component={setup.motherboard}
       />
-      {setup.waterCooler.name !== 'skipped' && (
+      {setup.waterCooler.description !== 'skipped' && (
         <ComponentCard
           imageUrl='/icons/fan.svg'
           componentName='Cooler'
@@ -37,7 +37,7 @@ export function ResultTable() {
         component={setup.ramMemory}
       />
 
-      {setup.graphicCard.name !== 'skipped' && (
+      {setup.graphicCard.description !== 'skipped' && (
         <ComponentCard
           imageUrl='/icons/gpu.svg'
           componentName='Placa de vídeo'
@@ -45,14 +45,14 @@ export function ResultTable() {
         />
       )}
 
-      {setup.hardDisk.name !== 'skipped' && (
+      {setup.hardDisk.description !== 'skipped' && (
         <ComponentCard
           imageUrl='/icons/hd.svg'
           componentName='Hard Disk'
           component={setup.hardDisk}
         />
       )}
-      {setup.SSD.name !== 'skipped' && (
+      {setup.SSD.description !== 'skipped' && (
         <ComponentCard
           imageUrl='/icons/ssd.svg'
           componentName='SSD'
@@ -71,14 +71,14 @@ export function ResultTable() {
         component={setup.pcCabinet}
       />
 
-      {setup.fan.name !== 'skipped' && (
+      {setup.fan.description !== 'skipped' && (
         <ComponentCard
           imageUrl='/icons/fan.svg'
           componentName='Fan'
           component={setup.fan}
         />
       )}
-      {setup.monitor.name !== 'skipped' && (
+      {setup.monitor.description !== 'skipped' && (
         <ComponentCard
           imageUrl='/icons/monitor.svg'
           componentName='Monitor'

@@ -33,24 +33,24 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   // });
 
   const fanNames = setup.fan.ListOfComponents.reduce((ac, el) => {
-    return ac === '' ? el.name : `${ac}, ${el.name}`
+    return ac === '' ? el.description : `${ac}, ${el.description}`
   }, '')
   const ramMemoryNames = setup.ramMemory.ListOfComponents.reduce((ac, el) => {
-    return ac === '' ? el.name : `${ac}, ${el.name}`
+    return ac === '' ? el.description : `${ac}, ${el.description}`
   }, '')
   const ramMemorySizeInGb = setup.ramMemory.ListOfComponents.reduce((ac, el) => {
     return ac + (el.ramSizeInGb * el.amount);
   }, 0)
 
   const hdNames = !(setup.hardDisk.name === 'skipped')  ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
-    return ac === '' ? el.name : `${ac}, ${el.name}`
+    return ac === '' ? el.description : `${ac}, ${el.description}`
   }, '') : null
   const hdSizeInGb = !(setup.hardDisk.name === 'skipped') ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
     return ac + (el.sizeInGb * el.amount);
   }, 0) : null
 
   const ssdNames = !(setup.SSD.name === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
-    return ac === '' ? el.name : `${ac}, ${el.name}`
+    return ac === '' ? el.description : `${ac}, ${el.description}`
   }, '') : null
 
   const ssdSizeInGb = !(setup.SSD.name === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
@@ -157,7 +157,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
           </thead>
           <tbody>
             <tr>
-              <td>${setup.cpu.name}</td>
+              <td>${setup.cpu.description}</td>
               <td>${setup.cpu.cpuSocket}</td>
               <td>-</td>
               <td>${
@@ -168,7 +168,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
               }</td>
             </tr>
             <tr>
-              <td>${setup.motherboard.name}</td>
+              <td>${setup.motherboard.description}</td>
               <td>${setup.motherboard.cpuSocket}</td>
               <td>${setup.motherboard.ramSocket}</td>
               <td>${
@@ -180,7 +180,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
             </tr>
             ${ setup.waterCooler.name !== 'skipped' ? (`
               <tr>
-                <td>${setup.waterCooler.name}</td>
+                <td>${setup.waterCooler.description}</td>
                 <td>${setup.waterCooler.socketCompatibility?.join(', ')}</td>
                 <td>-</td>
                 <td>${
@@ -203,7 +203,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
               }</td>
             </tr>
             <tr>
-              <td>${setup.graphicCard.name}</td>
+              <td>${setup.graphicCard.description}</td>
               <td>-</td>
               <td>${setup.graphicCard.vRamSizeInGb} Gb</td>
               <td>${
@@ -249,7 +249,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
               ) : ''
             }
             <tr>
-              <td>${setup.powerSupply.name}</td>
+              <td>${setup.powerSupply.description}</td>
               <td>-</td>
               <td>${setup.powerSupply.powerInWatts} W</td>
               <td>${
@@ -292,7 +292,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
               setup.monitor?.name !== 'skipped' ? (
                 `
                 <tr>
-                  <td>${setup.monitor.name}</td>
+                  <td>${setup.monitor.description}</td>
                   <td>-</td>
                   <td>-</td>
                   <td>${

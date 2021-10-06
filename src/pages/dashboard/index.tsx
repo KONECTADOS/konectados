@@ -1,7 +1,5 @@
 import { get } from '@firebase/database';
 import { ref } from 'firebase/database';
-import { GetServerSideProps } from 'next';
-import  { parseCookies } from 'nookies';
 import { useEffect, useState } from 'react';
 import { Feedbacks } from '../../components/Feedbacks';
 import { SetupsTable } from '../../components/SetupsTable';
@@ -9,12 +7,19 @@ import { database } from '../../services/firebase';
 import styles from '../../styles/dashboard.module.scss';
 import Head from 'next/head';
 import toast, { Toaster } from 'react-hot-toast';
+import router from 'next/router';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function Dashboard() {
   const [setups, setSetups] = useState([])
   const [feedbacks, setFeedbacks] = useState([])
+  const {user} = useAuth()
 
   useEffect(() => {
+    if(!user.id){
+      router.push('/auth')
+    }
+
     const promise = (async () => {
       await get(ref(database, 'setups/')).then(snapshot => {
         const data = snapshot.val()
@@ -63,20 +68,4 @@ export default function Dashboard() {
       </section>
     </main>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const token = parseCookies(ctx, 'token@konecta')
-
-  if(!token['token@konecta']){
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/auth'
-      }
-    }
-  }
-  return {
-    props: {}
-  }
 }
