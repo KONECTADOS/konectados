@@ -50,8 +50,9 @@ export default function Resultado() {
     try {
       set(ref(database, 'setups/' + uuid()), {
         ...data
-      });
+      }).then(() => router.push('/finalizar'))
     } catch (error) {
+      console.log(error);
       
     }
   }
