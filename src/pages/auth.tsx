@@ -1,12 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { useRouter } from 'next/router';
-import { setCookie } from 'nookies';
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import styles from '../../styles/auth.module.scss';
+import styles from '../styles/auth.module.scss';
 import Head from 'next/head';
-import { auth } from '../../services/firebase';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
 
 export default function Home() {
   const [email, setEmail] = useState('')

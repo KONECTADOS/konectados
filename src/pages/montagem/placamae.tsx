@@ -75,39 +75,3 @@ export default function PlacaMae({ }) {
     </>
   )
 }
-
-// export const getStaticProps: GetStaticProps = async (ctx) => {
-//   const { data } = await api.get('', {
-//     params: {
-//       pesquisa: 'Placa mãe',
-//       situacao: 'A'
-//     },
-//   })
-
-//   const motherboards = data.retorno.produtos.map(el => {
-//     const produto = el.produto;
-
-//     const coolerRegExp = new RegExp(/COOLER/);
-//     if (produto.nome.search(coolerRegExp) !== -1) return null
-
-//     const sockets = getSocketCompatibility(produto.nome)
-//     const hasInStock = checkHasProductInStock(produto.nome, produto.codigo)
-
-//     if(!hasInStock) return null
-
-
-//     return {
-//       name: produto.nome,
-//       price: produto.preco,
-//       cpuSocket: sockets[0] || null,
-//       ramSocket: [...getRAMSocketCompatibility(produto.nome)][0]
-//     }
-//   })
-
-//   return {
-//     props: {
-//       motherboards: motherboards.filter(el => el !== null),
-//     },
-//     revalidate: 1000 * 60 * 10 // 10 minutos 
-//   }
-// }

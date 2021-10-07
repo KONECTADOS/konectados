@@ -24,7 +24,7 @@ export default function PlacaDeVideo() {
   }
 
   useEffect(() => {
-    const hasIntegratedGraphics = getHasIntegratedGraphics(setup.cpu?.name || '');
+    const hasIntegratedGraphics = getHasIntegratedGraphics(setup.cpu?.description || '');
     setIsGraphicCardRequired(!hasIntegratedGraphics);
 
     const estoqueEmCache = JSON.parse(localStorage.getItem('Konectados@stockCache'))
@@ -40,7 +40,7 @@ export default function PlacaDeVideo() {
       setGraphicCardsList(estoqueEmCache.graphicCards)
     }
 
-  }, [setup.cpu?.name])
+  }, [setup.cpu?.description])
 
   return (
     <>
