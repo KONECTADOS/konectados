@@ -24,6 +24,9 @@ export default function Resultado() {
   const router = useRouter()
   const { setup, setupPrice } = useComputer();
 
+  const whatsappNumber = '5511972264416'
+  
+
   function handleChangeEmail(email) {
     const isAValidEmail = validateEmail(email);
     if (isAValidEmail) {
@@ -132,7 +135,7 @@ export default function Resultado() {
                 placeholder="Digite aqui seu telefone"
               />
 
-              <a target="_blank" href={`https://wa.me/send?phone=${phoneNumber.replace('+', '')}&text=${message}`} onClick={saveSetupOnFirebase} rel="noreferrer">
+              <a target="_blank" href={`https://wa.me/send?phone=${whatsappNumber}&text=${message}`} onClick={saveSetupOnFirebase} rel="noreferrer">
                 <img src="/icons/whatsapp.svg" width="24px" height="24px" alt="" />
                 Enviar
               </a>
