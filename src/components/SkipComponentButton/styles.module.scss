@@ -1,8 +1,18 @@
+.wrapper{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: var(--gray-800);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .skipButton{
-  // position: absolute;
-  // bottom: 1rem;
-  // left: calc(50% - 40px);
-  // margin: 2rem 0;
+  margin: 1rem auto;
   float: right;
   height: 3rem;
   width: 120px;

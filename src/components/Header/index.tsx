@@ -44,7 +44,7 @@ export function Header() {
           <li>
             <Link href={setup.cpu && setup.motherboard ? '/montagem/cooler' : ''}>
               <a className={path === '/montagem/cooler' ? styles.currentComponent : (setup.waterCooler && styles.choosed)}>
-                Water Cooler
+                Cooler
               </a>
             </Link>
           </li>
