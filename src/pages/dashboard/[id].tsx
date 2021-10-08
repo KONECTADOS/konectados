@@ -42,9 +42,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.params
   const { konectados } = parseCookies(ctx)
 
+  if(!konectados){
+    return {
+      redirect:{
+        destination: '/auth',
+        permanent: false,
+      }
+    }
+  }
+
   const admin = JSON.parse(konectados)
   
-  if(!admin || !admin.email || !admin.id) {
+  if(!admin || !admin.email || !admin.id || !id) {
     return {
       redirect:{
         destination: '/auth',

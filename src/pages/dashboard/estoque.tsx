@@ -190,6 +190,15 @@ export default function Estoque({admin}) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { konectados } = parseCookies(ctx)
 
+  if(!konectados){
+    return {
+      redirect:{
+        destination: '/auth',
+        permanent: false,
+      }
+    }
+  }
+
   const admin = JSON.parse(konectados)
   
   if(!admin || !admin.email || !admin.id) {
