@@ -79,8 +79,17 @@ export default function Dashboard({admin}) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { konectados } = parseCookies(ctx)
 
+  if(!konectados){
+    return {
+      redirect:{
+        destination: '/auth',
+        permanent: false,
+      }
+    }
+  }
+  
   const admin = JSON.parse(konectados)
-  console.log(admin);
+
   
   if(!admin || !admin.email || !admin.id) {
     return {
