@@ -46,6 +46,7 @@ export default function Resultado() {
   async function saveSetupOnFirebase() {
     const data = {
       email: email.toLowerCase(),
+      phoneNumber,
       setup,
       price: setupPrice
     }

@@ -8,7 +8,7 @@ export function SetupsTable({ setups }) {
       <table>
         <thead>
           <tr>
-            <th>Email</th>
+            <th>Contato</th>
             <th>Preço</th>
             <th></th>
           </tr>
@@ -18,7 +18,7 @@ export function SetupsTable({ setups }) {
           {setups.map((setup, index) => {
             return (
               <tr key={index}>
-                <td>{setup.email}</td>
+                <td>{setup.email || `WhatsApp: ${setup.phoneNumber}`}</td>
                 <td>{
                   new Intl.NumberFormat('pt-BR', {
                     style: 'currency',
