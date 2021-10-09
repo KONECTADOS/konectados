@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useComputer } from '../../hooks/useComputer';
 import { useState } from 'react';
+import { useAuth } from '../../hooks/useAuth';
 
 export function Header() {
   const [isVisible, setIsVisible] = useState(false)
@@ -11,8 +12,15 @@ export function Header() {
   const path = router.asPath
 
   const { setup } = useComputer()
+  const { logOut } = useAuth();
 
   const pathRegExp = new RegExp(/montagem\/*/);
+
+  async function handleLogout(e) {
+    e.preventDefault()
+    await logOut()
+    router.push('/auth')
+  }
 
   if (path.search(pathRegExp) !== -1) {
     return (
@@ -128,6 +136,7 @@ export function Header() {
             <Link href='/dashboard/estoque'>
               <a style={{marginLeft: '2rem'}}>Atualizar estoque</a>
             </Link>
+            <a  style={{marginLeft: '2rem', color: 'var(--red-500)'}} href="#" onClick={e => handleLogout(e)}>Sair</a>
           </div>
         )
       }

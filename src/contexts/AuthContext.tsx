@@ -1,5 +1,5 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { setCookie } from 'nookies';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { setCookie, destroyCookie } from 'nookies';
 import { createContext, useState, useEffect, ReactNode } from 'react';
 import { auth } from '../services/firebase';
 
@@ -10,6 +10,7 @@ type User = {
 
 type AuthContextType = {
   user: User | undefined,
+  logOut: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<{
     error?: string;
     isAuth: boolean;
@@ -47,6 +48,17 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
   }, [])
 
+  async function logOut(){
+    try {
+      await signOut(auth)
+
+      destroyCookie(null, 'konectados')
+      setUser(null);
+    } catch (error) {
+      
+    }
+  }
+
   async function signIn(email: string, password: string) {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
@@ -62,6 +74,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         isAuth: true,
       }
     } catch (error) {
+      console.log(error, error.message);
+      
       return  {
         isAuth: false,
       }
@@ -69,7 +83,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, signIn }}>
+    <AuthContext.Provider value={{ user, signIn, logOut }}>
       {children}
     </AuthContext.Provider>
   )
