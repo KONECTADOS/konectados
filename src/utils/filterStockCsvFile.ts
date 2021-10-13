@@ -122,7 +122,6 @@ export async function divideProductsByCategory(stock): Promise<STOCK> {
     }
   }
 
-
   return {
     cpus,
     motherboards,
@@ -202,7 +201,6 @@ export async function cleanStockData(stock): Promise<Estoque> {
     return product;
   })
 
-  console.log('finalizado')
   return {
     cpus: cpus.filter(el => el !== null),
     motherboards: motherboards.filter(el => el !== null),

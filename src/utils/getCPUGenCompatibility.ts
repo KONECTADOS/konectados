@@ -2,7 +2,6 @@ export function getCPUGenCompatibility(cpu = '') {
   if(cpu.search(/[iI]\d/) !== -1){
 
     if(cpu.search(/\b2\d\d\d\b/) !== -1 || cpu.search(/3\d\d\d/) !== -1){
-      console.log(cpu.search(/\b2\d\d\d\b/), cpu.search(/3\d\d\d/))
       return ['H61', 'B75'];
     }
     if(cpu.search(/4\d\d\d/) !== -1){
@@ -29,12 +28,10 @@ export function getCPUGenCompatibility(cpu = '') {
 
   if(cpu.search(/AM4/) !== -1){
     if(cpu.search(/RYZEN [123]/) !== -1){
-      console.log(cpu)
       return ['A320', 'B450'];
     }
     
     if(cpu.search(/RYZEN 5/) !== -1){
-      console.log(cpu)
       return ['A520', 'B550'];
     }
   }

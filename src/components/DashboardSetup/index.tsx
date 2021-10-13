@@ -22,7 +22,7 @@ export function DashboardSetup({ userSetup }) {
         component={setup.motherboard}
       />
 
-      {setup.waterCooler.name !== 'skipped' && (
+      {setup.waterCooler.description !== 'skipped' && (
         <SetupCard
           component={setup.waterCooler}
         />
@@ -35,7 +35,7 @@ export function DashboardSetup({ userSetup }) {
         />
       ))}
 
-      {setup.graphicCard.name !== 'skipped' && (
+      {setup.graphicCard.description !== 'skipped' && (
         <SetupCard
           component={setup.graphicCard}
         />
@@ -70,7 +70,7 @@ export function DashboardSetup({ userSetup }) {
         component={setup.pcCabinet}
       />
 
-      {setup.fan?.name !== 'skipped' &&
+      {setup.fan?.description !== 'skipped' &&
         setup.fan?.ListOfComponents.map((el, index) => {
           return (
             <SetupCard
@@ -80,7 +80,7 @@ export function DashboardSetup({ userSetup }) {
           )
         }
         )}
-      {setup.monitor?.name !== 'skipped' && (
+      {setup.monitor?.description !== 'skipped' && (
         <SetupCard
           component={setup.monitor}
         />

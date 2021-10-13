@@ -74,14 +74,16 @@ export default function Estoque({admin}) {
   
       toast.promise(promiseStockData, {
         loading: 'Salvando estoque...',
-        error: () => {
+        error: (e) => {
+          console.log(e)
           setIsLoading(false)
           return 'Erro ao salvar estoque, tente reacarregar a página e enviar novamente.'
         } ,
         success: () => {
           toast.promise(promiseStockInfo, {
             loading: 'Salvando informações adicionais...',
-            error: () => {
+            error: (e) => {
+              console.log(e)
               setIsLoading(false)
               return 'Erro ao salvar informações adicionais, tente reacarregar a página e enviar novamente.'
             } ,
@@ -97,11 +99,11 @@ export default function Estoque({admin}) {
       
       
     } catch (error) {
+      toast.error("Um produto não mapeado foi encontrado em seu estoque, procure suporte técnico.")
       setIsLoading(false)
+      console.log(error);
       
     }
-
-    // fetchEstoque()
   }
 
   async function handleChangeFile(e) {
@@ -135,6 +137,8 @@ export default function Estoque({admin}) {
           }, []);
           const stockData = await divideProductsByCategory(stock);
           const resumedData = await cleanStockData(stockData)
+          
+          console.log(resumedData);
           
           setCsvFiles(files)
           setEstoqueData(resumedData)
