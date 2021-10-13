@@ -35,4 +35,6 @@ export function getCPUGenCompatibility(cpu = '') {
       return ['A520', 'B550'];
     }
   }
+
+  return ['-']
 }
