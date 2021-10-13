@@ -15,4 +15,6 @@ export function getPowerInWatts(produto: string) {
   if(produto.includes('300W')) return 300
   if(produto.includes('230W')) return 230
   if(produto.includes('200W')) return 200
+
+  return 0
 }

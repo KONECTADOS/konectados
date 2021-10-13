@@ -10,6 +10,6 @@ export function getRAMSocketCompatibility(produto: string) {
     sockets.push('DDR2');
   }
 
-
+  if(!sockets[0]) sockets[0] = '-'
   return sockets
 }
