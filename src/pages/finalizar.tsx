@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { ref, set } from '@firebase/database';
 import { v4 as uuid } from 'uuid';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { database } from '../services/firebase';
 
 import styles from '../styles/finalizar.module.scss';
@@ -28,7 +28,7 @@ export default function Finalizar() {
 
     setFeedback('')
     localStorage.removeItem('konecta@setup')
-    router.push('/')
+    router.push('/obrigado')
   }
 
   return (

@@ -73,7 +73,7 @@ export default function Resultado() {
     }
 
     try {
-
+      
       const sendEmailPromise = apiRoutes.post('/api/sendemail', {
         data
       });
@@ -93,8 +93,8 @@ export default function Resultado() {
     }
 
     setEmail('')
-    localStorage.removeItem('konecta@setup')
-    router.push("/finalizar")
+    // localStorage.removeItem('konecta@setup')
+    // router.push("/finalizar")
   }
 
 
@@ -152,11 +152,11 @@ export default function Resultado() {
 
             <div className={styles.sendSetupForm}>
               <p>
-                Enviar PC para o E-mail da Konectados
+                Enviar PC para o E-mail
               </p>
               <input type="email" value={email} onChange={e => handleChangeEmail(e.target.value)} placeholder="Digite aqui o seu email!" />
               <button type="button" onClick={handleSendSetup} disabled={!isEmailValid}>
-                Enviar para um vendedor
+                Enviar
               </button>
             </div>
           </div>

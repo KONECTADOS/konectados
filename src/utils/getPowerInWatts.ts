@@ -8,6 +8,7 @@ export function getPowerInWatts(produto: string) {
   if(produto.includes('550W')) return 550
   if(produto.includes('500W')) return 500
   if(produto.includes('450W')) return 450
+  if(produto.includes('430W')) return 430
   if(produto.includes('420W')) return 420
   if(produto.includes('400W')) return 400
   if(produto.includes('350W')) return 350

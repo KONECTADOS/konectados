@@ -1,17 +1,6 @@
 import { doc, getDoc } from "firebase/firestore";
 import { Dispatch, SetStateAction } from "react";
-import { getSocketCompatibility } from "../utils/getSocketCompatibility";
 import { firestore } from "./firebase";
-
-interface CPUS {
-  description: string;
-  price: number;
-  skuCode: number;
-  images: string[];
-  stock: number;
-  cpuSocket: string;
-}
-
 
 export async function fetchStock(component: string,changeStateFunction: Dispatch<SetStateAction<any[]>>) {
   const docRef = doc(firestore, 'estoque', 'atual');

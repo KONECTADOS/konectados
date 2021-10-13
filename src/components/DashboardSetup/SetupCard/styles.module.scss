@@ -15,6 +15,7 @@
     height: 1.1rem;
     accent-color: var(--red-500);
     opacity: 0.2;
+    cursor: pointer;
 
     &:checked {
       opacity: 1;
