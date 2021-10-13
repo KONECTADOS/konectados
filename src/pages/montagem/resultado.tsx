@@ -25,7 +25,7 @@ export default function Resultado() {
   const { setup, setupPrice } = useComputer();
 
   const whatsappNumber = '5511972264416'
-  
+
 
   function handleChangeEmail(email) {
     const isAValidEmail = validateEmail(email);
@@ -54,10 +54,13 @@ export default function Resultado() {
     try {
       set(ref(database, 'setups/' + uuid()), {
         ...data
-      }).then(() => router.push('/finalizar'))
+      }).then(() => {
+        localStorage.removeItem('konecta@setup')
+        router.push('/finalizar')
+      })
     } catch (error) {
       console.log(error);
-      
+
     }
   }
 
@@ -90,6 +93,7 @@ export default function Resultado() {
     }
 
     setEmail('')
+    localStorage.removeItem('konecta@setup')
     router.push("/finalizar")
   }
 
