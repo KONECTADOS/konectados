@@ -18,7 +18,8 @@ import 'react-phone-input-2/lib/style.css'
 
 export default function Resultado() {
   const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
+  const [nameWhats, setNameWhats] = useState('')
+  const [nameEmail, setNameEmail] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [isEmailValid, setIsEmailValid] = useState(false)
   const router = useRouter()
@@ -40,13 +41,14 @@ export default function Resultado() {
   let message: string;
 
   if (process.browser) {
-    message = window.encodeURI(generateWhatsAppMessage({ ...setup, price: setupPrice }, name, phoneNumber))
+    message = window.encodeURI(generateWhatsAppMessage({ ...setup, price: setupPrice }, nameWhats, phoneNumber))
   }
 
   async function saveSetupOnFirebase() {
     const data = {
       email: email.toLowerCase(),
       phoneNumber,
+      name: nameWhats,
       setup,
       price: setupPrice
     }
@@ -69,6 +71,7 @@ export default function Resultado() {
     const data = {
       email: email.toLowerCase(),
       setup,
+      name: nameEmail,
       price: setupPrice
     }
 
@@ -130,7 +133,7 @@ export default function Resultado() {
               <p>
                 Enviar PC para o WhatsApp da Konectados
               </p>
-              <input type="text" placeholder="Digite aqui seu nome" value={name} onChange={e => setName(e.target.value)} />
+              <input type="text" placeholder="Digite aqui seu nome" value={nameWhats} onChange={e => setNameWhats(e.target.value)} />
 
               <PhoneInput
                 country={'br'}
@@ -154,6 +157,8 @@ export default function Resultado() {
               <p>
                 Enviar PC para o E-mail
               </p>
+              <input type="text" placeholder="Digite aqui seu nome" value={nameEmail} onChange={e => setNameEmail(e.target.value)} />
+
               <input type="email" value={email} onChange={e => handleChangeEmail(e.target.value)} placeholder="Digite aqui o seu email!" />
               <button type="button" onClick={handleSendSetup} disabled={!isEmailValid}>
                 Enviar
