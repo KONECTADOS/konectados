@@ -180,7 +180,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
             <tr>
               <td style="color: #fff; padding: .75rem 1rem; border-bottom: 1px solid #272323;">${setup.graphicCard.description}</td>
               <td style="color: #fff; padding: .75rem 1rem; border-bottom: 1px solid #272323;">-</td>
-              <td style="color: #fff; padding: .75rem 1rem; border-bottom: 1px solid #272323;">${setup.graphicCard.vRamSizeInGb} Gb</td>
+              <td style="color: #fff; padding: .75rem 1rem; border-bottom: 1px solid #272323;">${setup.graphicCard.sizeInGb} Gb</td>
               <td style="color: #fff; padding: .75rem 1rem; border-bottom: 1px solid #272323;">${
                 new Intl.NumberFormat('pt-BR', {
                   style: 'currency',
