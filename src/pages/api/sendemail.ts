@@ -5,7 +5,7 @@ import * as nodemailer from 'nodemailer';
 export default async (request: NextApiRequest, response: NextApiResponse) => {
   if(request.method !== 'POST') return response.status(404)
   const { data } = request.body
-  const {setup, email, price} = data
+  const {setup, email, price, name} = data
 
   // PRODUÇÃO
   const transporter = nodemailer.createTransport({
@@ -180,7 +180,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
             <tr>
               <td style="color: #fff; padding: .75rem 1rem; border-bottom: 1px solid #272323;">${setup.graphicCard.description}</td>
               <td style="color: #fff; padding: .75rem 1rem; border-bottom: 1px solid #272323;">-</td>
-              <td style="color: #fff; padding: .75rem 1rem; border-bottom: 1px solid #272323;">${setup.graphicCard.vRamSizeInGb} Gb</td>
+              <td style="color: #fff; padding: .75rem 1rem; border-bottom: 1px solid #272323;">${setup.graphicCard.sizeInGb} Gb</td>
               <td style="color: #fff; padding: .75rem 1rem; border-bottom: 1px solid #272323;">${
                 new Intl.NumberFormat('pt-BR', {
                   style: 'currency',
@@ -286,13 +286,14 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         <a style="display: inline-block; padding: 1rem 0; width: 100%; color: #fff; background: #ef233c; text-decoration: none; font-size: 1rem; border-radius: .5rem; text-align: center; margin-top: 16px;" href="https://www.konectados.com.br/" target="_blank" rel="noreferrer">Visite nossa loja</a>
       </div>
     `
-  )
+  );
 
   try {
 
     const sendEmail = await transporter.sendMail({
       from: `"Konectados" <${process.env.SENDER_ADDRESS}>`, // sender address
       to: email, // list of receivers
+      bcc: ['konectados@konectados.com.br'],
       subject: "Meu PC ✔", // Subject line
       text: "Setup Konectados", // plain text body
       html, // html body
@@ -300,9 +301,11 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     console.log("Message sent: %s", sendEmail.messageId);
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(sendEmail));
+    return response.json({ status: 'send' })
   } catch (error) {
-    console.log('aqui')
-    console.log(error)
+    console.log(error);
+    
+    return response.status(400).json({ status: 'error', message: error.message })
   }
-  return response.json({ status: 'send' })
 }
+

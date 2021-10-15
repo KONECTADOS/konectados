@@ -91,9 +91,9 @@ export default function Resultado() {
         ...data
       });
 
-      setEmail('')
-      localStorage.removeItem('konecta@setup')
-      router.push("/finalizar")
+      // setEmail('')
+      // localStorage.removeItem('konecta@setup')
+      // router.push("/finalizar")
     } catch (error) {
       console.log(error)
     }
