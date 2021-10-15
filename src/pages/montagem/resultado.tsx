@@ -38,12 +38,12 @@ export default function Resultado() {
     setEmail(email)
   }
 
-  let message: string;
+  // let message: string;
 
-  if (process.browser) {
-    message = window.encodeURI(generateWhatsAppMessage({ ...setup, price: setupPrice }, nameWhats, phoneNumber))
-  }
-
+  // if (process.browser) {
+  //   message = generateWhatsAppMessage({ ...setup, price: setupPrice }, nameWhats, phoneNumber)
+  // }
+  
   async function saveSetupOnFirebase() {
     const data = {
       email: email.toLowerCase(),
@@ -52,12 +52,15 @@ export default function Resultado() {
       setup,
       price: setupPrice
     }
-
+    
     try {
-      set(ref(database, 'setups/' + uuid()), {
+      const id = uuid()
+      set(ref(database, 'setups/' + id), {
         ...data
       }).then(() => {
         localStorage.removeItem('konecta@setup')
+        const message = generateWhatsAppMessage({ ...setup, price: setupPrice, id }, nameWhats, phoneNumber)
+        window.open(`https://wa.me/send?phone=${whatsappNumber}&text=${message}`)
         router.push('/finalizar')
       })
     } catch (error) {
@@ -91,9 +94,9 @@ export default function Resultado() {
         ...data
       });
 
-      // setEmail('')
-      // localStorage.removeItem('konecta@setup')
-      // router.push("/finalizar")
+      setEmail('')
+      localStorage.removeItem('konecta@setup')
+      router.push("/finalizar")
     } catch (error) {
       console.log(error)
     }
@@ -143,10 +146,10 @@ export default function Resultado() {
                 placeholder="Digite aqui seu telefone"
               />
 
-              <a target="_blank" href={`https://wa.me/send?phone=${whatsappNumber}&text=${message}`} onClick={saveSetupOnFirebase} rel="noreferrer">
+              <button onClick={saveSetupOnFirebase}>
                 <img src="/icons/whatsapp.svg" width="24px" height="24px" alt="" />
                 Enviar
-              </a>
+              </button>
             </div>
 
             <div className={styles.divider}>

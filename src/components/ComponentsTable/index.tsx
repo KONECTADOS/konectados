@@ -4,7 +4,6 @@ import { useComputer } from '../../hooks/useComputer';
 import styles from './styles.module.scss';
 import Image from 'next/image';
 import { SkipComponentButton } from '../SkipComponentButton';
-import { ProductModal } from '../ProductModal';
 
 export function ComponentsTable({ products, componentName, onChoose, moreThanOne = false, handleOpenModal }) {
   const { insertComponentIntoSetup, setup } = useComputer();

@@ -2,14 +2,14 @@ import { SetupCard } from './SetupCard';
 import styles from './styles.module.scss';
 
 export function DashboardSetup({ userSetup }) {
-
+  
   const { setup } = userSetup
   return (
     <section className={styles.container}>
       <header>
         <h2>Especificações</h2>
 
-        <p>{userSetup.email} • <span>{new Intl.NumberFormat('pt-BR', {
+        <p>{userSetup.email || `WhatsApp: +${userSetup.phoneNumber}`} • <span>{new Intl.NumberFormat('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         }).format(userSetup.price)}</span></p>

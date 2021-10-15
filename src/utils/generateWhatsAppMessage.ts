@@ -17,18 +17,7 @@ export function generateWhatsAppMessage(setup, name: string, phoneNumber: string
 
   Olá, meu nome é ${name}.
   Tel/Cel: ${phoneNumber}
-
-  Meu PC:
-  *Processador:* ${setup.cpu?.description.slice(0, 50)}...
-  *Placa mãe:* ${setup.motherboard?.description.slice(0, 50)}...
-  ${setup.waterCooler?.description === 'skipped' ? "" : `*Cooler:* ${setup.waterCooler?.description.slice(0, 50)}...`}
-  *Memória RAM:* ${rmNames.slice(0, 50)}...
-  ${setup.graphicCard?.description === 'skipped' ? '' : `*Placa de vídeo:* ${setup.graphicCard?.description.slice(0, 50)}...`}
-  ${setup.hardDisk?.description === 'skipped' ? "" : `*HDs:* ${hdNames.slice(0, 50)}...`}
-  ${setup.SSD?.description === 'skipped' ? "" : `*SSDs:* ${ssdNames.slice(0, 50)}...`}
-  *Fonte:* ${setup.powerSupply?.description.slice(0, 50)}...
-  *Gabinete:* ${setup.pcCabinet?.description.slice(0, 50)}...
-  ${setup.fan?.description === 'skipped' ? "" : `*FANs:* ${fanNames.slice(0, 50)}...`}
+  Link do meu PC: https://monteseupc.konectados.com.br/pc/${setup.id}
 
   *Valor:* ${new Intl.NumberFormat('pt-BR', {style: 'currency',currency: 'BRL',}).format(setup.price)}
 `
