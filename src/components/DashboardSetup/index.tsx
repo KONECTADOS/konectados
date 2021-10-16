@@ -5,13 +5,13 @@ import { database } from '../../services/firebase';
 import { SetupCard } from './SetupCard';
 import styles from './styles.module.scss';
 
-export function DashboardSetup({ userSetup }) {
+export function DashboardSetup({ userSetup, isUser }: { userSetup: any; isUser?: boolean }) {
   const [isLoading, setIsLoading] = useState(false)
   const { setup } = userSetup
 
   async function deleteSetup() {
-    try {      
-      
+    try {
+
       setIsLoading(true);
       await remove(ref(database, 'setups/' + userSetup.id))
       router.push('/dashboard')
@@ -78,10 +78,14 @@ export function DashboardSetup({ userSetup }) {
             )
           })}
 
-          <div className={styles.changeStatus}>
-            <button onClick={updateSetup} className={styles.update}>Marcar como {userSetup.montado ? 'não montado': 'montado'}</button>
-            <button onClick={deleteSetup}>Apagar</button>
-          </div>
+          {isUser ? (
+            <></>
+          ) : (
+            <div className={styles.changeStatus}>
+              <button onClick={updateSetup} className={styles.update}>Marcar como {userSetup.montado ? 'não montado' : 'montado'}</button>
+              <button onClick={deleteSetup}>Apagar</button>
+            </div>
+          )}
         </>
       )}
     </section>
