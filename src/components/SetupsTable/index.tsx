@@ -16,7 +16,6 @@ export function SetupsTable({ setups }) {
 
         <tbody>
           {setups.map((setup, index) => {
-            console.log(setup.id);
             
             return (
               <tr key={index}>

@@ -36,7 +36,7 @@ export default function MemoriaRam() {
   return (
     <>
       <Head>
-        <title>Memória RAM | Konectados</title>
+        <title>SSD | Konectados</title>
       </Head>
 
       {productModal && (

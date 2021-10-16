@@ -50,7 +50,8 @@ export default function Resultado() {
       phoneNumber,
       name: nameWhats,
       setup,
-      price: setupPrice
+      price: setupPrice,
+      montado: false,
     }
     
     try {
@@ -75,7 +76,8 @@ export default function Resultado() {
       email: email.toLowerCase(),
       setup,
       name: nameEmail,
-      price: setupPrice
+      price: setupPrice,
+      montado: false,
     }
 
     try {
@@ -146,7 +148,7 @@ export default function Resultado() {
                 placeholder="Digite aqui seu telefone"
               />
 
-              <button onClick={saveSetupOnFirebase}>
+              <button onClick={saveSetupOnFirebase} className={styles.sendWhatsapp}>
                 <img src="/icons/whatsapp.svg" width="24px" height="24px" alt="" />
                 Enviar
               </button>

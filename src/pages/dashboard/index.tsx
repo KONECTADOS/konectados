@@ -13,49 +13,56 @@ import { parseCookies } from 'nookies';
 
 export default function Dashboard({admin}) {
   const [setups, setSetups] = useState([])
+  const [montados, setMontados] = useState([])
   const [feedbacks, setFeedbacks] = useState([])
   const {user} = useAuth()
 
   useEffect(() => {
     if(user && user?.id && (user?.email !== admin.email || user?.id !== admin.id)){
       router.push('/auth')
+    } else {
+      const fetchData = async () => {
+        await get(ref(database, 'setups/')).then(snapshot => {
+          const data = snapshot.val()
+          const newSetup = []
+          for (const key in data) {
+            if (Object.prototype.hasOwnProperty.call(data, key)) {
+              newSetup.push({ ...data[key], id: key, montado: data[key].montado || false })
+            }
+          }
+          let pcsMontados = newSetup.filter(el => el.montado === true);
+          let pcs = newSetup.filter(el => el.montado === false)
+          console.log(pcs, pcsMontados, newSetup);
+          
+          setSetups(pcs)
+          setMontados(pcsMontados)
+          
+        });
+    
+        await get(ref(database, 'feedbacks/')).then(snapshot => {
+          const data = snapshot.val()
+          const newFeedbacks = []
+          for (const key in data) {
+            if (Object.prototype.hasOwnProperty.call(data, key)) {
+              newFeedbacks.push({ ...data[key], id: key })
+            }
+          }
+          setFeedbacks(newFeedbacks)
+        });
+      }
+  
+      const promise = user ? fetchData() : null
+  
+      user && toast.promise(promise, {
+        loading: 'Carregando...',
+        success: 'Dashboard carregado!',
+        error: () => {
+          if(!user) router.push('/auth')
+          return 'Erro ao carregar setups, tente recarregar a página.'
+        },
+      })
     }
 
-    const fetchData = async () => {
-      await get(ref(database, 'setups/')).then(snapshot => {
-        const data = snapshot.val()
-        const newSetup = []
-        for (const key in data) {
-          if (Object.prototype.hasOwnProperty.call(data, key)) {
-            newSetup.push({ ...data[key], id: key })
-          }
-        }
-  
-        setSetups(newSetup)
-      });
-  
-      await get(ref(database, 'feedbacks/')).then(snapshot => {
-        const data = snapshot.val()
-        const newFeedbacks = []
-        for (const key in data) {
-          if (Object.prototype.hasOwnProperty.call(data, key)) {
-            newFeedbacks.push({ ...data[key], id: key })
-          }
-        }
-        setFeedbacks(newFeedbacks)
-      });
-    }
-
-    const promise = user ? fetchData() : null
-
-    user && toast.promise(promise, {
-      loading: 'Carregando...',
-      success: 'Dashboard carregado!',
-      error: () => {
-        if(!user) router.push('/auth')
-        return 'Erro ao carregar setups, tente recarregar a página.'
-      },
-    })
   }, [user, admin])
 
   return (
@@ -70,6 +77,11 @@ export default function Dashboard({admin}) {
 
         <Feedbacks
           feedbacks={feedbacks}
+        />
+
+        <h2>PCs montados</h2>
+        <SetupsTable
+          setups={montados}
         />
       </section>
     </main>
