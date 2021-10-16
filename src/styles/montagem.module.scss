@@ -181,7 +181,7 @@
       display: flex;
       gap: 0.5rem;
       align-items: center;
-      margin: 0.5rem 0 1rem;
+      // margin: 0.5rem 0 1rem;
       // max-width: 360px;
 
       label {
@@ -200,7 +200,7 @@
       background: var(--gray-800);
     }
 
-    a{
+    button.sendWhatsapp{
       display: flex;
       align-items: center;
       justify-content: center;
@@ -211,6 +211,7 @@
       transition: .2s;
       font-weight: bold;
       position: relative;
+      margin-top: 0.75rem;
 
       img{
         position: absolute;
@@ -224,7 +225,7 @@
       }
     }
 
-    button {
+    button:not(.sendWhatsapp) {
       margin-top: 0.75rem;
       cursor: pointer;
       background: var(--red-400);

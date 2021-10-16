@@ -16,6 +16,7 @@ export function SetupsTable({ setups }) {
 
         <tbody>
           {setups.map((setup, index) => {
+            
             return (
               <tr key={index}>
                 <td>{setup.name || 'Sem nome'} | {setup.email || `WhatsApp: ${setup.phoneNumber}`}</td>

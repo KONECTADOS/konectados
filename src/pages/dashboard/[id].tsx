@@ -23,10 +23,10 @@ export default function Setup ({ setupId, admin }) {
       if(!setupData){
         router.push('/dashboard')
       }
-      setSetup(setupData)
+      setSetup({...setupData, id: setupId})
     })
   }, [setupId, user, admin])
-
+ 
   return (
     <main>
       <section>
