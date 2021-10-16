@@ -18,13 +18,22 @@ export default function PC({ id }: PCProps) {
   const [validator, setValidator] = useState('');
   const [validationType, setValidationType] = useState('');
 
+  
   useEffect(() => {
+    const fetchSetup = async () => {
+      const snapshot = await get(ref(database, 'setups/' + id))
+      const data = snapshot.val();
+  
+      setSetup(data);
+      return data
+    }
+    
     setIsLoading(true)
     fetchSetup().then(data => {
       data.email ? setValidationType('E-mail') : setValidationType('Telefone')
       setIsLoading(false)
     })
-  }, [])
+  }, [id])
 
   async function verify() {
     console.log(validator, setup)
@@ -38,15 +47,6 @@ export default function PC({ id }: PCProps) {
       }
     }
   }
-
-  const fetchSetup = async () => {
-    const snapshot = await get(ref(database, 'setups/' + id))
-    const data = snapshot.val();
-
-    setSetup(data);
-    return data
-  }
-
 
   return (
     <>

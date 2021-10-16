@@ -59,7 +59,7 @@ export default function Resultado() {
         ...data
       }).then(() => {
         localStorage.removeItem('konecta@setup')
-        const message = generateWhatsAppMessage({ ...setup, price: setupPrice, id }, nameWhats, phoneNumber)
+        const message = window.encodeURI(generateWhatsAppMessage({ ...setup, price: setupPrice, id }, nameWhats, phoneNumber))
         window.open(`https://wa.me/send?phone=${whatsappNumber}&text=${message}`)
         router.push('/finalizar')
       })
