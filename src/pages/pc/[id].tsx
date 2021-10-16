@@ -62,6 +62,7 @@ export default function PC({ id }: PCProps) {
             {setup && isValid ? (
               <DashboardSetup
                 userSetup={setup}
+                isUser
               />
             ) : (
               <div className={styles.validation}>
@@ -81,9 +82,6 @@ export default function PC({ id }: PCProps) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query;
-
-  console.log(id);
-
 
   return {
     props: {

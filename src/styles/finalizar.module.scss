@@ -139,14 +139,20 @@
 @media (max-width: 768px){
   .container{
     flex-direction: column;
-    padding-bottom: 4rem;
+    padding: 2rem 2rem 4rem;
 
     .image{
       margin: 4rem 0;
     }
 
     .pageContent{
-      margin-top: 15rem;
+      margin-top: 5rem;
+      h5{
+        font-size: 1.125rem;
+      }
+      h2{
+        font-size: 2.5rem;
+      }
     }
   }
 }
