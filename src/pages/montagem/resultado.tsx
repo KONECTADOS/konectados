@@ -15,6 +15,7 @@ import { validateEmail } from "../../utils/validateEmail";
 import { generateWhatsAppMessage } from "../../utils/generateWhatsAppMessage";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import { generateHTMLEmail } from "../../utils/generateHTMLEmail";
 
 export default function Resultado() {
   const [email, setEmail] = useState('')
@@ -100,16 +101,10 @@ export default function Resultado() {
   }
 
   async function handleSendSetup() {
-
+    const html = generateHTMLEmail(setup, setupPrice, nameEmail, fanNames, ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb)
     const data = {
       email: email.toLowerCase(),
-      setup,
-      name: nameEmail,
-      price: setupPrice,
-      montado: false,
-      info: {
-        fanNames, ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb,
-      }
+      html,
     }
 
     try {
