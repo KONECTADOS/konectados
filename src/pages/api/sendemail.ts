@@ -47,16 +47,19 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       html, // html body
     }
     // console.log(options)
-    const sendEmail = await transporter.sendMail(options);
+    transporter.sendMail(options, function (error, info) {
+      if (error) {
+        console.log('error sending email: ' + error);
+        return response.status(400).json({ status: 'error', message: error })
+      } else {
+        console.log('email sent' + info.response);
+        return response.json({ status: 'send' })
+      }
+    });
 
-    console.log('email enviado');
-    console.log("Message sent: %s", sendEmail.messageId);
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(sendEmail));
-    return response.json({ status: 'send' })
   } catch (error) {
     console.log(error);
 
-    return response.status(400).json({ status: 'error', message: error.message })
   }
 }
 
