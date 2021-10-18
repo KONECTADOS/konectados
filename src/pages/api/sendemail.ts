@@ -23,26 +23,26 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     },
   });
   
-  await transporter.verify(function (error, success) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Server is ready to take our messages");
-    }
-  });
-
+  
   try {
+    await transporter.verify(function (error, success) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Server is ready to take our messages");
+      }
+    });
     
-    const options = {
-      from: `"Konectados" <${process.env.SENDER_ADDRESS}>`, // sender address
-      to: email, // list of receivers
-      bcc: 'konectados@konectados.com.br',
-      subject: "Meu PC ✔", // Subject line
-      text: "Setup Konectados", // plain text body
-      html, // html body
-    }
-    // console.log(options)
-    const sendEmail = await transporter.sendMail(options);
+    // const options = {
+    //   from: `"Konectados" <${process.env.SENDER_ADDRESS}>`, // sender address
+    //   to: email, // list of receivers
+    //   bcc: 'konectados@konectados.com.br',
+    //   subject: "Meu PC ✔", // Subject line
+    //   text: "Setup Konectados", // plain text body
+    //   html, // html body
+    // }
+    // // console.log(options)
+    // const sendEmail = await transporter.sendMail(options);
 
     console.log('email enviado');
     console.log("Message sent: %s", sendEmail.messageId);
