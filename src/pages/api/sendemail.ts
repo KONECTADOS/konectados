@@ -41,7 +41,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       text: "Setup Konectados", // plain text body
       html, // html body
     }
-    console.log(options)
+    // console.log(options)
     const sendEmail = await transporter.sendMail(options);
 
     console.log('email enviado');
