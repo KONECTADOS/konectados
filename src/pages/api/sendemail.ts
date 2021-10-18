@@ -4,9 +4,9 @@ import * as nodemailer from 'nodemailer';
 import { generateHTMLEmail } from '../../utils/generateHTMLEmail';
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
-  if(request.method !== 'POST') return response.status(404)
+  if (request.method !== 'POST') return response.status(404)
   const { data } = request.body
-  const {setup, email, price, name} = data
+  const { setup, email, price, name, info } = data
 
   // PRODUÇÃO
   const transporter = nodemailer.createTransport({
@@ -18,7 +18,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       pass: process.env.EMAIL_ACCOUNT_PASSWORD,
     },
     tls: {
-        rejectUnauthorized: false,
+      rejectUnauthorized: false,
     },
   });
 
@@ -36,30 +36,32 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   //   },
   // });
 
-  const fanNames = !(setup.fan.description === 'skipped')  ?setup.fan.ListOfComponents.reduce((ac, el) => {
-    return ac === '' ? el.description : `${ac}, ${el.description}`
-  }, '') : null;
-  const ramMemoryNames = setup.ramMemory.ListOfComponents.reduce((ac, el) => {
-    return ac === '' ? el.description : `${ac}, ${el.description}`
-  }, '')
-  const ramMemorySizeInGb = setup.ramMemory.ListOfComponents.reduce((ac, el) => {
-    return ac + (el.ramSizeInGb * el.amount);
-  }, 0)
+  // const fanNames = !(setup.fan.description === 'skipped')  ?setup.fan.ListOfComponents.reduce((ac, el) => {
+  //   return ac === '' ? el.description : `${ac}, ${el.description}`
+  // }, '') : null;
+  // const ramMemoryNames = setup.ramMemory.ListOfComponents.reduce((ac, el) => {
+  //   return ac === '' ? el.description : `${ac}, ${el.description}`
+  // }, '')
+  // const ramMemorySizeInGb = setup.ramMemory.ListOfComponents.reduce((ac, el) => {
+  //   return ac + (el.ramSizeInGb * el.amount);
+  // }, 0)
 
-  const hdNames = !(setup.hardDisk.description === 'skipped')  ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
-    return ac === '' ? el.description : `${ac}, ${el.description}`
-  }, '') : null
-  const hdSizeInGb = !(setup.hardDisk.description === 'skipped') ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
-    return ac + (el.sizeInGb * el.amount);
-  }, 0) : null
+  // const hdNames = !(setup.hardDisk.description === 'skipped')  ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
+  //   return ac === '' ? el.description : `${ac}, ${el.description}`
+  // }, '') : null
+  // const hdSizeInGb = !(setup.hardDisk.description === 'skipped') ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
+  //   return ac + (el.sizeInGb * el.amount);
+  // }, 0) : null
 
-  const ssdNames = !(setup.SSD.description === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
-    return ac === '' ? el.description : `${ac}, ${el.description}`
-  }, '') : null
+  // const ssdNames = !(setup.SSD.description === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
+  //   return ac === '' ? el.description : `${ac}, ${el.description}`
+  // }, '') : null
 
-  const ssdSizeInGb = !(setup.SSD.description === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
-    return ac + (el.sizeInGb * el.amount);
-  }, 0) : null
+  // const ssdSizeInGb = !(setup.SSD.description === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
+  //   return ac + (el.sizeInGb * el.amount);
+  // }, 0) : null
+
+  const { fanNames, ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb } = info
 
   const html = generateHTMLEmail(setup, price, name, fanNames, ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb)
 
@@ -79,7 +81,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     return response.json({ status: 'send' })
   } catch (error) {
     console.log(error);
-    
+
     return response.status(400).json({ status: 'error', message: error.message })
   }
 }
