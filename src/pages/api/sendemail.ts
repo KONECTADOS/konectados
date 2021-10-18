@@ -1,7 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as nodemailer from 'nodemailer';
-import { generateHTMLEmail } from '../../utils/generateHTMLEmail';
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method !== 'POST') return response.status(404)
@@ -23,20 +22,28 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       rejectUnauthorized: false,
     },
   });
-  console.log('após transporter');
+  
+  transporter.verify(function (error, success) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Server is ready to take our messages");
+    }
+  });
 
   try {
     
-    console.log('Envio de email');
-    const sendEmail = await transporter.sendMail({
+    const options = {
       from: `"Konectados" <${process.env.SENDER_ADDRESS}>`, // sender address
       to: email, // list of receivers
-      bcc: ['konectados@konectados.com.br'],
+      bcc: 'konectados@konectados.com.br',
       subject: "Meu PC ✔", // Subject line
       text: "Setup Konectados", // plain text body
       html, // html body
-    });
-    
+    }
+    console.log(options)
+    const sendEmail = await transporter.sendMail(options);
+
     console.log('email enviado');
     console.log("Message sent: %s", sendEmail.messageId);
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(sendEmail));
