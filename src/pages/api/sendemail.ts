@@ -8,7 +8,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   const { email, html } = data
 
   console.log('antes do transporter');
-  
+
   // PRODUÇÃO
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -20,12 +20,14 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     },
     tls: {
       rejectUnauthorized: false,
+      ciphers: 'SSLv3'
     },
+    requireTLS: true,//this parameter solved problem for me
   });
-  
-  
-  
-  
+
+
+
+
   try {
     await transporter.verify(function (error, success) {
       if (error) {
@@ -34,7 +36,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         console.log("Server is ready to take our messages");
       }
     });
-    
+
     const options = {
       from: `"Konectados" <${process.env.SENDER_ADDRESS}>`, // sender address
       to: email, // list of receivers
