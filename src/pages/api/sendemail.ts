@@ -23,7 +23,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     },
   });
   
-  transporter.verify(function (error, success) {
+  await transporter.verify(function (error, success) {
     if (error) {
       console.log(error);
     } else {
