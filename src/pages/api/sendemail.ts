@@ -11,8 +11,9 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
   // PRODUÇÃO
   const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
+    host: 'smtp.konectados.com.br',
+    port: 587,
+    secureConnection: false,
     secure: false,
     auth: {
       user: process.env.EMAIL_ACCOUNT_USER,
