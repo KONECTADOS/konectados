@@ -8,6 +8,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   const { data } = request.body
   const { setup, email, price, name, info } = data
 
+  console.log('antes do transporter');
+  
   // PRODUÇÃO
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -21,6 +23,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       rejectUnauthorized: false,
     },
   });
+  console.log('após transporter');
 
   // DESENVOLVIMENTO
   // let testAccount = await nodemailer.createTestAccount();
@@ -65,8 +68,11 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
   const html = generateHTMLEmail(setup, price, name, fanNames, ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb)
 
+  console.log('Mensagem gerada');
+  
   try {
-
+    
+    console.log('Envio de email');
     const sendEmail = await transporter.sendMail({
       from: `"Konectados" <${process.env.SENDER_ADDRESS}>`, // sender address
       to: email, // list of receivers
@@ -75,7 +81,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       text: "Setup Konectados", // plain text body
       html, // html body
     });
-
+    
+    console.log('email enviado');
     console.log("Message sent: %s", sendEmail.messageId);
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(sendEmail));
     return response.json({ status: 'send' })
