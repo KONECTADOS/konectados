@@ -73,7 +73,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   try {
     
     console.log('Envio de email');
-    const sendEmail = await transporter.sendMail({
+    const sendEmail = transporter.sendMail({
       from: `"Konectados" <${process.env.SENDER_ADDRESS}>`, // sender address
       to: email, // list of receivers
       bcc: ['konectados@konectados.com.br'],
