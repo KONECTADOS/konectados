@@ -25,7 +25,36 @@ export default function Resultado() {
   const router = useRouter()
   const { setup, setupPrice } = useComputer();
 
-  const whatsappNumber = '5511972264416'
+  const whatsappNumber = '5511972264416';
+  let fanNames, ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb
+
+  if (typeof window !== 'undefined') {
+    fanNames = !(setup.fan?.description === 'skipped') ? setup.fan.ListOfComponents.reduce((ac, el) => {
+      return ac === '' ? el.description : `${ac}, ${el.description}`
+    }, '') : null;
+    ramMemoryNames = setup.ramMemory?.ListOfComponents.reduce((ac, el) => {
+      return ac === '' ? el.description : `${ac}, ${el.description}`
+    }, '')
+    ramMemorySizeInGb = setup.ramMemory?.ListOfComponents.reduce((ac, el) => {
+      return ac + (el.ramSizeInGb * el.amount);
+    }, 0)
+
+    hdNames = !(setup.hardDisk?.description === 'skipped') ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
+      return ac === '' ? el.description : `${ac}, ${el.description}`
+    }, '') : null
+    hdSizeInGb = !(setup.hardDisk?.description === 'skipped') ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
+      return ac + (el.sizeInGb * el.amount);
+    }, 0) : null
+
+    ssdNames = !(setup.SSD?.description === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
+      return ac === '' ? el.description : `${ac}, ${el.description}`
+    }, '') : null
+
+    ssdSizeInGb = !(setup.SSD?.description === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
+      return ac + (el.sizeInGb * el.amount);
+    }, 0) : null
+
+  }
 
 
   function handleChangeEmail(email) {
@@ -43,7 +72,7 @@ export default function Resultado() {
   // if (process.browser) {
   //   message = generateWhatsAppMessage({ ...setup, price: setupPrice }, nameWhats, phoneNumber)
   // }
-  
+
   async function saveSetupOnFirebase() {
     const data = {
       email: email.toLowerCase(),
@@ -53,7 +82,7 @@ export default function Resultado() {
       price: setupPrice,
       montado: false,
     }
-    
+
     try {
       const id = uuid()
       set(ref(database, 'setups/' + id), {
@@ -78,10 +107,13 @@ export default function Resultado() {
       name: nameEmail,
       price: setupPrice,
       montado: false,
+      info: {
+        fanNames, ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb,
+      }
     }
 
     try {
-      
+
       const sendEmailPromise = apiRoutes.post('/api/sendemail', {
         data
       });
