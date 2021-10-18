@@ -6,7 +6,7 @@ import { generateHTMLEmail } from '../../utils/generateHTMLEmail';
 export default async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method !== 'POST') return response.status(404)
   const { data } = request.body
-  const { setup, email, price, name, info } = data
+  const { email, html } = data
 
   console.log('antes do transporter');
   
@@ -25,55 +25,10 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   });
   console.log('após transporter');
 
-  // DESENVOLVIMENTO
-  // let testAccount = await nodemailer.createTestAccount();
-
-  // // create reusable transporter object using the default SMTP transport
-  // let transporter = nodemailer.createTransport({
-  //   host: "smtp.ethereal.email",
-  //   port: 587,
-  //   secure: false, // true for 465, false for other ports
-  //   auth: {
-  //     user: testAccount.user, // generated ethereal user
-  //     pass: testAccount.pass, // generated ethereal password
-  //   },
-  // });
-
-  // const fanNames = !(setup.fan.description === 'skipped')  ?setup.fan.ListOfComponents.reduce((ac, el) => {
-  //   return ac === '' ? el.description : `${ac}, ${el.description}`
-  // }, '') : null;
-  // const ramMemoryNames = setup.ramMemory.ListOfComponents.reduce((ac, el) => {
-  //   return ac === '' ? el.description : `${ac}, ${el.description}`
-  // }, '')
-  // const ramMemorySizeInGb = setup.ramMemory.ListOfComponents.reduce((ac, el) => {
-  //   return ac + (el.ramSizeInGb * el.amount);
-  // }, 0)
-
-  // const hdNames = !(setup.hardDisk.description === 'skipped')  ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
-  //   return ac === '' ? el.description : `${ac}, ${el.description}`
-  // }, '') : null
-  // const hdSizeInGb = !(setup.hardDisk.description === 'skipped') ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
-  //   return ac + (el.sizeInGb * el.amount);
-  // }, 0) : null
-
-  // const ssdNames = !(setup.SSD.description === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
-  //   return ac === '' ? el.description : `${ac}, ${el.description}`
-  // }, '') : null
-
-  // const ssdSizeInGb = !(setup.SSD.description === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
-  //   return ac + (el.sizeInGb * el.amount);
-  // }, 0) : null
-
-  const { fanNames, ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb } = info
-
-  const html = generateHTMLEmail(setup, price, name, fanNames, ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb)
-
-  console.log('Mensagem gerada');
-  
   try {
     
     console.log('Envio de email');
-    const sendEmail = transporter.sendMail({
+    const sendEmail = await transporter.sendMail({
       from: `"Konectados" <${process.env.SENDER_ADDRESS}>`, // sender address
       to: email, // list of receivers
       bcc: ['konectados@konectados.com.br'],
