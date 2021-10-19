@@ -1,4 +1,4 @@
-export function generateWhatsAppMessage(setup, name: string, phoneNumber: string) {
+export function generateWhatsAppMessage(setup, name: string, phoneNumber: string, email: string) {
   const fanNames = setup.fan?.description !== 'skipped' ? setup.fan?.ListOfComponents.reduce((ac, el) => {
     if (ac === '') return ac === '' ? `${el.amount}x | ${el.description}` : `${ac}, ${el.amount} | ${el.description}`
   }, '') : '';
@@ -13,12 +13,13 @@ export function generateWhatsAppMessage(setup, name: string, phoneNumber: string
   }, '');
 
   return `
-  *Montagem de PC - Konectados*
+*Montagem de PC - Konectados*
 
-  Olá, meu nome é ${name}.
-  Tel/Cel: ${phoneNumber}
-  Link do meu PC: https://monteseupc.konectados.com.br/pc/${setup.id}
+Olá, meu nome é ${name}.
+Tel/Cel: ${phoneNumber}
+Email: ${email}
+Link do meu PC: https://monteseupc.konectados.com.br/pc/${setup.id}
 
-  *Valor:* ${new Intl.NumberFormat('pt-BR', {style: 'currency',currency: 'BRL',}).format(setup.price)}
+*Valor:* ${new Intl.NumberFormat('pt-BR', {style: 'currency',currency: 'BRL',}).format(setup.price)}
 `
 }

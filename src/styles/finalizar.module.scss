@@ -38,8 +38,9 @@
   }
   
   h5 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     color: var(--white-75);
+    max-width: 500px;
     
     &.obrigado{
       font-size: 1.1rem;
@@ -73,7 +74,7 @@
     line-height: 150%;
   }
 
-  button, a {
+  button {
     cursor: pointer;
     height: 4rem;
     background: var(--red-400);
@@ -88,10 +89,15 @@
   }
 
   a{
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: calc(50% - .5rem);
+    // display: inline-flex;
+    // justify-content: center;
+    // align-items: center;
+    width: 100%;
+    font-size: 1.25rem;
+    color: var(--red-500);
+    &:hover{
+      text-decoration: underline;
+    }
   }
   .secondary {
     margin-left: 1rem;

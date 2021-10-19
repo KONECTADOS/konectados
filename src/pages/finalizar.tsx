@@ -7,10 +7,12 @@ import { useState } from 'react';
 import { database } from '../services/firebase';
 
 import styles from '../styles/finalizar.module.scss';
+import { useComputer } from '../hooks/useComputer';
 
 export default function Finalizar() {
   const [feedback, setFeedback] = useState('')
   const router = useRouter()
+  const {setup} = useComputer();
 
   async function handleSendFeedback() {
     const data = {
@@ -39,9 +41,10 @@ export default function Finalizar() {
 
       <main className={styles.container}>
         <div className={styles.pageContent}>
-          <h5>✔️ Seu setup foi enviado para nossa equipe.</h5>
+          <h5>✔️ Seu setup foi enviado para nossa equipe. <a href={setup.link}>Clique aqui para visualizar seu pc</a></h5>
           <h2>Conte-nos a sua <span>experiência</span>!</h2>
 
+          
           <div className={styles.sendFeedback}>
             {/* <p>Fala pra gente o que você achou da nossa plataforma</p> */}
             <textarea
