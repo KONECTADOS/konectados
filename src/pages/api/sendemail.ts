@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { NextApiRequest, NextApiResponse } from 'next';
-import * as nodemailer from 'nodemailer';
+import SMTPTransport from 'nodemailer';
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method !== 'POST') return response.status(404)
@@ -10,7 +10,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   console.log('antes do transporter');
 
   // PRODUÇÃO
-  const transporter = nodemailer.createTransport({
+  const transporter = SMTPTransport.createTransport({
     host: 'smtp.konectados.com.br',
     port: 587,
     secure: false,
@@ -25,7 +25,21 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     requireTLS: true,//this parameter solved problem for me
   });
 
-  console.log(process.env.EMAIL_ACCOUNT_USER, process.env.EMAIL_ACCOUNT_PASSWORD);
+  // const transporter = SMTPTransport.createTransport({
+  //   host: 'konectados-dev@konectados.com',
+  //   port: 2525,
+  //   secure: false,
+  //   auth: {
+  //     user: 'konectados-dev@konectados.com',
+  //     pass: 'F7634FC24147DB1490203DDB54FA2508C021',
+  //   },
+  //   tls: {
+  //     rejectUnauthorized: false,
+  //     // ciphers: 'SSLv3'
+  //   },
+  //   requireTLS: true,//this parameter solved problem for me
+  // });
+
   
 
   try {
@@ -40,11 +54,11 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     const options = {
       from: `"Konectados" <${process.env.SENDER_ADDRESS}>`, // sender address
       to: email, // list of receivers
-      // bcc: 'konectados@konectados.com.br',
       subject: "Meu PC ✔", // Subject line
       text: "Setup Konectados", // plain text body
       html, // html body
-      // from: `"Konectados" <konectados-dev@konectados.com>`, // sender address
+      // from: `"Konectados" <${process.env.SENDER_ADDRESS}>`, // sender address
+      // bcc: 'konectados@konectados.com.br',
     }
     await transporter.sendMail(options);
     console.log('enviado')
