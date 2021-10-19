@@ -13,13 +13,13 @@ export function generateWhatsAppMessage(setup, name: string, phoneNumber: string
   }, '');
 
   return `
-  *Montagem de PC - Konectados*
+*Montagem de PC - Konectados*
 
-  Olá, meu nome é ${name}.
-  Tel/Cel: ${phoneNumber}
-  Email: ${email}
-  Link do meu PC: https://monteseupc.konectados.com.br/pc/${setup.id}
+Olá, meu nome é ${name}.
+Tel/Cel: ${phoneNumber}
+Email: ${email}
+Link do meu PC: https://monteseupc.konectados.com.br/pc/${setup.id}
 
-  *Valor:* ${new Intl.NumberFormat('pt-BR', {style: 'currency',currency: 'BRL',}).format(setup.price)}
+*Valor:* ${new Intl.NumberFormat('pt-BR', {style: 'currency',currency: 'BRL',}).format(setup.price)}
 `
 }
