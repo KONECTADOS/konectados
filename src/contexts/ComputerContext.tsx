@@ -69,6 +69,7 @@ interface UserSetup {
   pcCabinet: PcCabinet;
   monitor: PcComponent;
   fan: PcComponent;
+  link?: string;
 }
 
 interface Estoque {
@@ -87,6 +88,7 @@ interface ComputerContextProps {
   estoque: Estoque;
   fetchEstoque: () => Promise<void>;
   setEstoque: (estoque: Estoque) => void;
+  setSetupLink: (link: string) => void;
   changeCurrentComponentAmount: (componentAmount: string | number) => void;
   skipComponent: (componentName: CurrentComponent) => void;
   insertComponentIntoSetup: (
@@ -134,6 +136,12 @@ export function ComputerContextProvider({ children }) {
     setEstoque(stock);
   }
 
+  function setSetupLink(link) {
+    const newSetup = { ...setup };
+    newSetup.link = link
+    setSetup(newSetup)
+  }
+
   function changeCurrentComponentAmount(componentAmount: string | number) {
     setCurrentComponentAmount(Number(componentAmount))
   }
@@ -172,6 +180,7 @@ export function ComputerContextProvider({ children }) {
       }
     }
     setSetupPrice(currentSetupPrice)
+    localStorage.setItem('konecta@setup', JSON.stringify(newSetup))
 
     setSetup(newSetup);
   }
@@ -189,13 +198,24 @@ export function ComputerContextProvider({ children }) {
       }
     }
 
+    setSetupPrice(currentSetupPrice)
+    localStorage.setItem('konecta@setup', JSON.stringify(newSetup))
+
     setSetup(newSetup);
   }
 
   function skipComponent(componentName: string) {
     const newSetup = { ...setup };
     newSetup[componentName] = { description: "skipped", price: 0 }
+    let currentSetupPrice: number = 0
 
+    for (const key in newSetup) {
+      if (Object.prototype.hasOwnProperty.call(newSetup, key)) {
+        currentSetupPrice += newSetup[key].price;
+      }
+    }
+
+    setSetupPrice(currentSetupPrice)
     localStorage.setItem('konecta@setup', JSON.stringify(newSetup))
     setSetup(newSetup)
   }
@@ -208,6 +228,7 @@ export function ComputerContextProvider({ children }) {
       estoque,
       setEstoque,
       fetchEstoque,
+      setSetupLink,
       insertComponentIntoSetup,
       changeComponentIntoSetup,
       removeComponentIntoSetup,

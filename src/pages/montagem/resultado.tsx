@@ -8,56 +8,24 @@ import { Subtotal } from "../../components/Subtotal";
 import { useComputer } from "../../hooks/useComputer"
 import { database } from "../../services/firebase";
 import styles from '../../styles/montagem.module.scss';
-import { apiRoutes } from "../../services/api";
 import Head from 'next/head';
 import toast, { Toaster } from "react-hot-toast";
 import { validateEmail } from "../../utils/validateEmail";
 import { generateWhatsAppMessage } from "../../utils/generateWhatsAppMessage";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-import { generateHTMLEmail } from "../../utils/generateHTMLEmail";
-import { Email } from "../../services/email.js";
 
 export default function Resultado() {
   const [email, setEmail] = useState('')
-  const [nameWhats, setNameWhats] = useState('')
-  const [nameEmail, setNameEmail] = useState('')
+  const [name, setName] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [isEmailValid, setIsEmailValid] = useState(false)
+  const [isTelValid, setIsTelValid] = useState(false)
+  const [sendToWhatsapp, setSendToWhatsapp] = useState(true)
   const router = useRouter()
-  const { setup, setupPrice } = useComputer();
+  const { setup, setupPrice, setSetupLink } = useComputer();
 
   const whatsappNumber = '5511972264416';
-  let fanNames, ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb
-
-  if (typeof window !== 'undefined') {
-    fanNames = !(setup.fan?.description === 'skipped') ? setup.fan.ListOfComponents.reduce((ac, el) => {
-      return ac === '' ? el.description : `${ac}, ${el.description}`
-    }, '') : null;
-    ramMemoryNames = setup.ramMemory?.ListOfComponents.reduce((ac, el) => {
-      return ac === '' ? el.description : `${ac}, ${el.description}`
-    }, '')
-    ramMemorySizeInGb = setup.ramMemory?.ListOfComponents.reduce((ac, el) => {
-      return ac + (el.ramSizeInGb * el.amount);
-    }, 0)
-
-    hdNames = !(setup.hardDisk?.description === 'skipped') ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
-      return ac === '' ? el.description : `${ac}, ${el.description}`
-    }, '') : null
-    hdSizeInGb = !(setup.hardDisk?.description === 'skipped') ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
-      return ac + (el.sizeInGb * el.amount);
-    }, 0) : null
-
-    ssdNames = !(setup.SSD?.description === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
-      return ac === '' ? el.description : `${ac}, ${el.description}`
-    }, '') : null
-
-    ssdSizeInGb = !(setup.SSD?.description === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
-      return ac + (el.sizeInGb * el.amount);
-    }, 0) : null
-
-  }
-
 
   function handleChangeEmail(email) {
     const isAValidEmail = validateEmail(email);
@@ -69,78 +37,133 @@ export default function Resultado() {
     setEmail(email)
   }
 
-  // let message: string;
 
-  // if (process.browser) {
-  //   message = generateWhatsAppMessage({ ...setup, price: setupPrice }, nameWhats, phoneNumber)
-  // }
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-  async function saveSetupOnFirebase() {
+
+    const id = uuid()
     const data = {
       email: email.toLowerCase(),
       phoneNumber,
-      name: nameWhats,
+      name,
       setup,
       price: setupPrice,
       montado: false,
     }
 
     try {
-      const id = uuid()
+      
       set(ref(database, 'setups/' + id), {
         ...data
       }).then(() => {
         localStorage.removeItem('konecta@setup')
-        const message = window.encodeURI(generateWhatsAppMessage({ ...setup, price: setupPrice, id }, nameWhats, phoneNumber))
-        window.open(`https://wa.me/${whatsappNumber}?text=${message}`)
+        if(sendToWhatsapp){
+          let fanNames, ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb
+
+          fanNames = !(setup.fan?.description === 'skipped') ? setup.fan.ListOfComponents.reduce((ac, el) => {
+            return ac === '' ? el.description : `${ac}, ${el.description}`
+          }, '') : null;
+          ramMemoryNames = setup.ramMemory?.ListOfComponents.reduce((ac, el) => {
+            return ac === '' ? el.description : `${ac}, ${el.description}`
+          }, '')
+          ramMemorySizeInGb = setup.ramMemory?.ListOfComponents.reduce((ac, el) => {
+            return ac + (el.ramSizeInGb * el.amount);
+          }, 0)
+      
+          hdNames = !(setup.hardDisk?.description === 'skipped') ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
+            return ac === '' ? el.description : `${ac}, ${el.description}`
+          }, '') : null
+          hdSizeInGb = !(setup.hardDisk?.description === 'skipped') ? setup.hardDisk.ListOfComponents.reduce((ac, el) => {
+            return ac + (el.sizeInGb * el.amount);
+          }, 0) : null
+      
+          ssdNames = !(setup.SSD?.description === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
+            return ac === '' ? el.description : `${ac}, ${el.description}`
+          }, '') : null
+      
+          ssdSizeInGb = !(setup.SSD?.description === 'skipped') ? setup.SSD.ListOfComponents.reduce((ac, el) => {
+            return ac + (el.sizeInGb * el.amount);
+          }, 0) : null
+      
+          const message = window.encodeURI(generateWhatsAppMessage({ ...setup, price: setupPrice, id }, name, phoneNumber, email))
+          window.open(`https://wa.me/${whatsappNumber}?text=${message}`)
+        }
+        setSetupLink(`monteseupc.konectados.com.br/pc/${id}`)
         router.push('/finalizar')
       })
     } catch (error) {
       console.log(error);
-
     }
   }
 
-  async function handleSendSetup() {
-    const html = generateHTMLEmail(setup, setupPrice, nameEmail, fanNames, ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb)
-    const data = {
-      email: email.toLowerCase(),
-      html,
-    }
 
-    try {
+  // async function saveSetupOnFirebase() {
+  //   const data = {
+  //     email: email.toLowerCase(),
+  //     phoneNumber,
+  //     name,
+  //     setup,
+  //     price: setupPrice,
+  //     montado: false,
+  //   }
 
-      // const sendEmailPromise = Email.send({
-      //   SecureToken: "9c1044e6-afe6-43e9-87e4-12e04b95d014",
-      //   To: [email.toLowerCase().trim()],
-      //   Bcc: ["konectados@konectados.com.br"], 
-      //   From: "konectados-dev@konectados.com.br",
-      //   Subject: "Email em produção",
-      //   Body: "Email em produção enviado"
-      // })
-      
-      const sendEmailPromise = apiRoutes.post('/api/sendemail', {
-        data
-      });
+  //   try {
+  //     const id = uuid()
+  //     set(ref(database, 'setups/' + id), {
+  //       ...data
+  //     }).then(() => {
+  //       localStorage.removeItem('konecta@setup')
+  //       const message = window.encodeURI(generateWhatsAppMessage({ ...setup, price: setupPrice, id }, name, phoneNumber))
+  //       window.open(`https://wa.me/${whatsappNumber}?text=${message}`)
+  //       router.push('/finalizar')
+  //     })
+  //   } catch (error) {
+  //     console.log(error);
 
-      await toast.promise(sendEmailPromise, {
-        loading: 'Enviando seu PC...',
-        success: 'Setup enviado!',
-        error: 'Erro ao enviar PC',
-      });
+  //   }
+  // }
 
-      // set(ref(database, 'setups/' + uuid()), {
-      //   ...data
-      // });
+  // async function handleSendSetup() {
+  //   const html = generateHTMLEmail(setup, setupPrice, name, fanNames, ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb)
+  //   const data = {
+  //     email: email.toLowerCase(),
+  //     html,
+  //   }
 
-      // setEmail('')
-      // localStorage.removeItem('konecta@setup')
-      // router.push("/finalizar")
-    } catch (error) {
-      console.log(error)
-    }
+  //   try {
 
-  }
+  //     // const sendEmailPromise = Email.send({
+  //     //   SecureToken: "9c1044e6-afe6-43e9-87e4-12e04b95d014",
+  //     //   To: [email.toLowerCase().trim()],
+  //     //   Bcc: ["konectados@konectados.com.br"], 
+  //     //   From: "konectados-dev@konectados.com.br",
+  //     //   Subject: "Email em produção",
+  //     //   Body: "Email em produção enviado"
+  //     // })
+
+  //     const sendEmailPromise = apiRoutes.post('/api/sendemail', {
+  //       data
+  //     });
+
+  //     await toast.promise(sendEmailPromise, {
+  //       loading: 'Enviando seu PC...',
+  //       success: 'Setup enviado!',
+  //       error: 'Erro ao enviar PC',
+  //     });
+
+  //     // set(ref(database, 'setups/' + uuid()), {
+  //     //   ...data
+  //     // });
+
+  //     // setEmail('')
+  //     // localStorage.removeItem('konecta@setup')
+  //     // router.push("/finalizar")
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+
+  // }
 
 
   return (
@@ -170,42 +193,31 @@ export default function Resultado() {
           <h3>Terminou de montar o <span>PC dos seus sonhos</span>? Envie agora mesmo para um de nossos vendedores</h3>
           <div className={styles.wrapper}>
 
-
-            <div className={styles.sendToWhatsapp}>
+            <form  onSubmit={handleSubmit} className={styles.sendSetupForm}>
               <p>
-                Enviar PC para o WhatsApp da Konectados
+                Envie seu PC para a nossa equipe
               </p>
-              <input type="text" placeholder="Digite aqui seu nome" value={nameWhats} onChange={e => setNameWhats(e.target.value)} />
-
+              <input type="text" placeholder="Digite aqui seu nome" value={name} onChange={e => setName(e.target.value)} />
+              <input type="email" value={email} onChange={e => handleChangeEmail(e.target.value)} placeholder="Digite aqui o seu e-mail" />
               <PhoneInput
                 country={'br'}
                 preferredCountries={['br', 'us', 'ar']}
                 value={phoneNumber}
-                onChange={phone => setPhoneNumber(phone)}
+                onChange={phone => {
+                  phone.length >= 12 ? setIsTelValid(true) : setIsTelValid(false)
+                  setPhoneNumber(phone)
+                }}
                 placeholder="Digite aqui seu telefone"
               />
 
-              <button onClick={saveSetupOnFirebase} className={styles.sendWhatsapp}>
-                <img src="/icons/whatsapp.svg" width="24px" height="24px" alt="" />
+              <div className={styles.checkWhatsapp}>
+                <input type="checkbox" name="" id="whatsapp" checked={sendToWhatsapp} onChange={e => setSendToWhatsapp(!sendToWhatsapp)}/>
+                <label htmlFor="whatsapp" >Enviar mensagem para o WhatsApp da Konectados</label>
+              </div>
+              <button type="submit" disabled={!isEmailValid || !isTelValid || name.length < 3}>
                 Enviar
               </button>
-            </div>
-
-            <div className={styles.divider}>
-              <p>ou</p>
-            </div>
-
-            <div className={styles.sendSetupForm}>
-              <p>
-                Enviar PC para o E-mail
-              </p>
-              <input type="text" placeholder="Digite aqui seu nome" value={nameEmail} onChange={e => setNameEmail(e.target.value)} />
-
-              <input type="email" value={email} onChange={e => handleChangeEmail(e.target.value)} placeholder="Digite aqui o seu email!" />
-              <button type="button" onClick={handleSendSetup} disabled={!isEmailValid}>
-                Enviar
-              </button>
-            </div>
+            </form>
           </div>
         </section>
       </main>
