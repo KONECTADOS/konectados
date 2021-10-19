@@ -16,7 +16,7 @@ import { generateWhatsAppMessage } from "../../utils/generateWhatsAppMessage";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { generateHTMLEmail } from "../../utils/generateHTMLEmail";
-import { Email } from "../../services/email";
+import { Email } from "../../services/email.js";
 
 export default function Resultado() {
   const [email, setEmail] = useState('')
