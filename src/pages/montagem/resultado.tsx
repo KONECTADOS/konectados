@@ -128,13 +128,13 @@ export default function Resultado() {
         error: 'Erro ao enviar PC',
       });
 
-      set(ref(database, 'setups/' + uuid()), {
-        ...data
-      });
+      // set(ref(database, 'setups/' + uuid()), {
+      //   ...data
+      // });
 
-      setEmail('')
-      localStorage.removeItem('konecta@setup')
-      router.push("/finalizar")
+      // setEmail('')
+      // localStorage.removeItem('konecta@setup')
+      // router.push("/finalizar")
     } catch (error) {
       console.log(error)
     }
