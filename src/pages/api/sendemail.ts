@@ -25,7 +25,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     requireTLS: true,//this parameter solved problem for me
   });
 
-
+  console.log(process.env.EMAIL_ACCOUNT_USER, process.env.EMAIL_ACCOUNT_PASSWORD);
+  
 
   try {
     await transporter.verify(function (error, success) {
