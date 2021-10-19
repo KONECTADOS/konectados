@@ -123,10 +123,6 @@ export default function Resultado() {
         data
       });
 
-      console.log('enviado');
-      
-
-
       await toast.promise(sendEmailPromise, {
         loading: 'Enviando seu PC...',
         success: 'Setup enviado!',
