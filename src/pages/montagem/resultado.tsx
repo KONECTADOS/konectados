@@ -119,31 +119,19 @@ export default function Resultado() {
       //   Body: "Email em produção enviado"
       // })
       
-      await apiRoutes.post('/api/sendemail', {
+      const sendEmailPromise = apiRoutes.post('/api/sendemail', {
         data
       });
 
       console.log('enviado');
       
 
-      // Email.send({
-      //   Host: "smtp.elasticemail.com",
-      //   Username: "konectados-dev@konectados.com",
-      //   Password: "8C9071F5760C2D6EDD9E3E031F40CFB09F00",
-      //   To: [email.toLowerCase().trim()],
-      //   // Bcc: ["konectados@konectados.com.br"], 
-      //   From: "konectados-dev@konectados.com",
-      //   Subject: "Email em produção",
-      //   Body: "Email em produção enviado"
-      // }).then(
-      //   message => alert(message)
-      // );
 
-      // await toast.promise(sendEmailPromise, {
-      //   loading: 'Enviando seu PC...',
-      //   success: 'Setup enviado!',
-      //   error: 'Erro ao enviar PC',
-      // });
+      await toast.promise(sendEmailPromise, {
+        loading: 'Enviando seu PC...',
+        success: 'Setup enviado!',
+        error: 'Erro ao enviar PC',
+      });
 
       // set(ref(database, 'setups/' + uuid()), {
       //   ...data
