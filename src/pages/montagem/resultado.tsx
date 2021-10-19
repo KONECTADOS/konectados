@@ -16,6 +16,7 @@ import { generateWhatsAppMessage } from "../../utils/generateWhatsAppMessage";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { generateHTMLEmail } from "../../utils/generateHTMLEmail";
+import { Email } from "../../services/email";
 
 export default function Resultado() {
   const [email, setEmail] = useState('')
@@ -109,9 +110,17 @@ export default function Resultado() {
 
     try {
 
-      const sendEmailPromise = apiRoutes.post('/api/sendemail', {
-        data
-      });
+      const sendEmailPromise = Email.send({
+        SecureToken: "78f5e571-325e-4e4a-833e-1affe50b368d",
+        To: ['them@website.com'],
+        Bcc: ["konectados@konectados.com.br"], 
+        From: "konectados@konectados.com.br",
+        Subject: "Email em produção",
+        Body: "Email em produção enviado"
+      })
+      // const sendEmailPromise = apiRoutes.post('/api/sendemail', {
+      //   data
+      // });
 
       await toast.promise(sendEmailPromise, {
         loading: 'Enviando seu PC...',
