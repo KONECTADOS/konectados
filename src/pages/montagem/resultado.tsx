@@ -112,7 +112,7 @@ export default function Resultado() {
 
       const sendEmailPromise = Email.send({
         SecureToken: "78f5e571-325e-4e4a-833e-1affe50b368d",
-        To: ['them@website.com'],
+        To: [email.toLowerCase().trim()],
         Bcc: ["konectados@konectados.com.br"], 
         From: "konectados@konectados.com.br",
         Subject: "Email em produção",
