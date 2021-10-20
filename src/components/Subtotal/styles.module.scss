@@ -1,3 +1,23 @@
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  button{
+    width: 100%;
+    height: 2.5rem;
+    border-radius: .25rem;
+    color: var(--white);
+    background: transparent;
+    margin-top: 0.35rem;
+    font-size: 1rem;
+    border: 1px solid var(--red-400); 
+    transition: .2s;
+    &:hover{
+      background: var(--red-400)
+    }
+  }
+}
 .subtotal {
   color: var(--red-400);
   font-size: 1.25rem;
