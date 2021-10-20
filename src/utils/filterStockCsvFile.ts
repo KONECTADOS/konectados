@@ -79,6 +79,8 @@ export async function removeUselessProducts(stock, productsToRemove: string[]) {
     arrayOfProducts = arrayOfProducts.filter(el => !el['Descrição'].includes(product));
 
   }
+  console.log(arrayOfProducts);
+  
   return arrayOfProducts
 }
 
@@ -115,7 +117,7 @@ export async function divideProductsByCategory(stock): Promise<STOCK> {
       pcCabinets.push(key);
     } else if (key['Categoria'].includes('FONTE')) {
       powerSupplies.push(key);
-    } else if (key['Categoria'].includes('COOLER')) {
+    } else if (key['Categoria'].includes('COOLER > P/ PROCESSADOR')) {
       coolers.push(key);
     } else if (key['Categoria'].includes('MONITOR')) {
       monitors.push(key);
@@ -218,7 +220,9 @@ export async function cleanStockData(stock): Promise<Estoque> {
 
 
 function cleanStockProduct(product, isHd?: boolean): CLEANED_STOCK {
-  if (Number(product['Estoque'].replace(',', '.')) <= 0) return null
+  const stock = Number(String(product['Estoque']).replace(',', '.'))
+  const price = Number(String(product['Preço']).replace('.', '').replace(',', '.'))
+  if (stock <= 0) return null
   if(isHd){
     if(product['Descrição'].includes('EXTERNO') || product['Descrição'].includes('EXT')) return null
   }
@@ -227,8 +231,8 @@ function cleanStockProduct(product, isHd?: boolean): CLEANED_STOCK {
     description: product['Descrição'],
     aditionalDescription: product['Descrição complementar'],
     images,
-    price: Number(product['Preço'].replace('.', '').replace(',', '.')),
+    price,
     skuCode: Number(product['Código (SKU)']),
-    stock: Number(product['Estoque'].replace(',', '.')),
+    stock: stock,
   }
 }
