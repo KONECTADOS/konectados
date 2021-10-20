@@ -5,7 +5,7 @@ export function SetupCard({ component }) {
     <div className={styles.wrapper}>
       <input type="checkbox" name="" id="" />
       <div className={styles.motherboardCard}>
-        <p>Componente: <span>{(component.ramSizeInGb || component.sizeInGb) && `${component.amount || 1}x`} {component.description}</span></p>
+        <p>Componente: <span>{(component.ramSizeInGb || component.sizeInGb) && `1x`} {component.description}</span></p>
 
         <main>
           {component.cpuSocket && <p>Soquete da CPU: <span>{component.cpuSocket}</span></p>}
