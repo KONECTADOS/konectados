@@ -89,7 +89,7 @@ export default function Resultado() {
           const message = window.encodeURI(generateWhatsAppMessage({ ...setup, price: setupPrice, id }, name, phoneNumber, email))
           window.open(`https://wa.me/${whatsappNumber}?text=${message}`)
         }
-        setSetupLink(`monteseupc.konectados.com.br/pc/${id}`)
+        setSetupLink(`https://monteseupc.konectados.com.br/pc/${id}`)
         router.push('/finalizar')
       })
     } catch (error) {
