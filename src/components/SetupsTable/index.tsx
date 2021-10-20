@@ -8,7 +8,9 @@ export function SetupsTable({ setups }) {
       <table>
         <thead>
           <tr>
-            <th>Contato</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>WhatsApp</th>
             <th>Preço</th>
             <th></th>
           </tr>
@@ -19,7 +21,9 @@ export function SetupsTable({ setups }) {
             
             return (
               <tr key={index}>
-                <td>{setup.name || 'Sem nome'} | {setup.email || `WhatsApp: ${setup.phoneNumber}`}</td>
+                <td>{setup.name}</td>
+                <td>{setup.email}</td>
+                <td>{setup.phoneNumber}</td>
                 <td>{
                   new Intl.NumberFormat('pt-BR', {
                     style: 'currency',
