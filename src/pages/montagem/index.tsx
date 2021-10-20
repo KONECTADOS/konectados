@@ -4,13 +4,17 @@ import styles from '../../styles/montagem.module.scss';
 import Head from 'next/head';
 import Image from 'next/image';
 import { ComponentExample } from '../../components/ComponentExample';
+import { useComputer } from '../../hooks/useComputer';
 
 export default function Montagem() {
+  const {clearSetup} = useComputer()
 
   useEffect(() => {
     if (localStorage.getItem('konecta@setup')) {
       localStorage.removeItem('konecta@setup')
     }
+
+    clearSetup()
   }, [])
 
   return (

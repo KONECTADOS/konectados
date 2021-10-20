@@ -87,6 +87,7 @@ interface ComputerContextProps {
   setupPrice: number;
   estoque: Estoque;
   fetchEstoque: () => Promise<void>;
+  clearSetup: () => void;
   setEstoque: (estoque: Estoque) => void;
   setSetupLink: (link: string) => void;
   changeCurrentComponentAmount: (componentAmount: string | number) => void;
@@ -134,6 +135,10 @@ export function ComputerContextProvider({ children }) {
     const stock = data.val()
     setCookie(null, 'konectados@stock', stock)
     setEstoque(stock);
+  }
+
+  function clearSetup() {
+    setSetup({} as UserSetup)
   }
 
   function setSetupLink(link) {
@@ -227,6 +232,7 @@ export function ComputerContextProvider({ children }) {
       setupPrice,
       estoque,
       setEstoque,
+      clearSetup,
       fetchEstoque,
       setSetupLink,
       insertComponentIntoSetup,
