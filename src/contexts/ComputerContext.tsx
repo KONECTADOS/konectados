@@ -139,6 +139,7 @@ export function ComputerContextProvider({ children }) {
 
   function clearSetup() {
     setSetup({} as UserSetup)
+    setSetupPrice(0)
   }
 
   function setSetupLink(link) {
