@@ -57,7 +57,7 @@ export function DashboardSetup({ userSetup, isUser }: { userSetup: any; isUser?:
             if (key === 'fan' && setup[key].description === 'skipped') return null
             if (key === 'monitor' && setup[key].description === 'skipped') return null
 
-            if (key === 'SSD' || key === 'hardDisk' || key === 'fan') {
+            if (key === 'SSD' || key === 'hardDisk' || key === 'fan' || key === 'ramMemory') {
               return (
                 <>
                   {setup[key].ListOfComponents?.map((el, index) => (
