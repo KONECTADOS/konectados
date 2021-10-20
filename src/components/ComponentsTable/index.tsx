@@ -189,7 +189,7 @@ function ProductItem({ product, componentName, redirectTo, moreThanOne, listOfCo
     <tr>
       <td onClick={(e) => handleOpenModal(product)}>
         <div className={styles.productImage}>
-          <Image width="160px" height="160px" src={product.images[0]} alt={product.description} />
+          <img width="160px" height="160px" src={product.images[0]} alt={product.description} />
           { product.images[1] !== '' ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img width="160px" height="160px" src={product.images[1]} className={styles.hiddenImg} alt={product.description} />

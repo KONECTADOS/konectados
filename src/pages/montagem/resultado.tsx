@@ -23,7 +23,7 @@ export default function Resultado() {
   const [isTelValid, setIsTelValid] = useState(false)
   const [sendToWhatsapp, setSendToWhatsapp] = useState(true)
   const router = useRouter()
-  const { setup, setupPrice, setSetupLink } = useComputer();
+  const { setup, setupPrice, setSetupLink, clearSetup } = useComputer();
 
   const whatsappNumber = '5511972264416';
 
@@ -43,6 +43,7 @@ export default function Resultado() {
 
 
     const id = uuid()
+    const now = new Date()
     const data = {
       email: email.toLowerCase(),
       phoneNumber,
@@ -50,6 +51,7 @@ export default function Resultado() {
       setup,
       price: setupPrice,
       montado: false,
+      createdAt: now
     }
 
     try {

@@ -11,14 +11,14 @@ import { useAuth } from '../../hooks/useAuth';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
 
-export default function Dashboard({admin}) {
+export default function Dashboard({ admin }) {
   const [setups, setSetups] = useState([])
   const [montados, setMontados] = useState([])
   const [feedbacks, setFeedbacks] = useState([])
-  const {user} = useAuth()
+  const { user } = useAuth()
 
   useEffect(() => {
-    if(user && user?.id && (user?.email !== admin.email || user?.id !== admin.id)){
+    if (user && user?.id && (user?.email !== admin.email || user?.id !== admin.id)) {
       router.push('/auth')
     } else {
       const fetchData = async () => {
@@ -30,15 +30,15 @@ export default function Dashboard({admin}) {
               newSetup.push({ ...data[key], id: key, montado: data[key].montado || false })
             }
           }
-          let pcsMontados = newSetup.filter(el => el.montado === true);
-          let pcs = newSetup.filter(el => el.montado === false)
-          console.log(pcs, pcsMontados, newSetup);
-          
+          let pcsMontados = newSetup.filter(el => el.montado === true).sort((a, b) => Number(new Date(a.createdAt)) - Number(new Date(b.createdAt)) || -1)
+          let pcs = newSetup.filter(el => el.montado === false).sort((a, b) => Number(new Date(a.createdAt)) - Number(new Date(b.createdAt)) || -1)
+
+
           setSetups(pcs)
           setMontados(pcsMontados)
-          
+
         });
-    
+
         await get(ref(database, 'feedbacks/')).then(snapshot => {
           const data = snapshot.val()
           const newFeedbacks = []
@@ -50,14 +50,14 @@ export default function Dashboard({admin}) {
           setFeedbacks(newFeedbacks)
         });
       }
-  
+
       const promise = user ? fetchData() : null
-  
+
       user && toast.promise(promise, {
         loading: 'Carregando...',
         success: 'Dashboard carregado!',
         error: () => {
-          if(!user) router.push('/auth')
+          if (!user) router.push('/auth')
           return 'Erro ao carregar setups, tente recarregar a página.'
         },
       })
@@ -91,21 +91,21 @@ export default function Dashboard({admin}) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { konectados } = parseCookies(ctx)
 
-  if(!konectados){
+  if (!konectados) {
     return {
-      redirect:{
+      redirect: {
         destination: '/auth',
         permanent: false,
       }
     }
   }
-  
+
   const admin = JSON.parse(konectados)
 
-  
-  if(!admin || !admin.email || !admin.id) {
+
+  if (!admin || !admin.email || !admin.id) {
     return {
-      redirect:{
+      redirect: {
         destination: '/auth',
         permanent: false,
       }
