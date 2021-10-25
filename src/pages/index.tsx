@@ -4,12 +4,22 @@ import Head from 'next/head';
 import { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import styles from '../styles/index.module.scss';
+import { get, ref, remove } from '@firebase/database';
+import { database } from '../services/firebase';
 
 export default function Home() {
 
   useEffect(() => {
-    if(localStorage.getItem('konecta@setup')) toast.success('Obrigado por montar seu PC conosco!')
-    // fetchEstoque()
+    if(localStorage.getItem('konecta@setup')) toast.success('Obrigado por montar seu PC conosco!');
+
+    async function fetchData() {      
+      // const snapshot = await get(ref(database, 'feedbacks/'))
+  
+      // console.log(snapshot.val());
+      // remove(ref(database, 'feedbacks'))
+    }
+    
+    fetchData()
   }, [])
 
   return (

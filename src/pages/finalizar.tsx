@@ -12,16 +12,18 @@ import { useComputer } from '../hooks/useComputer';
 export default function Finalizar() {
   const [feedback, setFeedback] = useState('')
   const router = useRouter()
-  const {setup} = useComputer();
+  const { setup } = useComputer();
 
   async function handleSendFeedback() {
+    const now = new Date()
     const data = {
-      feedback
+      criadoEm: Number(now),
+      feedback: feedback.slice(0, 100),
     }
 
     try {
-      set(ref(database, 'feedbacks/' + uuid()), {
-        ...data
+      await set(ref(database, 'feedbacks/' + uuid()), {
+        ...data,
       });
 
     } catch (error) {
@@ -44,14 +46,17 @@ export default function Finalizar() {
           <h5>✔️ Seu setup foi enviado para nossa equipe. <a href={setup.link}>Clique aqui para visualizar seu pc</a></h5>
           <h2>Conte-nos a sua <span>experiência</span>!</h2>
 
-          
+
           <div className={styles.sendFeedback}>
             {/* <p>Fala pra gente o que você achou da nossa plataforma</p> */}
             <textarea
               value={feedback}
-              onChange={e => setFeedback(e.target.value)}
+              onChange={e => feedback.length === 100 && e.target.value.length >= 100 ? null : setFeedback(e.target.value.slice(0,100))}
               placeholder="Fala pra gente o que você achou da nossa plataforma!"
             />
+            <span style={{marginTop: '.5rem'}}>
+              {feedback.length}/100
+            </span>
             <button
               className={styles.sendFeedbackButton}
               onClick={handleSendFeedback}

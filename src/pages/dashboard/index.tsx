@@ -42,12 +42,15 @@ export default function Dashboard({ admin }) {
         await get(ref(database, 'feedbacks/')).then(snapshot => {
           const data = snapshot.val()
           const newFeedbacks = []
+
           for (const key in data) {
             if (Object.prototype.hasOwnProperty.call(data, key)) {
-              newFeedbacks.push({ ...data[key], id: key })
+              newFeedbacks.push({ ...data[key], id: key, criadoEm: data[key].criadoEm })
             }
           }
-          setFeedbacks(newFeedbacks)
+          
+          const feedbacksEmOrdem = newFeedbacks.sort((a, b) => Number((b.criadoEm)) - Number(a.criadoEm))
+          setFeedbacks(feedbacksEmOrdem)
         });
       }
 
