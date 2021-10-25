@@ -6,6 +6,7 @@ import Router from 'next/router';
 
 import '../styles/global.scss'
 import { AuthContextProvider } from '../contexts/AuthContext';
+import { EditComponentContextProvider } from '../contexts/EditComponentContext';
 
 Router.events.on('routeChangeStart', () => {
   NProgress.start()
@@ -21,9 +22,11 @@ function MyApp({ Component, pageProps }) {
   return (
     <AuthContextProvider>
       <ComputerContextProvider>
-        <Header />
-        <Component {...pageProps} />
-        <SideNavigation />
+        <EditComponentContextProvider>
+          <Header />
+          <Component {...pageProps} />
+          <SideNavigation />
+        </EditComponentContextProvider>
       </ComputerContextProvider>
     </AuthContextProvider>
   )

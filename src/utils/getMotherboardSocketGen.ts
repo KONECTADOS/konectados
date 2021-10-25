@@ -15,7 +15,7 @@ export function getMotherboardSocketGen(cpu = ''): string {
   if(cpu.includes('B460')) return 'B460'
   if(cpu.includes('Z490')) return 'Z490'
   
-  if(cpu.includes('FX')) return 'FX'
+  if(cpu.includes('FX') || cpu.includes('AM3')) return 'FX'
   if(cpu.includes('A68')) return 'A68'
 
   if(cpu.includes('A320')) return 'A320'
@@ -24,5 +24,5 @@ export function getMotherboardSocketGen(cpu = ''): string {
   if(cpu.includes('A520')) return 'A520'
   if(cpu.includes('B550')) return 'B550'
 
-  return ''
+  return '-'
 }

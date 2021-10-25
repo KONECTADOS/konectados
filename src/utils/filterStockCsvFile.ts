@@ -75,11 +75,10 @@ export interface Estoque {
 export async function removeUselessProducts(stock, productsToRemove: string[]) {
   let arrayOfProducts = [...stock]
   for await (const product of productsToRemove) {
-
-    arrayOfProducts = arrayOfProducts.filter(el => !el['Descrição'].includes(product));
+    arrayOfProducts.forEach(el => console.log(el['Descrição'].includes(product) ? el : ''))
+    arrayOfProducts = arrayOfProducts.filter(el => !el['Descrição'].includes(product) || el['Descrição'].includes('FONTE ATX'));
 
   }
-  console.log(arrayOfProducts);
   
   return arrayOfProducts
 }
