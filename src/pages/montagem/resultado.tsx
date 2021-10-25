@@ -99,75 +99,6 @@ export default function Resultado() {
     }
   }
 
-
-  // async function saveSetupOnFirebase() {
-  //   const data = {
-  //     email: email.toLowerCase(),
-  //     phoneNumber,
-  //     name,
-  //     setup,
-  //     price: setupPrice,
-  //     montado: false,
-  //   }
-
-  //   try {
-  //     const id = uuid()
-  //     set(ref(database, 'setups/' + id), {
-  //       ...data
-  //     }).then(() => {
-  //       localStorage.removeItem('konecta@setup')
-  //       const message = window.encodeURI(generateWhatsAppMessage({ ...setup, price: setupPrice, id }, name, phoneNumber))
-  //       window.open(`https://wa.me/${whatsappNumber}?text=${message}`)
-  //       router.push('/finalizar')
-  //     })
-  //   } catch (error) {
-  //     console.log(error);
-
-  //   }
-  // }
-
-  // async function handleSendSetup() {
-  //   const html = generateHTMLEmail(setup, setupPrice, name, fanNames, ramMemoryNames, ramMemorySizeInGb, hdNames, hdSizeInGb, ssdNames, ssdSizeInGb)
-  //   const data = {
-  //     email: email.toLowerCase(),
-  //     html,
-  //   }
-
-  //   try {
-
-  //     // const sendEmailPromise = Email.send({
-  //     //   SecureToken: "9c1044e6-afe6-43e9-87e4-12e04b95d014",
-  //     //   To: [email.toLowerCase().trim()],
-  //     //   Bcc: ["konectados@konectados.com.br"], 
-  //     //   From: "konectados-dev@konectados.com.br",
-  //     //   Subject: "Email em produção",
-  //     //   Body: "Email em produção enviado"
-  //     // })
-
-  //     const sendEmailPromise = apiRoutes.post('/api/sendemail', {
-  //       data
-  //     });
-
-  //     await toast.promise(sendEmailPromise, {
-  //       loading: 'Enviando seu PC...',
-  //       success: 'Setup enviado!',
-  //       error: 'Erro ao enviar PC',
-  //     });
-
-  //     // set(ref(database, 'setups/' + uuid()), {
-  //     //   ...data
-  //     // });
-
-  //     // setEmail('')
-  //     // localStorage.removeItem('konecta@setup')
-  //     // router.push("/finalizar")
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-
-  // }
-
-
   return (
     <>
       <Head>
@@ -199,8 +130,8 @@ export default function Resultado() {
               <p>
                 Envie seu PC para a nossa equipe
               </p>
-              <input type="text" placeholder="Digite aqui seu nome" value={name} onChange={e => setName(e.target.value)} />
-              <input type="email" value={email} onChange={e => handleChangeEmail(e.target.value)} placeholder="Digite aqui o seu e-mail" />
+              <input type="text" placeholder="Digite aqui seu nome" value={name} onChange={e => setName(e.target.value)} required/>
+              <input type="email" value={email} onChange={e => handleChangeEmail(e.target.value)} placeholder="Digite aqui o seu e-mail"required />
               <PhoneInput
                 country={'br'}
                 preferredCountries={['br', 'us', 'ar']}
@@ -213,7 +144,7 @@ export default function Resultado() {
               />
 
               <div className={styles.checkWhatsapp}>
-                <input type="checkbox" name="" id="whatsapp" checked={sendToWhatsapp} onChange={e => setSendToWhatsapp(!sendToWhatsapp)}/>
+                <input type="checkbox" name="" id="whatsapp" checked={sendToWhatsapp} onChange={e => setSendToWhatsapp(!sendToWhatsapp)} required/>
                 <label htmlFor="whatsapp" >Enviar mensagem para o WhatsApp da Konectados</label>
               </div>
               <button type="submit" disabled={!isEmailValid || !isTelValid || name.length < 3}>

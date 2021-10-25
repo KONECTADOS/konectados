@@ -99,15 +99,40 @@
       text-decoration: underline;
     }
   }
+  
+  .wrapper{
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+
+    a{
+      transition: .2s;
+      &:hover{
+        filter: brightness(.9);
+        text-decoration: none;
+      }
+    }
+  }
+
+  .wrapper a:not(.secondary){
+    background: var(--red-400);
+    color: var(--white);
+    padding: .8rem 1.5rem;
+    border-radius: .5rem;
+  }
+
   .secondary {
     margin-left: 1rem;
     background: transparent;
     color: var(--white);
     border: 2px solid var(--red-400);
+    padding: .65rem 1.5rem;
+    border-radius: .5rem;
     &:hover {
       background: var(--red-400);
     }
   }
+
 }
 
 .sendFeedback {
