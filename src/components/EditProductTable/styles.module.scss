@@ -1,0 +1,65 @@
+.table{
+  min-width: 900px;
+
+  width: 100%;
+  border-spacing: 0 0.5rem;
+
+
+  tbody, thead{
+    width: 100%; 
+    display: contents;
+  }
+
+  thead{
+    tr th{
+      padding: 1rem ;
+    }
+  }
+}
+
+.component{
+  width: 100%;
+  background: var(--gray-800);
+  td{
+    padding: .5rem 1rem;
+
+    &:last-child{
+      display: flex;
+      align-items: center;
+    }
+  }
+  input{
+    height: 2.5rem;
+    max-width: 135px;
+    padding: 0 1rem;
+    font-size: 1rem;
+    background: var(--black);
+    border: none;
+    color: var(--white);
+    border-radius: .25rem;
+    transition: .2s;
+    &:disabled{
+      opacity: .5;
+    }
+  }
+  
+  button{
+    cursor: pointer;
+    border: none;
+    transition: .2s;
+    background: none;
+    padding: .5rem;
+    color: var(--white);
+    border-radius: .5rem;
+    // font-weight: bold;
+
+    &.edit{
+      opacity: .5;
+    }
+
+    & + button{
+      background: var(--red-400);
+      margin-left: 0.5rem;
+    }
+  }
+}

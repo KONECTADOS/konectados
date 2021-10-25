@@ -25,6 +25,12 @@
       td {
         padding: 1rem 2rem;
         text-align: left;
+
+        &:last-child{
+          a{
+            color: var(--red-400);
+          }
+        }
       }
     }
   }

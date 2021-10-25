@@ -3,14 +3,14 @@ import { doc, setDoc } from "firebase/firestore";
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import toast, { Toaster } from 'react-hot-toast';
-import { database, firestore } from '../../services/firebase';
-import styles from '../../styles/estoque.module.scss';
-import parseCSV from '../../utils/parseCSV';
-import { useComputer } from '../../hooks/useComputer';
-import { cleanStockData, divideProductsByCategory, removeUselessProducts, Estoque as EstoqueProps } from '../../utils/filterStockCsvFile';
-import { NumberOfComponents } from '../../components/NumberOfComponents';
+import { database, firestore } from '../../../services/firebase';
+import styles from '../../../styles/estoque.module.scss';
+import parseCSV from '../../../utils/parseCSV';
+import { useComputer } from '../../../hooks/useComputer';
+import { cleanStockData, divideProductsByCategory, removeUselessProducts, Estoque as EstoqueProps } from '../../../utils/filterStockCsvFile';
+import { NumberOfComponents } from '../../../components/NumberOfComponents';
 import router from 'next/router';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../../hooks/useAuth';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
 
@@ -137,9 +137,7 @@ export default function Estoque({admin}) {
           }, []);
           const stockData = await divideProductsByCategory(stock);
           const resumedData = await cleanStockData(stockData)
-          
-          console.log(resumedData);
-          
+                   
           setCsvFiles(files)
           setEstoqueData(resumedData)
           setIsLoading(false)
