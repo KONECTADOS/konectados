@@ -8,6 +8,7 @@ export function SetupsTable({ setups }) {
       <table>
         <thead>
           <tr>
+            <th>Envio</th>
             <th>Nome</th>
             <th>E-mail</th>
             <th>WhatsApp</th>
@@ -18,10 +19,16 @@ export function SetupsTable({ setups }) {
 
         <tbody>
           {setups.map((setup, index) => {
-            
+            const date = new Date(setup.createdAt);
+            const criadoEm = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
             return (
               <tr key={index}>
-                <td>{setup.name}</td>
+                <td>
+                  <time>{criadoEm}</time>
+                </td>
+                <td>
+                  {setup.name}
+                </td>
                 <td>{setup.email}</td>
                 <td>{setup.phoneNumber}</td>
                 <td>{

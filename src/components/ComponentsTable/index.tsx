@@ -69,7 +69,7 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
         </thead>
 
         <tbody>
-          {products.map((product, index) => {
+          {products[0] ? products.map((product, index) => {
             return (
               <ProductItem
                 product={product}
@@ -81,7 +81,9 @@ export function ComponentsTable({ products, componentName, onChoose, moreThanOne
                 listOfComponents={{ components: ListOfComponents || null, setComponents: setListOfComponents || null }}
               />
             )
-          })}
+          }) : (
+            <h2>Ops! Estamos sem esse produto em estoque.</h2>
+          )}
         </tbody>
       </table>
 

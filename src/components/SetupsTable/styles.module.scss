@@ -30,10 +30,23 @@
     tbody{
       tr{
         border-bottom: 1px solid var(--gray-50);
+
+        time{
+          font-size: .8rem;
+          z-index: -1;
+        }
+
         td{
           padding: 1rem 2rem;
+
           &:first-child{
-            text-align: left;
+            width: 130px;
+            max-width: 130px;
+            color: var(--red-400)
+          }
+
+          &:nth-child(2){
+            position: relative;
           }
           &:last-child{
             text-align: right;

@@ -51,7 +51,7 @@ export default function Resultado() {
       setup,
       price: setupPrice,
       montado: false,
-      createdAt: now
+      createdAt: Number(now)
     }
 
     try {
@@ -144,7 +144,7 @@ export default function Resultado() {
               />
 
               <div className={styles.checkWhatsapp}>
-                <input type="checkbox" name="" id="whatsapp" checked={sendToWhatsapp} onChange={e => setSendToWhatsapp(!sendToWhatsapp)} required/>
+                <input type="checkbox" name="" id="whatsapp" checked={sendToWhatsapp} onChange={e => setSendToWhatsapp(!sendToWhatsapp)} />
                 <label htmlFor="whatsapp" >Enviar mensagem para o WhatsApp da Konectados</label>
               </div>
               <button type="submit" disabled={!isEmailValid || !isTelValid || name.length < 3}>

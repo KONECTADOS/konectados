@@ -30,9 +30,11 @@ export default function Dashboard({ admin }) {
               newSetup.push({ ...data[key], id: key, montado: data[key].montado || false })
             }
           }
-          let pcsMontados = newSetup.filter(el => el.montado === true).sort((a, b) => Number(new Date(a.createdAt)) - Number(new Date(b.createdAt)) || -1)
-          let pcs = newSetup.filter(el => el.montado === false).sort((a, b) => Number(new Date(a.createdAt)) - Number(new Date(b.createdAt)) || -1)
+          let pcsMontados = newSetup.filter(el => el.montado === true).sort((a, b) => Number(b.createdAt) - Number(a.createdAt))
+          let pcs = newSetup.filter(el => el.montado === false).sort((a, b) => Number(b.createdAt) - Number(a.createdAt))
 
+          console.log(pcs);
+          
 
           setSetups(pcs)
           setMontados(pcsMontados)
