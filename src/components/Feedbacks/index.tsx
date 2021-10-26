@@ -11,7 +11,6 @@ export function Feedbacks({ feedbacks }) {
           return (
             <div key={feedback.id} className={styles.feedback}>
               <span className={styles.quoteLeft}>&ldquo; </span>
-              {console.log(feedback)}
               {feedback.feedback}
               <br/><time style={{fontSize: '.9rem'}}> Enviado em {criadoEm}</time>
               <span className={styles.quoteRight}> &ldquo;</span>
