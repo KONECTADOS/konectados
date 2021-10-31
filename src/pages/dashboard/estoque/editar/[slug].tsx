@@ -1,16 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { getDoc, doc } from "@firebase/firestore";
 import { GetServerSideProps } from "next";
-// import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast"
 import { EditProductTable } from "../../../../components/EditProductTable";
 import { useComponent } from "../../../../hooks/useComponent";
-import { firestore } from "../../../../services/firebase";
+import { database, firestore } from "../../../../services/firebase";
 import styles from './styles.module.scss';
 
 export default function Component({ components, estoque, componentName }) {
-  const { setList, saveList, setEstoque, setCurrentComponent } = useComponent()
-  // const router = useRouter();
+  const { setList, saveList, setEstoque, setCurrentComponent, list } = useComponent()
+  const [percentage, setPercentage] = useState(components[0].porcentagem || 0);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setCurrentComponent(componentName)
@@ -20,22 +23,77 @@ export default function Component({ components, estoque, componentName }) {
 
   async function handleSaveComponents() {
     const promise = saveList()
+
     toast.promise(promise, {
       loading: 'Salvando alterações no banco de dados',
       success: 'Preço atualizado!',
       error: 'Erro ao salvar novo preço. Tente recarregar a página e tentar novamente.'
     })
 
-    // router.push('/dashboard/estoque')
+    router.push('/dashboard/estoque')
+  }
+
+  async function handleSavePercentage() {
+    setIsLoading(true)
+    const newList = [...components].map((el, index) => {
+      let price;
+      if(percentage === 0 ){
+        return {
+          ...el,
+          price: el.basePrice,
+          porcentagem: 0,
+        }
+      }
+      if(el.basePrice){
+        price = el.basePrice + (el.basePrice * (percentage / 100));
+        return {
+          ...el,
+          price,
+          porcentagem: percentage,
+        }
+      } else {
+        
+        price = el.price + (el.price * (percentage / 100));
+        console.log(price, el.price);
+        return {
+          ...el,
+          basePrice: el.price,
+          price,
+          porcentagem: percentage,
+        }
+      } 
+    });
+    
+    console.log(newList);
+    setList(newList);
+    
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 500)
   }
 
   return (
     <main className={styles.container}>
       <Toaster />
       <section className={styles.content}>
-        <ComponentName name={componentName}/>
+        <ComponentName name={componentName} />
 
-        <EditProductTable components={components} />
+        <section className={styles.changePrice}>
+          <span>Taxas ou descontos (%)</span>
+          <input
+            type="number"
+            value={percentage}
+            onChange={e => setPercentage(Number(e.target.value))}
+          />
+
+          <button onClick={handleSavePercentage}>
+            Aplicar
+          </button>
+        </section>
+
+        {isLoading ? (<div className="loading" style={{position: 'absolute', left: '45%', top: '40%'}}/>) : (
+          <EditProductTable components={list} />
+        )}
       </section>
 
       <div className={styles.saveNewComponents}>
@@ -45,7 +103,7 @@ export default function Component({ components, estoque, componentName }) {
   )
 }
 
-function ComponentName({name}: {name: string}) {
+function ComponentName({ name }: { name: string }) {
   let componentName: string;
 
   switch (name) {
@@ -85,7 +143,7 @@ function ComponentName({name}: {name: string}) {
   }
 
   return (
-    <h2>Atualizar { componentName}</h2>
+    <h2>Atualizar {componentName}</h2>
   )
 }
 

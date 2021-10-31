@@ -43,3 +43,41 @@
     }
   }
 }
+
+.changePrice{
+  margin-top: 1rem;
+  position: relative;
+  span{
+    display: inline-block;
+    color: var(--white-50);
+    opacity: .8;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  input, button{
+    height: 3rem;
+    font-size: 1rem;
+    border: none;
+    padding: 0 1.5rem;
+    border-radius: 0.5rem;
+    color: var(--white);
+    &:focus {
+      outline: none;
+    }
+  }
+  
+  input{
+    min-width: 160px;
+    background: var(--gray-800); 
+  }
+  
+  button{
+    background: var(--red-400);
+    min-width: 160px;
+    font-size: 1.1rem;
+    margin-left: 0.75rem;
+
+    // font-weight: bold;
+  }
+}

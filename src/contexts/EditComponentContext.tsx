@@ -7,6 +7,7 @@ type EditComponentContextType = {
   list: any[];
   setComponentIntoList: (component: any) => void;
   saveList: () => Promise<void>;
+  updateStock: () => void;
   setList: Dispatch<SetStateAction<any[]>>;
   setEstoque: Dispatch<SetStateAction<any>>;
   setCurrentComponent: Dispatch<SetStateAction<string>>;
@@ -38,14 +39,23 @@ export function EditComponentContextProvider({ children }: EditComponentContextP
     setEstoque(newEstoque)
   }
 
+  function updateStock(){
+    const newEstoque = {...estoque};
+    newEstoque[currentComponent] = list
+
+    setEstoque(newEstoque)
+  }
+
   async function saveList () {
-    console.log(estoque, list)
+    const newEstoque = {...estoque};
+    newEstoque[currentComponent] = list
+
     const now = new Date()
-    await setDoc(doc(firestore, 'estoque', 'atual'), {estoque, criadoEm: now});
+    await setDoc(doc(firestore, 'estoque', 'atual'), {estoque: newEstoque, criadoEm: now});
   }
  
   return (
-    <EditComponentContext.Provider value={{ currentComponent, list, setComponentIntoList, saveList, setList, setEstoque, setCurrentComponent }}>
+    <EditComponentContext.Provider value={{ currentComponent, list, updateStock, setComponentIntoList, saveList, setList, setEstoque, setCurrentComponent }}>
       {children}
     </EditComponentContext.Provider>
   )
