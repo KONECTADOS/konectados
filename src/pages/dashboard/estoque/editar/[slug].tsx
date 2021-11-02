@@ -11,7 +11,7 @@ import styles from './styles.module.scss';
 
 export default function Component({ components, estoque, componentName }) {
   const { setList, saveList, setEstoque, setCurrentComponent, list } = useComponent()
-  const [percentage, setPercentage] = useState(components[0].porcentagem || 0);
+  const [percentage, setPercentage] = useState<number>(components[0].porcentagem || null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -72,6 +72,10 @@ export default function Component({ components, estoque, componentName }) {
     }, 500)
   }
 
+  function handleChangePercentage(value){
+    setPercentage(value)
+  }
+
   return (
     <main className={styles.container}>
       <Toaster />
@@ -83,7 +87,8 @@ export default function Component({ components, estoque, componentName }) {
           <input
             type="number"
             value={percentage}
-            onChange={e => setPercentage(Number(e.target.value))}
+            placeholder="0%"
+            onChange={e => handleChangePercentage(e.target.value)}
           />
 
           <button onClick={handleSavePercentage}>
